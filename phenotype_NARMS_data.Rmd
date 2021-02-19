@@ -1,0 +1,98 @@
+---
+title: "NARMS_ecoli_PhenData"
+output: html_document
+---
+
+```{r packages, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# load dplyr 
+library(dplyr)
+library(reshape2)
+```
+
+
+```{r load in data, include=TRUE}
+# load in excel file of phenotype data 
+phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+View(phen2017)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+headr <- colnames(phen2017)
+headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+headr.want 
+phen2017.sub <- phen2017[headr.want]
+View(phen2017.sub)
+
+### do the same for 2018 and 2019 datasets
+# load in excel file of phenotype data 
+phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+View(phen2018)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+headr <- colnames(phen2018)
+headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+headr.want 
+phen2018.sub <- phen2018[headr.want]
+View(phen2018.sub)
+
+### do the same for 2018 and 2019 datasets
+# load in excel file of phenotype data 
+phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+View(phen2019)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+headr <- colnames(phen2019)
+headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+headr.want 
+phen2019.sub <- phen2019[headr.want]
+View(phen2019.sub)
+
+colnames(phen2019.sub) == colnames(phen2017.sub)
+colnames(phen2019.sub) == colnames(phen2018.sub)
+colnames(phen2018.sub) == colnames(phen2017.sub)
+
+# use reshape2 to melt data (want 3 cols: sample.ID, antibiotic, INT)
+  # use melt data frame (https://www.rdocumentation.org/packages/reshape2/versions/1.4.4/topics/melt.data.frame)
+    # don't include any value for measure.vars so that it uses everything except sample.ID.
+phen2017.melt <- melt(phen2017.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+View(phen2017.melt)
+phen2018.melt <- melt(phen2018.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+View(phen2018.melt)
+phen2019.melt <- melt(phen2019.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+View(phen2019.melt)
+
+
+
+```
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
