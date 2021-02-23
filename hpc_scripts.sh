@@ -39,4 +39,3 @@ source activate iqtree #load in iqtree environment
 iqtree -nt 4 -s /workdir/hcm59/Ecoli/SNPs/core_gene_alignment.aln
   # nt is number of threads
   # s specifies alignment file to use
-  
