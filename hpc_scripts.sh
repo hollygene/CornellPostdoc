@@ -36,6 +36,16 @@ bacWGS_pipeline.py -l -a SRR13450825_2.fastq
 # put miniconda in your path
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate iqtree #load in iqtree environment
-iqtree -nt 4 -s /workdir/hcm59/Ecoli/SNPs/core_gene_alignment.aln
+iqtree -s /workdir/hcm59/Ecoli/SNPs/Ecoli_snps.subset.aln -m GTR+G -nt AUTO
   # nt is number of threads
   # s specifies alignment file to use
+  # m specifies what model to use
+  # GTR: most general substitution model
+  # G: allows different sites to have different substitution rates
+  # ASC: want IQTree to run ascertainment bias correction (necessary because SNP data)
+
+workdir="/workdir/hcm59/Ecoli/SNPs"
+### To use fasta FetchSeqs perl script
+perl ${workdir}/Fasta_fetchseqs.pl -in ${workdir}/Ecoli_snps.snp_sites.aln \
+  -m ${workdir}/samples_wanted.txt -file -out ${workdir}/Ecoli_snps.subset.aln \
+  -regex -v

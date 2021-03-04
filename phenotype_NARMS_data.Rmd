@@ -5,54 +5,54 @@ output: html_document
 
 ```{r packages, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# load dplyr 
+# load dplyr
 library(dplyr)
 library(reshape2)
 ```
 
 
 ```{r load in data, include=TRUE}
-# load in excel file of phenotype data 
+# load in excel file of phenotype data
 phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
 View(phen2017)
-# need to subset data into what I actually need 
+# need to subset data into what I actually need
 # what I need:
 # sample name (the one that matches the sequencing data)
-# antibiotic name 
-  # interpretation of susceptibility/resistance to specified antibiotic 
+# antibiotic name
+  # interpretation of susceptibility/resistance to specified antibiotic
 headr <- colnames(phen2017)
 headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
-headr.want 
+headr.want
 phen2017.sub <- phen2017[headr.want]
 View(phen2017.sub)
 
 ### do the same for 2018 and 2019 datasets
-# load in excel file of phenotype data 
+# load in excel file of phenotype data
 phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
 View(phen2018)
-# need to subset data into what I actually need 
+# need to subset data into what I actually need
 # what I need:
 # sample name (the one that matches the sequencing data)
-# antibiotic name 
-  # interpretation of susceptibility/resistance to specified antibiotic 
+# antibiotic name
+  # interpretation of susceptibility/resistance to specified antibiotic
 headr <- colnames(phen2018)
 headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
-headr.want 
+headr.want
 phen2018.sub <- phen2018[headr.want]
 View(phen2018.sub)
 
 ### do the same for 2018 and 2019 datasets
-# load in excel file of phenotype data 
+# load in excel file of phenotype data
 phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
 View(phen2019)
-# need to subset data into what I actually need 
+# need to subset data into what I actually need
 # what I need:
 # sample name (the one that matches the sequencing data)
-# antibiotic name 
-  # interpretation of susceptibility/resistance to specified antibiotic 
+# antibiotic name
+  # interpretation of susceptibility/resistance to specified antibiotic
 headr <- colnames(phen2019)
 headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
-headr.want 
+headr.want
 phen2019.sub <- phen2019[headr.want]
 View(phen2019.sub)
 
@@ -70,8 +70,14 @@ View(phen2018.melt)
 phen2019.melt <- melt(phen2019.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
 View(phen2019.melt)
 
+str(phen2017.melt)
+str(phen2018.melt)
+str(phen2019.melt)
 
 
+# stick all three years together
+phenAll <- rbind(phen2017.melt,phen2018.melt,phen2019.melt)
+View(phenAll)
 ```
 
 

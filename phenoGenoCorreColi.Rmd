@@ -1,0 +1,31 @@
+---
+title: "phenoGenoCorr"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+
+
+```
+
+
+```{r phen,include=TRUE}
+# First read in the phenotypic data from Olga (already subsetted from previous analysis with treeWAS)
+Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+# Next read in the genotypic data from AMR finder 
+Gen <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210222_171811.tsv",header=TRUE)
+  
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
