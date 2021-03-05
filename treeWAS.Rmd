@@ -3,56 +3,277 @@ title: "treeWAS"
 output: html_document
 ---
 
-```{r load packages, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(knitr)
-library(devtools)
-# install_github("caitiecollins/treeWAS", build_vignettes = TRUE)
+# install packages
 library(treeWAS)
+
 ```
 
+```{r phenotypic data, include=FALSE}
+# load in excel file of phenotype data 
+phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+# View(phen2017)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+# headr <- colnames(phen2017)
+# headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+# headr.want 
+# phen2017.sub <- phen2017[headr.want]
+# View(phen2017.sub)
 
-```{r treeWAS vignette}
-browseVignettes("treeWAS")
-## Load example data:
+### do the same for 2018 and 2019 datasets
+# load in excel file of phenotype data 
+phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+# View(phen2018)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+# headr <- colnames(phen2018)
+# headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+# headr.want 
+# phen2018.sub <- phen2018[headr.want]
+# View(phen2018.sub)
+
+### do the same for 2018 and 2019 datasets
+# load in excel file of phenotype data 
+phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+# View(phen2019)
+# need to subset data into what I actually need 
+# what I need:
+# sample name (the one that matches the sequencing data)
+# antibiotic name 
+  # interpretation of susceptibility/resistance to specified antibiotic 
+# headr <- colnames(phen2019)
+# headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+# headr.want 
+# phen2019.sub <- phen2019[headr.want]
+# View(phen2019.sub)
+# 
+# dim(phen2019.sub)
+# 
+# colnames(phen2019.sub) == colnames(phen2017.sub)
+# colnames(phen2019.sub) == colnames(phen2018.sub)
+# colnames(phen2018.sub) == colnames(phen2017.sub)
+
+# use reshape2 to melt data (want 3 cols: sample.ID, antibiotic, INT)
+  # use melt data frame (https://www.rdocumentation.org/packages/reshape2/versions/1.4.4/topics/melt.data.frame)
+    # don't include any value for measure.vars so that it uses everything except sample.ID.
+# phen2017.melt <- melt(phen2017.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# View(phen2017.melt)
+# phen2018.melt <- melt(phen2018.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# View(phen2018.melt)
+# phen2019.melt <- melt(phen2019.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# View(phen2019.melt)
+# 
+# str(phen2017.melt)
+# str(phen2018.melt)
+# str(phen2019.melt)
+
+
+# stick all three years together
+# phenAll <- rbind(phen2017.melt,phen2018.melt,phen2019.melt)
+# View(phenAll)
+```
+
+```{r ecoliSNPs,include=FALSE}
+# # want to know what example data looks like 
 data(snps)
+View(snps)
 data(phen)
+View(phen)
 data(tree)
-data(snps.reconstruction)
-## Examine data:
-## genetic data
-str(snps)
-## phenotype
-str(phen)
-table(phen)
-## tree
-str(tree)
-## genetic data reconstruction:
-str(snps.reconstruction)
-## Load colours:
-data(phen.plot.col)
-str(phen.plot.col)
-
-## Plot tree showing phenotype:
-
-
-phen_nodes <- phen.plot.col$all.nodes
-phen_nodes
-str(phen_nodes)
-phen_nodes <- as.factor(phen_nodes)
-str(phen_nodes)
-phen_nodes
-# for whatever reason, this function doesn't work properly and colors everything red
-p <- plot_phen(tree, phen.nodes=phen_nodes)
-
-# but the full function colors things correctly 
+View(tree)
 out <- treeWAS(snps = snps,
                 phen = phen,
                 tree = tree,
                 seed = 1)
 
+all(rownames(snps) %in% names(Phen))
+all(names(Phen) %in% rownames(snps))
+# 
+# 
+# ## Examine data:
+# ## genetic data
+# str(snps)
+
+## phenotype
+str(phen)
+table(phen)
+phen <- as.data.frame(phen)
+View(phen)
+# 
+# ## tree
+# str(tree)
+
+## Read data from file:
+eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/Ecoli_snps.snp_sites.aln", format = "fasta")
+rownames(eColiSNPs)
+colnames(eColiSNPs)
+str(eColiSNPs)
+## Convert: 
+eColiMat <- DNAbin2genind(eColiSNPs)@tab
+
+head(eColiMat)
+rownames(eColiMat)
+colnames(eColiMat)
+
+## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
+anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+
+# want strain (ID used in phenotypic data) and assembly (ID used in SNP data)
+header <- colnames(anno)
+header.want <- c(grep("Strain",header),grep("Assembly",header))
+anno.want <- anno[header.want]
+# View(anno.want)
+
+# merge phenotypic data with annotations to get IDs and assembly in same file 
+library(dplyr)
+colnames(phen2017)
+phen2017.anno <- inner_join(anno.want, phen2017, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(phen2017.anno)
+headr2017 <- colnames(phen2017.anno)
+headr2017.want <- c(grep("Assembly",headr2017),grep("sample.ID.",headr2017),grep("INT",headr2017))
+                    # ,grep(".MIC",headr2017)
+headr2017.want 
+phen2017.anno2 <- phen2017.anno[headr2017.want]
+dim(phen2017.anno)
+
+phen2018.anno <- inner_join(anno.want, phen2018, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(phen2018.anno)
+headr2018 <- colnames(phen2018.anno)
+headr2018.want <- c(grep("Assembly",headr2018),grep("sample.ID.",headr2018),grep("INT",headr2018))
+                    # ,grep("MIC",headr2018))
+headr2018.want 
+phen2018.anno <- phen2018.anno[headr2018.want]
+dim(phen2018.anno)
+
+phen2019.anno <- inner_join(anno.want, phen2019, by=c("Strain" = "sample.ID."),keep=TRUE)
+# View(phen2019.anno)
+headr2019 <- colnames(phen2019.anno)
+headr2019.want <- c(grep("Assembly",headr2019),grep("sample.ID.",headr2019),grep("INT",headr2019))
+                    # ,grep("MIC",headr2019))
+headr2019.want 
+phen2019.anno <- phen2019.anno[headr2019.want]
+dim(phen2019.anno)
+
+phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
+write.table(phenAll,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
+phenAll <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+# library(tidyverse)
+View(phenAll)
+str(phenAll)
+assembly <- phenAll$Assembly
+assembly
+str(assembly)
+assembly.sub <- as.data.frame(substr(assembly, 1, regexpr("\\.", assembly)-1))
+dim(assembly.sub)
+typeof(assembly.sub)
+# export the assembly numbers to a text file so I can extract those sequences from the fasta file for input into IQtree
+write.table(assembly,file="/Users/hcm59/Box/Github/CornellPostdoc/samples_wanted.txt")
+# need to parse the SNP dataset to get the same samples as phenotypic dataset 
+rownames(eColiMat)
+str(eColiMat)
+typeof(eColiMat)
+
+dim(eColiMat)
+
+
+eColirnames <- rownames(eColiMat)
+eColirnames
+eColirnames.sub <- as.data.frame(substr(eColirnames, 1, regexpr("\\.", eColirnames)-1))
+str(eColirnames.sub)
+typeof(eColirnames.sub)
+keep.eColiRnames <- eColirnames.sub[,1] %in% assembly.sub[,1]
+subsetEcoli <- eColiMat[keep.eColiRnames,]
+
+phenAll$Assembly <- substr(phenAll$Assembly, 1, regexpr("\\.", phenAll$Assembly)-1)
+rownames(phenAll) <- phenAll$Assembly
+eColiRownames <- rownames(subsetEcoli)
+subsetEcoliRownames <- substr(eColiRownames, 1, regexpr("\\.", eColiRownames)-1)
+rownames(subsetEcoli) <- subsetEcoliRownames
+rownames(subsetEcoli)
+write.table(subsetEcoli,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
+
+library(ape)
+# data(woodmouse)
+# str(woodmouse)
+# mouseMat<-as.character(woodmouse)
+# dim(mouseMat)
+# str(mouseMat)
+# subsetMouse<-mouseMat[c('No305','No304','No306'),]
+# dim(subsetMouse)
+
+### need to subset fasta file for the samples that I have phenotypic data for 
+install.packages("remotes")
+remotes::install_github("GuillemSalazar/FastaUtils")
+
 ```
 
+```{r phen_subset,include=FALSE}
+# first import back in the data you exported before
+Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+Phen
+headr <- colnames(Phen)
+headr.want <- c(grep("sample.ID",headr),grep("Assembly",headr), grep("INT",headr))
+headr.want
+phen.sub <- Phen[headr.want]
+head(phen.sub)
+
+# find all instances of "SUSC" and replace with 0
+library(tidyverse)
+phen.sub.0 <- phen.sub %>% mutate_all(funs(str_replace(., "SUSC", "0")))
+phen.sub.0
+# worked! # now do that to RESIST and convert NOINTP
+phen.sub.01 <- phen.sub.0 %>% mutate_all(funs(str_replace(., "RESIST", "1")))
+phen.sub.01.1 <- phen.sub.01 %>% mutate_all(funs(str_replace(., "NOINTP", "")))
+phen.sub.01.2 <- phen.sub.01.1 %>% mutate_all(funs(str_replace(., "INTER", "")))
+View(phen.sub.01.2)
+phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
+
+
+rownames(phen.sub.01.3) <- phen.sub.01.3$Assembly
+rownames(phen.sub.01.3)
+phenRownames <- rownames(phen.sub.01.3)
+rownames(phen.sub.01.3) <- substr(phenRownames, 1, regexpr("\\.", phenRownames)-1)
+
+
+
+
+
+```
+
+
+```{r treeWAS,include=TRUE}
+# First import the data needed for treeWAS
+# 3 things needed: SNP dataset 
+SNPs <- subsetEcoli
+rownames(SNPs)
+
+# Phenotypic dataset 
+Phen <- phen.sub.01.3
+  rownames(Phen) 
+# Tree
+# Tree <- 
+all(rownames(SNPs) %in% names(Phen))
+all(names(Phen) %in% rownames(SNPs))
+is.null(rownames(SNPs))
+is.null(names(phen))
+
+
+
+
+
+my.out <- treeWAS(snps = SNPs,
+                phen = Phen,
+                seed = 1)
+
+```
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
