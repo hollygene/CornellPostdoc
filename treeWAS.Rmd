@@ -43,59 +43,77 @@ phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-E
 ### do the same for 2018 and 2019 datasets
 # load in excel file of phenotype data 
 phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
-# View(phen2019)
-# need to subset data into what I actually need 
-# what I need:
-# sample name (the one that matches the sequencing data)
-# antibiotic name 
-  # interpretation of susceptibility/resistance to specified antibiotic 
-# headr <- colnames(phen2019)
-# headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
-# headr.want 
-# phen2019.sub <- phen2019[headr.want]
-# View(phen2019.sub)
+# # View(phen2019)
+# # need to subset data into what I actually need 
+# # what I need:
+# # sample name (the one that matches the sequencing data)
+# # antibiotic name 
+#   # interpretation of susceptibility/resistance to specified antibiotic 
+# # headr <- colnames(phen2019)
+# # headr.want <- c(grep("sample.ID",headr),grep("INT",headr))
+# # headr.want 
+# # phen2019.sub <- phen2019[headr.want]
+# # View(phen2019.sub)
+# # 
+# # dim(phen2019.sub)
+# # 
+# # colnames(phen2019.sub) == colnames(phen2017.sub)
+# # colnames(phen2019.sub) == colnames(phen2018.sub)
+# # colnames(phen2018.sub) == colnames(phen2017.sub)
 # 
-# dim(phen2019.sub)
+# # use reshape2 to melt data (want 3 cols: sample.ID, antibiotic, INT)
+#   # use melt data frame (https://www.rdocumentation.org/packages/reshape2/versions/1.4.4/topics/melt.data.frame)
+#     # don't include any value for measure.vars so that it uses everything except sample.ID.
+# # phen2017.melt <- melt(phen2017.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# # View(phen2017.melt)
+# # phen2018.melt <- melt(phen2018.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# # View(phen2018.melt)
+# # phen2019.melt <- melt(phen2019.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+# # View(phen2019.melt)
+# # 
+# # str(phen2017.melt)
+# # str(phen2018.melt)
+# # str(phen2019.melt)
 # 
-# colnames(phen2019.sub) == colnames(phen2017.sub)
-# colnames(phen2019.sub) == colnames(phen2018.sub)
-# colnames(phen2018.sub) == colnames(phen2017.sub)
-
-# use reshape2 to melt data (want 3 cols: sample.ID, antibiotic, INT)
-  # use melt data frame (https://www.rdocumentation.org/packages/reshape2/versions/1.4.4/topics/melt.data.frame)
-    # don't include any value for measure.vars so that it uses everything except sample.ID.
-# phen2017.melt <- melt(phen2017.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
-# View(phen2017.melt)
-# phen2018.melt <- melt(phen2018.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
-# View(phen2018.melt)
-# phen2019.melt <- melt(phen2019.sub, id.vars=c("sample.ID."),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
-# View(phen2019.melt)
 # 
-# str(phen2017.melt)
-# str(phen2018.melt)
-# str(phen2019.melt)
+# # stick all three years together
+# # phenAll <- rbind(phen2017.melt,phen2018.melt,phen2019.melt)
+# # View(phenAll)
 
 
-# stick all three years together
-# phenAll <- rbind(phen2017.melt,phen2018.melt,phen2019.melt)
-# View(phenAll)
+### MIC Cutoffs from CLSI VET01SEd5E performance standards document
+# Amikacin S <= 4  R > 4
+# cutoffs <- 
+
+
+
+
 ```
 
+
+
+
 ```{r ecoliSNPs,include=FALSE}
-# # want to know what example data looks like 
+# want to know what example data looks like
 data(snps)
 View(snps)
 data(phen)
 View(phen)
 data(tree)
 View(tree)
-out <- treeWAS(snps = snps,
-                phen = phen,
-                tree = tree,
-                seed = 1)
-
-all(rownames(snps) %in% names(Phen))
-all(names(Phen) %in% rownames(snps))
+names(phen)
+str(phen)
+typeof(phen)
+# out <- treeWAS(snps = snps,
+#                 phen = phen,
+#                 tree = tree,
+#                 seed = 1)
+# 
+names(phen)
+typeof(phen)
+str(phen)
+all(rownames(snps) %in% names(phen))
+all(names(phen) %in% rownames(snps))
 # 
 # 
 # ## Examine data:
@@ -103,10 +121,10 @@ all(names(Phen) %in% rownames(snps))
 # str(snps)
 
 ## phenotype
-str(phen)
-table(phen)
-phen <- as.data.frame(phen)
-View(phen)
+# str(phen)
+# table(phen)
+# phen <- as.data.frame(phen)
+# View(phen)
 # 
 # ## tree
 # str(tree)
@@ -143,6 +161,7 @@ headr2017.want <- c(grep("Assembly",headr2017),grep("sample.ID.",headr2017),grep
 headr2017.want 
 phen2017.anno2 <- phen2017.anno[headr2017.want]
 dim(phen2017.anno)
+rm(headr2017,headr2017.want)
 
 phen2018.anno <- inner_join(anno.want, phen2018, by=c("Strain" = "sample.ID."),keep=TRUE)
 View(phen2018.anno)
@@ -152,6 +171,7 @@ headr2018.want <- c(grep("Assembly",headr2018),grep("sample.ID.",headr2018),grep
 headr2018.want 
 phen2018.anno <- phen2018.anno[headr2018.want]
 dim(phen2018.anno)
+rm(headr2018,headr2018.want)
 
 phen2019.anno <- inner_join(anno.want, phen2019, by=c("Strain" = "sample.ID."),keep=TRUE)
 # View(phen2019.anno)
@@ -161,6 +181,7 @@ headr2019.want <- c(grep("Assembly",headr2019),grep("sample.ID.",headr2019),grep
 headr2019.want 
 phen2019.anno <- phen2019.anno[headr2019.want]
 dim(phen2019.anno)
+rm(headr2019,headr2019.want)
 
 phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
 write.table(phenAll,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
@@ -225,6 +246,11 @@ headr.want
 phen.sub <- Phen[headr.want]
 head(phen.sub)
 
+library(dplyr)
+library(reshape2)
+# phen.Melt <- melt(Phen, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+
+
 # find all instances of "SUSC" and replace with 0
 library(tidyverse)
 phen.sub.0 <- phen.sub %>% mutate_all(funs(str_replace(., "SUSC", "0")))
@@ -241,10 +267,20 @@ rownames(phen.sub.01.3) <- phen.sub.01.3$Assembly
 rownames(phen.sub.01.3)
 phenRownames <- rownames(phen.sub.01.3)
 rownames(phen.sub.01.3) <- substr(phenRownames, 1, regexpr("\\.", phenRownames)-1)
+View(phen.sub.01.3)
+phen.sub.01.4 <- phen.sub.01.3[,2:104]
+View(phen.sub.01.4)
+str(phen.sub.01.4)
 
+# phen.melt <- melt(phen.sub.01.4, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+phen.Amikacin <- phen.sub.01.4[,2]
+names(phen.Amikacin) <- rownames(phen.sub.01.4)
+view(phen.Amikacin)
+typeof(phen.Amikacin)
 
-
-
+phen.Amikacin2 <- as.vector(unlist(phen.Amikacin))
+names(phen.Amikacin2) <- names(phen.Amikacin)
+write.table(phen.Amikacin2,file="/Users/hcm59/Box/Github/CornellPostdoc/phen_Amikacin.txt")
 
 ```
 
@@ -252,25 +288,45 @@ rownames(phen.sub.01.3) <- substr(phenRownames, 1, regexpr("\\.", phenRownames)-
 ```{r treeWAS,include=TRUE}
 # First import the data needed for treeWAS
 # 3 things needed: SNP dataset 
+# subsetEcoli <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt",header=TRUE)
 SNPs <- subsetEcoli
 rownames(SNPs)
 
 # Phenotypic dataset 
-Phen <- phen.sub.01.3
-  rownames(Phen) 
+# Phen <- phen.sub.01.3
+  names(phen.Amikacin2) 
 # Tree
-# Tree <- 
-all(rownames(SNPs) %in% names(Phen))
-all(names(Phen) %in% rownames(SNPs))
+  library(ape)
+Tree <- read.tree(file="/Users/hcm59/Downloads/Ecoli_snps2.subset.aln.varsites.phy.treefile")
+Tree$tip.label
+Tree$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)
+Tree$tip.label
+## Cross-check labels with each other:
+all(Tree$tip.label %in% rownames(SNPs))
+all(rownames(SNPs) %in% Tree$tip.label)
+all(Tree$tip.label %in% names(phen.Amikacin2))
+all(names(phen.Amikacin2) %in% Tree$tip.label)
+all(names(phen.Amikacin2) %in% rownames(SNPs))
+all(rownames(SNPs) %in% names(phen.Amikacin2))
 is.null(rownames(SNPs))
-is.null(names(phen))
-
-
-
-
-
+is.null(names(phen.Amikacin2))
+# names(Phen)
+## 
+## Attempting to use parallel 
+# library(parallel)
+# library(MASS)
+# 
+# numCores <- detectCores()
+# numCores
+# system.time(
+#   results <- lapply(starts,fx)
+# )
 my.out <- treeWAS(snps = SNPs,
-                phen = Phen,
+                phen = phen.Amikacin2,
+                tree = Tree,
+                chunk.size = ncol(SNPs)*2,
+                mem.lim = 10,
+                phen.type = "discrete",
                 seed = 1)
 
 ```

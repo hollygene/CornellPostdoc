@@ -12,12 +12,14 @@ fastq-dump --split-3 $1
 # command to run QC
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate bacWGS
-bacWGS_readQC.py --threads 4 *.fastq > PRJNA318591_readQC.tsv
+bacWGS_readQC.py --threads 4 *.fastq > PRJNA324565_readQC.tsv
 
 
 # command to run snp-sites
+export PATH=/workdir/miniconda3/bin:$PATH
 source activate snippy
-snp-sites -mv -o Ecoli_snps core_gene_alignment.aln
+mkdir /workdir/hcm59/Ecoli/SNPs/snp_sites
+snp-sites -mvp -o /workdir/hcm59/Ecoli/SNPs/snp_sites/Ecoli_snps2 /workdir/hcm59/Ecoli/SNPs/core_gene_alignment.aln
 
 
 # command to run assembly and screening program:
@@ -36,7 +38,7 @@ bacWGS_pipeline.py -l -a SRR13450825_2.fastq
 # put miniconda in your path
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate iqtree #load in iqtree environment
-iqtree -s /workdir/hcm59/Ecoli/SNPs/Ecoli_snps.subset.aln -m GTR+G -nt AUTO
+iqtree -s /workdir/hcm59/Ecoli/SNPs/Ecoli_snps.subset.aln -m GTR+G+ASC -nt AUTO
   # nt is number of threads
   # s specifies alignment file to use
   # m specifies what model to use
