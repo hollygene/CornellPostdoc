@@ -95,25 +95,25 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 
 ```{r ecoliSNPs,include=FALSE}
 # want to know what example data looks like
-data(snps)
-View(snps)
-data(phen)
-View(phen)
-data(tree)
-View(tree)
-names(phen)
-str(phen)
-typeof(phen)
+# data(snps)
+# View(snps)
+# data(phen)
+# View(phen)
+# data(tree)
+# View(tree)
+# names(phen)
+# str(phen)
+# typeof(phen)
 # out <- treeWAS(snps = snps,
 #                 phen = phen,
 #                 tree = tree,
 #                 seed = 1)
-# 
-names(phen)
-typeof(phen)
-str(phen)
-all(rownames(snps) %in% names(phen))
-all(names(phen) %in% rownames(snps))
+# # 
+# names(phen)
+# typeof(phen)
+# str(phen)
+# all(rownames(snps) %in% names(phen))
+# all(names(phen) %in% rownames(snps))
 # 
 # 
 # ## Examine data:
@@ -148,7 +148,7 @@ anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200co
 header <- colnames(anno)
 header.want <- c(grep("Strain",header),grep("Assembly",header))
 anno.want <- anno[header.want]
-# View(anno.want)
+View(anno.want)
 
 # merge phenotypic data with annotations to get IDs and assembly in same file 
 library(dplyr)
@@ -183,43 +183,36 @@ phen2019.anno <- phen2019.anno[headr2019.want]
 dim(phen2019.anno)
 rm(headr2019,headr2019.want)
 
+rm(phenAll)
 phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
-write.table(phenAll,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
-phenAll <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+  
+test <- dplyr::full_join(phenAll,anno.want,by="Assembly")
+test$Assembly <- substr(test$Assembly, 1, regexpr("\\.", test$Assembly)-1)
+test$Assembly
+phenAllFinal <- test
+
+write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
+# phenAll <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # library(tidyverse)
-View(phenAll)
-str(phenAll)
-assembly <- phenAll$Assembly
-assembly
-str(assembly)
-assembly.sub <- as.data.frame(substr(assembly, 1, regexpr("\\.", assembly)-1))
-dim(assembly.sub)
-typeof(assembly.sub)
 # export the assembly numbers to a text file so I can extract those sequences from the fasta file for input into IQtree
-write.table(assembly,file="/Users/hcm59/Box/Github/CornellPostdoc/samples_wanted.txt")
+# write.table(assembly,file="/Users/hcm59/Box/Github/CornellPostdoc/samples_wanted.txt")
 # need to parse the SNP dataset to get the same samples as phenotypic dataset 
 rownames(eColiMat)
 str(eColiMat)
 typeof(eColiMat)
-
 dim(eColiMat)
-
 
 eColirnames <- rownames(eColiMat)
 eColirnames
-eColirnames.sub <- as.data.frame(substr(eColirnames, 1, regexpr("\\.", eColirnames)-1))
+eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
 str(eColirnames.sub)
 typeof(eColirnames.sub)
-keep.eColiRnames <- eColirnames.sub[,1] %in% assembly.sub[,1]
-subsetEcoli <- eColiMat[keep.eColiRnames,]
+eColiMat2 <- eColiMat
+rownames(eColiMat2) <- eColirnames.sub
 
-phenAll$Assembly <- substr(phenAll$Assembly, 1, regexpr("\\.", phenAll$Assembly)-1)
-rownames(phenAll) <- phenAll$Assembly
-eColiRownames <- rownames(subsetEcoli)
-subsetEcoliRownames <- substr(eColiRownames, 1, regexpr("\\.", eColiRownames)-1)
-rownames(subsetEcoli) <- subsetEcoliRownames
-rownames(subsetEcoli)
-write.table(subsetEcoli,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
+all(rownames(names(phenAllFinal)) %in% rownames(eColiMat2))
+
+write.table(eColiMat2,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
 
 library(ape)
 # data(woodmouse)
@@ -238,13 +231,16 @@ remotes::install_github("GuillemSalazar/FastaUtils")
 
 ```{r phen_subset,include=FALSE}
 # first import back in the data you exported before
-Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
-Phen
+# Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+Phen <- phenAllFinal
 headr <- colnames(Phen)
 headr.want <- c(grep("sample.ID",headr),grep("Assembly",headr), grep("INT",headr))
 headr.want
 phen.sub <- Phen[headr.want]
 head(phen.sub)
+names(phen.sub)[2]
+typeof(phen.sub[2])
+typeof(phen.sub[1])
 
 library(dplyr)
 library(reshape2)
@@ -253,20 +249,18 @@ library(reshape2)
 
 # find all instances of "SUSC" and replace with 0
 library(tidyverse)
-phen.sub.0 <- phen.sub %>% mutate_all(funs(str_replace(., "SUSC", "0")))
+phen.sub.0 <- phen.sub %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
 phen.sub.0
 # worked! # now do that to RESIST and convert NOINTP
-phen.sub.01 <- phen.sub.0 %>% mutate_all(funs(str_replace(., "RESIST", "1")))
-phen.sub.01.1 <- phen.sub.01 %>% mutate_all(funs(str_replace(., "NOINTP", "")))
-phen.sub.01.2 <- phen.sub.01.1 %>% mutate_all(funs(str_replace(., "INTER", "")))
+phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
+phen.sub.01.1 <- phen.sub.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
+phen.sub.01.2 <- phen.sub.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
 View(phen.sub.01.2)
 phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
 
 
-rownames(phen.sub.01.3) <- phen.sub.01.3$Assembly
+rownames(phen.sub.01.3) <- phenAllFinal$Assembly
 rownames(phen.sub.01.3)
-phenRownames <- rownames(phen.sub.01.3)
-rownames(phen.sub.01.3) <- substr(phenRownames, 1, regexpr("\\.", phenRownames)-1)
 View(phen.sub.01.3)
 phen.sub.01.4 <- phen.sub.01.3[,2:104]
 View(phen.sub.01.4)
@@ -275,7 +269,7 @@ str(phen.sub.01.4)
 # phen.melt <- melt(phen.sub.01.4, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
 phen.Amikacin <- phen.sub.01.4[,2]
 names(phen.Amikacin) <- rownames(phen.sub.01.4)
-view(phen.Amikacin)
+View(phen.Amikacin)
 typeof(phen.Amikacin)
 
 phen.Amikacin2 <- as.vector(unlist(phen.Amikacin))
@@ -297,12 +291,18 @@ rownames(SNPs)
   names(phen.Amikacin2) 
 # Tree
   library(ape)
-Tree <- read.tree(file="/Users/hcm59/Downloads/Ecoli_snps2.subset.aln.varsites.phy.treefile")
+Tree <- read.tree(file="/Users/hcm59/Box/Github/CornellPostdoc/Ecoli_snps.snp_sites.aln.treefile")
 Tree$tip.label
+# need to subset the tree
 Tree$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)
-Tree$tip.label
+keep.tiplabels <- Tree$tip.label %in% rownames(SNPs)
+keep.tiplabels
+dim(Tree)
+Tree.sub <- Tree[keep.tiplabels]
+Tree.sub
+Tree.sub$tip.label
 ## Cross-check labels with each other:
-all(Tree$tip.label %in% rownames(SNPs))
+all(Tree.sub$tip.label %in% rownames(SNPs))
 all(rownames(SNPs) %in% Tree$tip.label)
 all(Tree$tip.label %in% names(phen.Amikacin2))
 all(names(phen.Amikacin2) %in% Tree$tip.label)
