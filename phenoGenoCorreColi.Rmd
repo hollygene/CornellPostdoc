@@ -16,8 +16,65 @@ knitr::opts_chunk$set(echo = TRUE)
 # First read in the phenotypic data from Olga (already subsetted from previous analysis with treeWAS)
 Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # Next read in the genotypic data from AMR finder 
-Gen <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210222_171811.tsv",header=TRUE)
-  
+PRJNA324565 <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210222_171811.tsv",header=TRUE)
+## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
+anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+
+```
+
+```{r reorganizing,include=FALSE}
+# PRJNA324565$Isolate == anno$Run 
+# Phen$Strain == anno$Strain 
+# ^ going to take a couple of steps to get phenotypic and genotypic data with the same names
+## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
+anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+
+# want strain (ID used in phenotypic data) and Run (ID used in Geno data)
+header <- colnames(anno)
+header.want <- c(grep("Strain",header),grep("Run",header))
+anno.want <- anno[header.want]
+View(anno.want)
+
+# merge phenotypic data with annotations to get IDs and assembly in same file 
+library(dplyr)
+colnames(phen2017)
+phen2017.anno <- inner_join(anno.want, phen2017, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(phen2017.anno)
+headr2017 <- colnames(phen2017.anno)
+headr2017.want <- c(grep("Strain",headr2017),grep("Run",headr2017), grep("sample.ID.",headr2017),grep("INT",headr2017))
+                    # ,grep(".MIC",headr2017)
+headr2017.want 
+phen2017.anno2 <- phen2017.anno[headr2017.want]
+dim(phen2017.anno2)
+# rm(headr2017,headr2017.want)
+
+phen2018.anno <- inner_join(anno.want, phen2018, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(phen2018.anno)
+headr2018 <- colnames(phen2018.anno)
+headr2018.want <- c(grep("Assembly",headr2018),grep("Run",headr2018),grep("sample.ID.",headr2018),grep("INT",headr2018))
+                    # ,grep("MIC",headr2018))
+headr2018.want 
+phen2018.anno <- phen2018.anno[headr2018.want]
+dim(phen2018.anno)
+# rm(headr2018,headr2018.want)
+
+phen2019.anno <- inner_join(anno.want, phen2019, by=c("Strain" = "sample.ID."),keep=TRUE)
+# View(phen2019.anno)
+headr2019 <- colnames(phen2019.anno)
+headr2019.want <- c(grep("Assembly",headr2019),grep("Run",headr2019),grep("sample.ID.",headr2019),grep("INT",headr2019))
+                    # ,grep("MIC",headr2019))
+headr2019.want 
+phen2019.anno <- phen2019.anno[headr2019.want]
+dim(phen2019.anno)
+# rm(headr2019,headr2019.want)
+
+# rm(phenAll)
+phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
+
+
 ```
 
 ## Including Plots

@@ -10,7 +10,7 @@ install_github("caitiecollins/treeWAS", build_vignettes = TRUE)
 library(treeWAS)
 
 ## Read data from file:
-eColiSNPs <- read.dna(file = "/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_snps.snp_sites.aln", format = "fasta")
+eColiSNPs <- read.dna(file = "/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
 str(eColiSNPs)
