@@ -91,8 +91,6 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 ```
 
 
-
-
 ```{r ecoliSNPs,include=FALSE}
 # want to know what example data looks like
 # data(snps)
@@ -143,13 +141,23 @@ colnames(eColiMat)
 
 ## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
 anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
-
 # want strain (ID used in phenotypic data) and assembly (ID used in SNP data)
 header <- colnames(anno)
 header.want <- c(grep("Strain",header),grep("Assembly",header))
 anno.want <- anno[header.want]
 View(anno.want)
-
+anno.want2 <- substr(anno.want$Assembly, 1, regexpr("\\.", anno.want$Assembly)-1)
+anno.want2
+eColirnames <- rownames(eColiMat)
+eColirnames
+eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
+eColirnames.sub
+samples.want <- anno.want2 %in% eColirnames.sub
+samples.want
+table(samples.want)
+anno.want2 <- anno.want[samples.want,]
+anno.want2
+anno.want <- anno.want2
 # merge phenotypic data with annotations to get IDs and assembly in same file 
 library(dplyr)
 colnames(phen2017)
@@ -185,13 +193,13 @@ rm(headr2019,headr2019.want)
 
 rm(phenAll)
 phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
-  
+phenAll
 test <- dplyr::full_join(phenAll,anno.want,by="Assembly")
 test$Assembly <- substr(test$Assembly, 1, regexpr("\\.", test$Assembly)-1)
 test$Assembly
 phenAllFinal <- test
+rownames(eColiMat)
 
-write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
 # phenAll <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # library(tidyverse)
 # export the assembly numbers to a text file so I can extract those sequences from the fasta file for input into IQtree
@@ -211,8 +219,19 @@ eColiMat2 <- eColiMat
 rownames(eColiMat2) <- eColirnames.sub
 
 all(rownames(names(phenAllFinal)) %in% rownames(eColiMat2))
+all(rownames(eColiMat2) %in%  rownames(names(phenAllFinal))) 
 
-write.table(eColiMat2,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
+
+
+
+
+
+
+
+
+
+# write.table(eColiMat2,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
+write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
 
 library(ape)
 # data(woodmouse)

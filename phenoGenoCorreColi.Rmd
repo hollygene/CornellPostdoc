@@ -5,7 +5,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+library(dplyr)
+library(tidyr)
 
 
 
@@ -14,9 +15,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r phen,include=TRUE}
 # First read in the phenotypic data from Olga (already subsetted from previous analysis with treeWAS)
-Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+# Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # Next read in the genotypic data from AMR finder 
 PRJNA324565 <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210222_171811.tsv",header=TRUE)
+PRJNA318591 <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/ARG_table_20210312_143707_PRJNA318591.tsv", header=TRUE)
 ## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
 anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
 phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
@@ -25,7 +27,7 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 
 ```
 
-```{r reorganizing,include=FALSE}
+```{r reorganizing Phenotypic data,include=FALSE}
 # PRJNA324565$Isolate == anno$Run 
 # Phen$Strain == anno$Strain 
 # ^ going to take a couple of steps to get phenotypic and genotypic data with the same names
@@ -73,6 +75,78 @@ dim(phen2019.anno)
 
 # rm(phenAll)
 phenAll <- dplyr::bind_rows(phen2017.anno,phen2018.anno,phen2019.anno)
+headr <- colnames(phenAll)
+headr.want <- c(grep("Strain",headr),grep("Run",headr),grep("INT",headr))
+headr.want
+phen.sub <- phenAll[headr.want]
+
+# need to tidy up phenotypic data 
+library(reshape2)
+typeof(phen.sub)
+testTidayPhen <- gather(phen.sub,Subclass,Phenotype,-Strain,-Run) 
+tidyPhen <- testTidayPhen[,2:4]
+#remove substrings (.INT)
+tidyPhen$Subclass <- gsub(".INT", "", tidyPhen$Subclass)
+
+```
+
+```{r reorganizing  data, include=FALSE}
+# get a combined set of genotypic data 
+genotype9165 <- rbind(PRJNA324565,PRJNA318591)
+
+levels(as.factor(genotype9165$Subclass))
+levels(as.factor(genotype9165$Class))
+
+##subset genotypic data into subclasses
+# actually want to subset it into classes - and put the phenotype antibiotics into their respective class for correlations  
+
+gtAminogly <- genotype9165[which(genotype9165$Class=="AMINOGLYCOSIDE"),]
+gtAminoglyQuin <- genotype9165[which(genotype9165$Class=="AMINOGLYCOSIDE/QUINOLONE"),]
+gtBetaLac <- genotype9165[which(genotype9165$Class=="BETA-LACTAM"),]
+gtBleo <- genotype9165[which(genotype9165$Class=="BLEOMYCIN"),]
+gtColis <- genotype9165[which(genotype9165$Class=="COLISTIN"),]
+gtFos <- genotype9165[which(genotype9165$Class=="FOSFOMYCIN"),]
+gtLin <- genotype9165[which(genotype9165$Class=="LINCOSAMIDE"),]
+gtMac <- genotype9165[which(genotype9165$Class=="MACROLIDE"),]
+gtPhen <- genotype9165[which(genotype9165$Class=="PHENICOL"),]
+gtQuat <- genotype9165[which(genotype9165$Class=="QUATERNARY_AMMONIUM"),]
+gtQuin <- genotype9165[which(genotype9165$Class=="QUINOLONE"),]
+gtRif <- genotype9165[which(genotype9165$Class=="RIFAMYCIN"),]
+gtStrepthri <- genotype9165[which(genotype9165$Class=="STREPTOTHRICIN"),]
+gtSulfo <- genotype9165[which(genotype9165$Class=="SULFONAMIDE"),]
+gtTetra <- genotype9165[which(genotype9165$Class=="TETRACYCLINE"),]
+gtTrim <- genotype9165[which(genotype9165$Class=="TRIMETHOPRIM"),]
+
+
+# subset resitant phenotypes and susceptible phenotypes
+subclass <- levels(as.factor(tidyPhen$Subclass))
+subclass
+lookupTable <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/lookupTableEcoli.csv",header=TRUE)
+
+library(devtools, quietly=TRUE)
+source_gist("https://gist.github.com/dfalster/5589956")
+# addNewData("dataNew.csv", myData, allowedVars)
+allowedVars <- c("Run","Subclass","Phenotype","Class")
+ptSub <- addNewData("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/lookupTableEcoli.csv", tidyPhen, allowedVars)
+levels(as.factor(ptSub$Class))
+View(ptSub)
+
+table(levels(as.factor(genotype9165$Class)) %in% levels(as.factor(ptSub$Class)))
+table(levels(as.factor(ptSub$Class)) %in% levels(as.factor(genotype9165$Class)))
+levels(as.factor(genotype9165$Class))
+ptAMINOGLY <- ptSub[which(ptSub$Class=="AMINOGLYCOSIDE"),]
+dim(ptAMINOGLY)
+dim(gtAminogly)
+allAMINOGLY <- full_join(ptAMINOGLY, gtAminogly, by=c("Run" = "Isolate"),keep=TRUE)
+write.csv(allAMINOGLY,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/allAMINOGLY.csv")
+levels(as.factor(allAMINOGLY$Subclass.x))
+#combine datasets by Run (resistNa) and Isolate (genotype9165)
+# Only certain antibiotics are shared by both datasets
+
+
+
+
+
 
 
 ```

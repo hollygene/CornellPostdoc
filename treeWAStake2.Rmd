@@ -1,3 +1,9 @@
+---
+title: "treeWAStake2"
+output: html_document
+---
+
+```{r script, include=TRUE}
 ### Script for running treeWAS on the AHDC server
 
 ## First need to load in/install treeWAS
@@ -17,9 +23,11 @@ colnames(eColiSNPs)
 str(eColiSNPs)
 ## Convert: 
 eColiMat <- DNAbin2genind(eColiSNPs)@tab
+dim(eColiMat)
 # Remove columns with more than 50% NAs: 
 eColiMatShrt <- eColiMat
-eColiMatShrt <- eColiMatShrt[, which(colMeans(!is.na(eColiMatShrt)) > 0.5)]
+eColiMatShrt2 <- eColiMatShrt[, which(colMeans(!is.na(eColiMatShrt)) > 0.5)]
+dim(eColiMatShrt2)
 
 # anno <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
 anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
@@ -30,12 +38,12 @@ anno.want <- anno[header.want]
 
 # phenAll <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phenAll.txt")
 phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
-eColirnames <- rownames(eColiMatShrt)
+eColirnames <- rownames(eColiMatShrt2)
 eColirnames
 eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
 str(eColirnames.sub)
 typeof(eColirnames.sub)
-eColiMat2 <- eColiMatShrt
+eColiMat2 <- eColiMatShrt2
 rownames(eColiMat2) <- eColirnames.sub
 
 all(rownames(names(phenAll)) %in% rownames(eColiMat2))
@@ -77,7 +85,7 @@ str(phen.sub.01.4)
 # phen.melt <- melt(phen.sub.01.4, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
 phen.Amikacin <- phen.sub.01.4[,2]
 names(phen.Amikacin) <- rownames(phen.sub.01.4)
-# View(phen.Amikacin)
+View(phen.Amikacin)
 typeof(phen.Amikacin)
 phen.Amikacin
 
@@ -106,14 +114,54 @@ all(names(phen.Amikacin2) %in% rownames(SNPs))
 all(rownames(SNPs) %in% names(phen.Amikacin2))
 names(phen.Amikacin2)
 
-rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree)
+rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree,header,header.want)
 ls()
 
-treeWASTest2 <- treeWAS(snps = SNPs,
+suffixes <- keepLastN(colnames(SNPs), n = 2)
+suffixes <- unique(suffixes)
+
+if(all(suffixes %in% c(".a", ".c", ".g", ".t"))){
+  ## SNPs:
+  snps <- get.binary.snps(SNPs)
+  
+  ## ... Optional step (for snps.reconstruction, if present)
+  ## (Example only, if needed for user data)
+  # if(is.matrix(snps.reconstruction)){
+  #   snps.reconstruction <- snps.reconstruction[, which(colnames(snps.reconstruction) %in% colnames(snps))]
+  # }
+}
+
+
+
+
+
+treeWASTest2 <- treeWAS(snps = snps,
                   phen = phen.Amikacin2,
                   tree = Tree2,
-                  mem.lim = TRUE,
+                  mem.lim = 16,
                   filename.plot = "/Users/hcm59/Box/Github/CornellPostdoc/treeWas_plots3.18.pdf",
-                  seed = 1)
+                  seed=1)
 
-plot_phen(Tree2, phen.nodes=phen.plot.col$all.nodes)
+# plot_phen(Tree2, phen.nodes=phen.plot.col$all.nodes)
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
