@@ -17,7 +17,7 @@ library(tidyr)
 # First read in the phenotypic data from Olga (already subsetted from previous analysis with treeWAS)
 # Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # Next read in the genotypic data from AMR finder 
-PRJNA324565 <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210222_171811.tsv",header=TRUE)
+PRJNA324565 <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/ARG_table_20210305_123652_PRJNA324565.tsv",header=TRUE)
 PRJNA318591 <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/ARG_table_20210312_143707_PRJNA318591.tsv", header=TRUE)
 ## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
 anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
@@ -26,6 +26,109 @@ phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-E
 phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
 
 ```
+
+```{r visualize_AMRFinder_data, include=TRUE}
+
+accListPRJNA318591 <- read.table("/Users/hcm59/Downloads/PRJNA318591_SraAccList.txt")
+accListPRJNA324565 <- read.table("")
+nsamples91 <- nlevels(as.factor(PRJNA318591$Isolate))
+# 198 samples found AMR genes
+# 199 samples total 
+nsamples65 <- nlevels(as.factor(PRJNA324565$Isolate))
+# 101 samples found AMR genes 
+# 157 samples total 
+AMRFinder <- rbind(PRJNA324565,PRJNA318591)
+199+157
+198+101
+356-299
+
+# 356 samples total 
+
+library(ggplot2)
+library(tidyr)
+library(tibble)
+library(hrbrthemes)
+library(dplyr)
+## Let's try pHeatmap now 
+library(pheatmap)
+
+#remove duplicates 
+# AMRFinder [!duplicated(AMRFinder[c(1,2)]),]
+amrFinderByClass <- cbind(AMRFinder$Isolate,AMRFinder$Class)
+amrFinderByClass <-as.data.frame(amrFinderByClass)
+summary(amrFinderByClass)
+test <- amrFinderByClass %>% group_by(V1,V2) %>% mutate(count = n())
+test2 <- dcast(test, V1 ~ V2)
+write.csv(test2, "/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/amr_genes_table_perSample.csv")
+
+classes_per_sample <- c(7,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,6,1,1,1,1,10,1,1,7,1,1,1,1,1,1,1,1,1,1,1,1,1,2,10,1,1,1,1,1,6,4,1,1,1,3,6,1,1,1,1,1,1,1,1,5,1,3,6,1,1,4,8,1,1,1,1,1,1,3,1,1,3,1,6,1,1,9,1,1,1,1,2,1,5,2,1,1,2,1,7,1,7,1,7,1,2,1,1,1,2,4,1,7,1,8,5,11,5,5,10,4,4,1,1,1,1,1,1,5,2,1,4,7,4,7,1,1,7,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,2,1,3,1,1,1,1,1,1,1,5,1,1,1,1,1,1,9,1,1,8,1,1,1,1,1,1,1,4,1,1,3,1,1,6,1,1,1,1,1,6,7,8,4,6,8,2,1,6,1,4,1,1,1,5,1,9,9,7,1,1,1,1,1,1,3,1,4,1,7,1,6,1,1,1,1,1,9,1,1,1,1,3,6,1,1,1,1,2,1,1,1,1,1,4,1,2,1,1,1,1,1,1,1,1,1,5,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,5,1,1,1,3,1,4,1,1,1,1,1,1,1,1,6,1,1,1,1,3)
+numSamplesNumClasses <- table(classes_per_sample)
+str(numSamplesNumClasses)
+numSamplesNumClasses <- as.data.frame(numSamplesNumClasses)
+
+AMRclassesPerSample <- ggplot(data = numSamplesNumClasses, mapping = aes(x=classes_per_sample,y=Freq)) + geom_col(fill="purple") +
+  labs(x='AMR Classes per Sample',y='# samples') +
+  theme_classic()
+pdf(file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/AMRclassesperSample.pdf")
+AMRclassesPerSample
+
+## Want to know how often each sample is represented in dataset
+samples <- AMRFinder$Isolate
+genes_per_sample <- table(as.factor(samples))
+genes_per_sample <- as.data.frame(genes_per_sample)
+hist(genes_per_sample$Freq)
+plot(genes_per_sample)
+
+# set up cut-off values 
+breaks <- c(1,2,5,10,15,20,25)
+# specify interval/bin labels
+tags <- c("[1)", "[2-5)", "[5-10)", "[10-15)", "[15-20)", "[20-25)")
+# bucketing values into bins
+group_tags <- cut(genes_per_sample$Freq, 
+                  breaks=breaks, 
+                  include.lowest=TRUE, 
+                  right=FALSE, 
+                  labels=tags)
+# inspect bins
+summary(group_tags)
+
+
+
+
+
+
+
+
+
+
+# set up cut-off values 
+breaks <- c(1,2,5,10,15,20,25)
+# specify interval/bin labels
+tags <- c("[1)", "[2-5)", "[5-10)", "[10-15)", "[15-20)", "[20-25)")
+# bucketing values into bins
+group_tags <- cut(genes_per_sample$Freq, 
+                  breaks=breaks, 
+                  include.lowest=TRUE, 
+                  right=FALSE, 
+                  labels=tags)
+# inspect bins
+summary(group_tags)
+
+AMRgenesperSample <- ggplot(data = as_tibble(group_tags), mapping = aes(x=value)) + 
+  geom_bar(stat="count",fill="turquoise",color="white",alpha=0.7) + 
+  labs(x='AMR Genes per Sample',y='# samples') +
+  theme_classic() + stat_count(geom = "text", colour = "black", size = 3.5,
+aes(label = ..count..,vjust=-0.5))
+pdf(file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/AMRgenesperSample.pdf")
+AMRgenesperSample
+
+
+
+
+```
+
+
+
 
 ```{r reorganizing Phenotypic data,include=FALSE}
 # PRJNA324565$Isolate == anno$Run 

@@ -16,7 +16,7 @@ library(devtools)
 library(treeWAS)
 
 ## Read data from file:
-eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
+eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/gblocks_alignment/core_aln_long_branch_rm/Ecoli_snpsGblocks.snp_sites.aln", format = "fasta")
 # eColiSNPs <- read.dna(file = "/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
@@ -77,9 +77,9 @@ phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
 
 rownames(phen.sub.01.3) <- phenAll$Assembly
 rownames(phen.sub.01.3)
-View(phen.sub.01.3)
+# View(phen.sub.01.3)
 phen.sub.01.4 <- phen.sub.01.3[,2:104]
-View(phen.sub.01.4)
+# View(phen.sub.01.4)
 str(phen.sub.01.4)
 
 # phen.melt <- melt(phen.sub.01.4, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
@@ -88,6 +88,7 @@ names(phen.Amikacin) <- rownames(phen.sub.01.4)
 View(phen.Amikacin)
 typeof(phen.Amikacin)
 phen.Amikacin
+
 
 phen.Amikacin2 <- as.vector(unlist(phen.Amikacin))
 names(phen.Amikacin2) <- names(phen.Amikacin)
@@ -131,11 +132,7 @@ if(all(suffixes %in% c(".a", ".c", ".g", ".t"))){
   # }
 }
 
-
-
-
-
-treeWASTest2 <- treeWAS(snps = snps,
+treeWASTest2 <- treeWAS(snps = SNPs,
                   phen = phen.Amikacin2,
                   tree = Tree2,
                   mem.lim = 16,

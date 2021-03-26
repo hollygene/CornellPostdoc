@@ -19,7 +19,7 @@ bacWGS_readQC.py --threads 4 *.fastq > PRJNA324573_readQC.tsv
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate snippy
 # mkdir /workdir/hcm59/Ecoli/SNPs/snp_sites
-snp-sites -mvp -o /workdir/hcm59/Ecoli/SNPs/snp_sites/Ecoli_snpsGblocks /workdir/hcm59/Ecoli/SNPs/core_gene_alignment.aln-gb.fasta
+snp-sites -mvp -o /workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_snpsGblocks /workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_core_aln_subset.fasta-gb.fasta
 
 
 # command to run assembly and screening program:
@@ -48,8 +48,8 @@ iqtree -s /workdir/hcm59/Ecoli/SNPs/Ecoli_snps.subset.aln -m GTR+G+ASC -nt AUTO
 
 workdir="/workdir/hcm59/Ecoli/SNPs"
 ### To use fasta FetchSeqs perl script
-perl ${workdir}/Fasta_fetchseqs.pl -in ${workdir}/Ecoli_snps.snp_sites.aln \
-  -m ${workdir}/samples_wanted.txt -file -out ${workdir}/Ecoli_snps.subset.aln \
+perl ${workdir}/Fasta_fetchseqs.pl -in ${workdir}/core_aln_with_long_branch_sequence_removed/core_gene_alignment.aln \
+  -m ${workdir}/samples_wanted.txt -file -out ${workdir}/core_aln_with_long_branch_sequence_removed/Ecoli_core_aln_subset.fasta \
   -regex -v
 
 
@@ -57,4 +57,4 @@ perl ${workdir}/Fasta_fetchseqs.pl -in ${workdir}/Ecoli_snps.snp_sites.aln \
 
 export PATH=/programs/Gblocks_0.91b:$PATH
 
-Gblocks /workdir/hcm59/Ecoli/SNPs/core_gene_alignment.aln -t=d
+Gblocks /workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_core_aln_subset.fasta -t=d

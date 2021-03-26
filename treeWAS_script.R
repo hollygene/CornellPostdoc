@@ -6,12 +6,12 @@
 library(devtools)
 
 ## install treeWAS from github:
-# install_github("caitiecollins/treeWAS", build_vignettes = TRUE)
+install_github("caitiecollins/treeWAS", args=c('--library="/home/hcm59/R/x86_64-pc-linux-gnu-library/3.5"'))
 library(treeWAS)
-
+library(adegenet)
 ## Read data from file:
-eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
-# eColiSNPs <- read.dna(file = "/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta", format = "fasta")
+# eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
+eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_subset_snpsGblocks.snp_sites.aln", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
 str(eColiSNPs)
@@ -21,15 +21,15 @@ eColiMat <- DNAbin2genind(eColiSNPs)@tab
 eColiMatShrt <- eColiMat
 eColiMatShrt <- eColiMatShrt[, which(colMeans(!is.na(eColiMatShrt)) > 0.5)]
 
-# anno <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
-anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+anno <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+# anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
 header <- colnames(anno)
 header.want <- c(grep("Strain",header),grep("Assembly",header))
 anno.want <- anno[header.want]
 # View(anno.want)
 
-# phenAll <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phenAll.txt")
-phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+phenAll <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phenAll.txt")
+# phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 eColirnames <- rownames(eColiMatShrt)
 eColirnames
 eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
@@ -90,8 +90,8 @@ all(rownames(eColiMat2) %in% names(phen.Amikacin2))
 # phen.Ami <- as.vector(unlist(phen_Ami))
 # names(phen.Ami) <- rownames(phen_Ami)
 SNPs <- eColiMat2
-# Tree <- read.tree("/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta.treefile")
-Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta.treefile")
+Tree <- read.tree("/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta.treefile")
+# Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta.treefile")
 Tree$tip.label
 Tree2 <- Tree
 Tree2$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)
@@ -105,6 +105,21 @@ all(names(phen.Amikacin2) %in% Tree2$tip.label)
 all(names(phen.Amikacin2) %in% rownames(SNPs))
 all(rownames(SNPs) %in% names(phen.Amikacin2))
 names(phen.Amikacin2)
+
+suffixes <- keepLastN(colnames(SNPs), n = 2)
+suffixes <- unique(suffixes)
+
+if(all(suffixes %in% c(".a", ".c", ".g", ".t"))){
+  ## SNPs:
+  snps <- get.binary.snps(SNPs)
+  
+  ## ... Optional step (for snps.reconstruction, if present)
+  ## (Example only, if needed for user data)
+  # if(is.matrix(snps.reconstruction)){
+  #   snps.reconstruction <- snps.reconstruction[, which(colnames(snps.reconstruction) %in% colnames(snps))]
+  # }
+}
+
 
 rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree)
 ls()
