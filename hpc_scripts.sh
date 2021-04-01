@@ -38,7 +38,7 @@ bacWGS_pipeline.py -l -a SRR13450825_2.fastq
 # put miniconda in your path
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate iqtree #load in iqtree environment
-iqtree -s /workdir/hcm59/Ecoli/SNPs/Ecoli_snps.subset.aln -m GTR+G+ASC -nt AUTO
+iqtree -s /workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_subset_snpsGblocks.snp_sites.aln -m GTR+G+ASC -nt AUTO
   # nt is number of threads
   # s specifies alignment file to use
   # m specifies what model to use
