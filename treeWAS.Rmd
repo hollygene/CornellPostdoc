@@ -205,17 +205,20 @@ phen2019.fin <- filter(phen2019.anno, specific.host == "Canis lupus familiaris")
 
 rm(phenAll)
 phenAll <- dplyr::bind_rows(phen2017.fin,phen2018.fin,phen2019.fin)
-phenAll
+phenAll$Assembly
 test <- dplyr::inner_join(phenAll,anno.want,by="Assembly")
 test$Assembly <- substr(test$Assembly, 1, regexpr("\\.", test$Assembly)-1)
 test$Assembly
 phenAllFinal <- test
+write.csv(phenAllFinal,"/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
+
 rownames(eColiMat)
 
 # phenAll <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 # library(tidyverse)
 # export the assembly numbers to a text file so I can extract those sequences from the fasta file for input into IQtree
-# write.table(assembly,file="/Users/hcm59/Box/Github/CornellPostdoc/samples_wanted.txt")
+samples_wanted <- phenAll$Assembly
+write.table(samples_wanted,file="/Users/hcm59/Box/Github/CornellPostdoc/samples_wanted.txt")
 # need to parse the SNP dataset to get the same samples as phenotypic dataset 
 rownames(eColiMat)
 str(eColiMat)
@@ -230,7 +233,7 @@ typeof(eColirnames.sub)
 eColiMat2 <- eColiMat
 rownames(eColiMat2) <- eColirnames.sub
 eColiMat2$Assembly <- rownames(eColiMat2)
-combotest <- dplyr::inner_join(phenAll,eColiMat2,by=c("Assembly",""))
+combotest <- dplyr::inner_join(phenAll,eColiMat2,by=c("Assembly","Assembly"))
 
 
 all(rownames(names(phenAllFinal)) %in% rownames(eColiMat2))
@@ -246,7 +249,7 @@ all(rownames(eColiMat2) %in%  rownames(names(phenAllFinal)))
 
 
 # write.table(eColiMat2,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
-write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
+# write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
 
 library(ape)
 # data(woodmouse)
