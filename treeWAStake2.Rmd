@@ -16,7 +16,7 @@ library(devtools)
 library(treeWAS)
 
 ## Read data from file:
-eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/gblocks_alignment/core_aln_long_branch_rm/Ecoli_snpsGblocks.snp_sites.aln", format = "fasta")
+eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
 # eColiSNPs <- read.dna(file = "/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
@@ -37,7 +37,7 @@ anno.want <- anno[header.want]
 # View(anno.want)
 
 # phenAll <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phenAll.txt")
-phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+phenAll <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv",header=TRUE)
 eColirnames <- rownames(eColiMatShrt2)
 eColirnames
 eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
@@ -100,7 +100,7 @@ all(rownames(eColiMat2) %in% names(phen.Amikacin2))
 # names(phen.Ami) <- rownames(phen_Ami)
 SNPs <- eColiMat2
 # Tree <- read.tree("/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta.treefile")
-Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta.treefile")
+Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_gb_snp_sites.fasta.treefile")
 Tree$tip.label
 Tree2 <- Tree
 Tree2$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)

@@ -11,7 +11,7 @@ library(treeWAS)
 library(adegenet)
 ## Read data from file:
 # eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
-eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/core_aln_with_long_branch_sequence_removed/Ecoli_subset_snpsGblocks.snp_sites.aln", format = "fasta")
+eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
 str(eColiSNPs)
@@ -28,7 +28,7 @@ header.want <- c(grep("Strain",header),grep("Assembly",header))
 anno.want <- anno[header.want]
 # View(anno.want)
 
-phenAll <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phenAll.txt")
+phenAll <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/phenotypesDogs171819.csv")
 # phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 eColirnames <- rownames(eColiMatShrt)
 eColirnames
@@ -90,7 +90,7 @@ all(rownames(eColiMat2) %in% names(phen.Amikacin2))
 # phen.Ami <- as.vector(unlist(phen_Ami))
 # names(phen.Ami) <- rownames(phen_Ami)
 SNPs <- eColiMat2
-Tree <- read.tree("/local/workdir/hcm59/Ecoli/R_analyses/Ecoli_dog_core_snps.fasta.treefile")
+Tree <- read.tree("/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_gb_snp_sites.fasta.treefile")
 # Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta.treefile")
 Tree$tip.label
 Tree2 <- Tree
@@ -128,7 +128,18 @@ treeWASTest2 <- treeWAS(snps = SNPs,
                   phen = phen.Amikacin2,
                   tree = Tree2,
                   mem.lim = TRUE,
-                  filename.plot = "/Users/hcm59/Box/Github/CornellPostdoc/treeWas_plots3.18.pdf",
                   seed = 1)
 
-plot_phen(Tree2, phen.nodes=phen.plot.col$all.nodes)
+
+
+print(treeWASTest2, sort.by.p=FALSE)
+sig.loci <- treeWASTest2$treeWAS.combined
+View(sig.loci)
+sig.loci.indiv <- treeWASTest2$treeWAS.combined$treeWAS
+sigSnpsTerm <- treeWASTest2$terminal$sig.snps
+sigSnpsSimul <- treeWASTest2$simultaneous$sig.snps
+sigSnpsSubse <- treeWASTest2$subsequent$sig.snps
+
+## No Significant SNPs found with simultaneous score 
+
+plot_sig_snps(treeWASTest2$terminal$corr.dat,treeWASTest2$terminal$corr.sim, sig.snps = treeWASTest2$terminal$sig.snps)
