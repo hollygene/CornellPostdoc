@@ -71,14 +71,29 @@ phen.sub.0
 phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
 phen.sub.01.1 <- phen.sub.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
 phen.sub.01.2 <- phen.sub.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
-View(phen.sub.01.2)
-phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
+phen.sub.01.2.1 <- phen.sub.01.2 %>%  mutate_if(is.atomic,funs(str_replace(., "NI", "")))
+phen.sub.01.2.2 <- phen.sub.01.2.1 %>%  mutate_if(is.atomic,funs(str_replace(., "NS", "")))
+phen.sub.01.2.3 <- phen.sub.01.2.2 %>%  mutate_if(is.atomic,funs(str_replace(., "NOTSUS", "")))
+phen.sub.01.2.4 <- phen.sub.01.2.3 %>%  mutate_if(is.atomic,funs(str_replace(., "NOMIC", "")))
+View(phen.sub.01.2.4)
+phen.sub.01.5 <- phen.sub.01.2.4 %>% mutate_all(na_if,"")
+
+# need to add .1 to end of rownames to match the gene presence/absence matrix for scoary
+phen.sub.01.5$Assembly <- paste0(phenAll$Assembly, ".1")
 
 
-rownames(phen.sub.01.3) <- phenAll$Assembly
-rownames(phen.sub.01.3)
+rownames(phen.sub.01.5) <- phen.sub.01.5$Assembly
+rownames(phen.sub.01.5)
 # View(phen.sub.01.3)
-phen.sub.01.4 <- phen.sub.01.3[,2:104]
+phen.sub.01.6 <- phen.sub.01.5[,3:104]
+phenSubFilt <- Filter(function(x)!all(is.na(x)), phen.sub.01.6)
+
+
+# remove columns with more than 80% NAs
+phenSubFilt.1 <- phenSubFilt[, which(colMeans(!is.na(phenSubFilt)) > 0.05)]
+
+
+write.csv(phenSubFilt,file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
 # View(phen.sub.01.4)
 str(phen.sub.01.4)
 
@@ -115,7 +130,7 @@ all(names(phen.Amikacin2) %in% rownames(SNPs))
 all(rownames(SNPs) %in% names(phen.Amikacin2))
 names(phen.Amikacin2)
 
-rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree,header,header.want)
+# rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree,header,header.want)
 ls()
 
 suffixes <- keepLastN(colnames(SNPs), n = 2)
@@ -132,12 +147,12 @@ if(all(suffixes %in% c(".a", ".c", ".g", ".t"))){
   # }
 }
 
-treeWASTest2 <- treeWAS(snps = SNPs,
-                  phen = phen.Amikacin2,
-                  tree = Tree2,
-                  mem.lim = 16,
-                  filename.plot = "/Users/hcm59/Box/Github/CornellPostdoc/treeWas_plots3.18.pdf",
-                  seed=1)
+# treeWASTest2 <- treeWAS(snps = SNPs,
+                  # phen = phen.Amikacin2,
+                  # tree = Tree2,
+                  # mem.lim = 16,
+                  # filename.plot = "/Users/hcm59/Box/Github/CornellPostdoc/treeWas_plots3.18.pdf",
+                  # seed=1)
 
 # plot_phen(Tree2, phen.nodes=phen.plot.col$all.nodes)
 

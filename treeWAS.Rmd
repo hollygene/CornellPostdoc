@@ -10,7 +10,7 @@ library(treeWAS)
 
 ```
 
-```{r phenotypic data, include=FALSE}
+```{r load_pheno_data, include=FALSE}
 # load in excel file of phenotype data 
 phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
 # View(phen2017)
@@ -91,7 +91,7 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 ```
 
 
-```{r ecoliSNPs,include=FALSE}
+```{r clean_up_data,include=FALSE}
 # want to know what example data looks like
 # data(snps)
 # View(snps)
@@ -128,7 +128,7 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 # str(tree)
 
 ## Read data from file:
-eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/gblocks_alignment/core_aln_long_branch_rm_subsetphen/Ecoli_snpsGblocks.snp_sites.aln", format = "fasta")
+eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
 rownames(eColiSNPs)
 colnames(eColiSNPs)
 str(eColiSNPs)
@@ -240,14 +240,6 @@ all(rownames(names(phenAllFinal)) %in% rownames(eColiMat2))
 all(rownames(eColiMat2) %in%  rownames(names(phenAllFinal))) 
 
 
-
-
-
-
-
-
-
-
 # write.table(eColiMat2,file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt")
 # write.table(phenAllFinal,file="/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt")
 
@@ -316,56 +308,168 @@ write.table(phen.Amikacin2,file="/Users/hcm59/Box/Github/CornellPostdoc/phen_Ami
 ```
 
 
-```{r treeWAS,include=TRUE}
-# First import the data needed for treeWAS
-# 3 things needed: SNP dataset 
-# subsetEcoli <- read.table(file="/Users/hcm59/Box/Github/CornellPostdoc/subsetEcoliSNPs.txt",header=TRUE)
-SNPs <- subsetEcoli
-rownames(SNPs)
+```{r treeWAS_server_script,include=TRUE}
+### Script for running treeWAS on the AHDC server
 
-# Phenotypic dataset 
-# Phen <- phen.sub.01.3
-  names(phen.Amikacin2) 
-# Tree
-  library(ape)
-Tree <- read.tree(file="/Users/hcm59/Box/Github/CornellPostdoc/Ecoli_snps.snp_sites.aln.treefile")
+## First need to load in/install treeWAS
+## install devtools, if necessary:
+# install.packages("devtools", dep=TRUE)
+library(devtools)
+
+## install treeWAS from github:
+# install_github("caitiecollins/treeWAS", args=c('--library="/home/hcm59/R/x86_64-pc-linux-gnu-library/3.5"'))
+library(treeWAS)
+library(adegenet)
+
+
+## Read data from file:
+
+# eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
+eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/dog_verified_host/snp_sites/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
+rownames(eColiSNPs)
+colnames(eColiSNPs)
+str(eColiSNPs)
+
+
+## Convert: 
+eColiMat <- DNAbin2genind(eColiSNPs)@tab
+
+# Remove columns with more than 50% NAs: 
+eColiMatShrt <- eColiMat
+eColiMatShrt <- eColiMatShrt[, which(colMeans(!is.na(eColiMatShrt)) > 0.5)]
+
+anno <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+# anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+header <- colnames(anno)
+header.want <- c(grep("Strain",header),grep("Assembly",header))
+anno.want <- anno[header.want]
+# View(anno.want)
+
+phenAll <- read.csv("/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_PhenoForScoary_OxPolRm.csv")
+# phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
+eColirnames <- rownames(eColiMatShrt)
+eColirnames
+eColirnames.sub <- substr(eColirnames, 1, regexpr("\\.", eColirnames)-1)
+str(eColirnames.sub)
+typeof(eColirnames.sub)
+eColiMat2 <- eColiMatShrt
+rownames(eColiMat2) <- eColirnames.sub
+
+all(rownames(names(phenAll)) %in% rownames(eColiMat2))
+
+Phen <- phenAll
+headr <- colnames(Phen)
+headr.want <- c(grep("sample.ID",headr),grep("Assembly",headr), grep("INT",headr))
+headr.want
+phen.sub <- Phen[headr.want]
+head(phen.sub)
+names(phen.sub)[2]
+typeof(phen.sub[2])
+typeof(phen.sub[1])
+
+library(dplyr)
+library(reshape2)
+# phen.Melt <- melt(Phen, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+
+
+# find all instances of "SUSC" and replace with 0
+library(tidyverse)
+phen.sub.0 <- phen.sub %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
+phen.sub.0
+# worked! # now do that to RESIST and convert NOINTP
+phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
+phen.sub.01.1 <- phen.sub.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
+phen.sub.01.2 <- phen.sub.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
+phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
+
+
+rownames(phen.sub.01.3) <- phenAll$Assembly
+rownames(phen.sub.01.3)
+phen.sub.01.4 <- phen.sub.01.3[,2:104]
+str(phen.sub.01.4)
+
+# phen.melt <- melt(phen.sub.01.4, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
+phen.Amikacin <- phen.sub.01.4[,2]
+names(phen.Amikacin) <- rownames(phen.sub.01.4)
+# View(phen.Amikacin)
+typeof(phen.Amikacin)
+phen.Amikacin
+
+phen.Amikacin2 <- as.vector(unlist(phen.Amikacin))
+names(phen.Amikacin2) <- names(phen.Amikacin)
+all(rownames(names(phen.Amikacin2)) %in% rownames(eColiMat2))
+all(rownames(eColiMat2) %in% names(phen.Amikacin2))
+## Need files: phenotypic file, SNP file, tree file
+# phen_Ami <- read.table("/local/workdir/hcm59/Ecoli/R_analyses/phen_Amikacin.txt")
+# phen.Ami <- as.vector(unlist(phen_Ami))
+# names(phen.Ami) <- rownames(phen_Ami)
+SNPs <- eColiMat2
+Tree <- read.tree("/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_gb_snp_sites.fasta.treefile")
+# Tree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta.treefile")
 Tree$tip.label
-# need to subset the tree
-Tree$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)
-keep.tiplabels <- Tree$tip.label %in% rownames(SNPs)
-keep.tiplabels
-dim(Tree)
-Tree.sub <- Tree[keep.tiplabels]
-Tree.sub
-Tree.sub$tip.label
-## Cross-check labels with each other:
-all(Tree.sub$tip.label %in% rownames(SNPs))
-all(rownames(SNPs) %in% Tree$tip.label)
-all(Tree$tip.label %in% names(phen.Amikacin2))
-all(names(phen.Amikacin2) %in% Tree$tip.label)
+Tree2 <- Tree
+Tree2$tip.label <- substr(Tree$tip.label, 1, regexpr("\\.", Tree$tip.label)-1)
+Tree2$tip.label
+all(Tree2$tip.label %in% rownames(SNPs))
+all(rownames(SNPs) %in% Tree2$tip.label)
+all(Tree2$tip.label %in% rownames(SNPs))
+all(rownames(SNPs) %in% Tree2$tip.label)
+all(Tree2$tip.label %in% names(phen.Amikacin2))
+all(names(phen.Amikacin2) %in% Tree2$tip.label)
 all(names(phen.Amikacin2) %in% rownames(SNPs))
 all(rownames(SNPs) %in% names(phen.Amikacin2))
-is.null(rownames(SNPs))
-is.null(names(phen.Amikacin2))
-# names(Phen)
-## 
-## Attempting to use parallel 
-# library(parallel)
-# library(MASS)
-# 
-# numCores <- detectCores()
-# numCores
-# system.time(
-#   results <- lapply(starts,fx)
-# )
-my.out <- treeWAS(snps = SNPs,
-                phen = phen.Amikacin2,
-                tree = Tree,
-                chunk.size = ncol(SNPs)*2,
-                mem.lim = 10,
-                phen.type = "discrete",
-                seed = 1)
+names(phen.Amikacin2)
 
+# suffixes <- keepLastN(colnames(SNPs), n = 2)
+# suffixes <- unique(suffixes)
+
+# if(all(suffixes %in% c(".a", ".c", ".g", ".t"))){
+#   ## SNPs:
+#   snps <- get.binary.snps(SNPs)
+#   
+#   ## ... Optional step (for snps.reconstruction, if present)
+#   ## (Example only, if needed for user data)
+#   # if(is.matrix(snps.reconstruction)){
+#   #   snps.reconstruction <- snps.reconstruction[, which(colnames(snps.reconstruction) %in% colnames(snps))]
+#   # }
+# }
+
+
+rm(eColiSNPs,eColiMat,eColiMatShrt,anno,headr,headr.want,anno.want,phenAll,eColirnames,eColirnames.sub,eColiMat2,Phen,phen.sub,phen.sub.0,phen.sub.01,phen.sub.01.1,phen.sub.01.2,phen.sub.01.3,phen.sub.01.4,phen.Amikacin,Tree)
+ls()
+
+treeWASAmikacin <- treeWAS(snps = SNPs,
+                  phen = phen.Amikacin2,
+                  tree = Tree2,
+                  mem.lim = TRUE,
+                  seed = 1)
+```
+
+```{r visualize_parse_data,include=TRUE}
+# Will need to periodically update the .Rdata file from the server to get the most up-to-date results
+sigSnpsTermLocus <- treeWASTest2$terminal$sig.snps$SNP.locus
+write.table(sigSnpsTermLocus,file="/Users/hcm59/Box/Holly/Analyses/treeWAS/sigSNPsLociTerm_amikacin.txt")
+
+print(treeWASTest2, sort.by.p=FALSE)
+sig.loci <- treeWASTest2$treeWAS.combined
+View(sig.loci)
+sig.loci.indiv <- treeWASTest2$treeWAS.combined$treeWAS
+sigSnpsTerm <- treeWASTest2$terminal$sig.snps
+sigSnpsSimul <- treeWASTest2$simultaneous$sig.snps
+sigSnpsSubse <- treeWASTest2$subsequent$sig.snps
+write.csv(sigSnpsTerm,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/sigSNPsTerm_amikacin.csv")
+
+## No Significant SNPs found with simultaneous score 
+
+plot_sig_snps(treeWASTest2$terminal$corr.dat,treeWASTest2$terminal$corr.sim, sig.snps = treeWASTest2$terminal$sig.snps)
+
+phenRec <- treeWASTest2$dat$phen.reconstruction
+snpRec <- treeWASTest2$dat$snps.reconstruction
+phenTree <- treeWAS::plot_phen(Tree2, phen.nodes = phenRec, snp.nodes = snpRec[,1], par(pin=c(5,10)))
+
+write.tree(phenTree,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/testTree.nw")
+
+# write.treeWAS(,filename="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/sigSNPsTerm_amikacin.csv")
 ```
 ## R Markdown
 

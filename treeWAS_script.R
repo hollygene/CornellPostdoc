@@ -6,17 +6,24 @@
 library(devtools)
 
 ## install treeWAS from github:
-install_github("caitiecollins/treeWAS", args=c('--library="/home/hcm59/R/x86_64-pc-linux-gnu-library/3.5"'))
+# install_github("caitiecollins/treeWAS", args=c('--library="/home/hcm59/R/x86_64-pc-linux-gnu-library/3.5"'))
 library(treeWAS)
 library(adegenet)
+
+
 ## Read data from file:
+
 # eColiSNPs <- read.dna(file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/results_with_long_branch_sequence_removed/Ecoli_dog_core_snps.fasta", format = "fasta")
-eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
-rownames(eColiSNPs)
-colnames(eColiSNPs)
-str(eColiSNPs)
+# eColiSNPs <- read.dna(file = "/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_gb_snp_sites.fasta", format = "fasta")
+# rownames(eColiSNPs)
+# colnames(eColiSNPs)
+# str(eColiSNPs)
+
+
 ## Convert: 
-eColiMat <- DNAbin2genind(eColiSNPs)@tab
+# eColiMat <- DNAbin2genind(eColiSNPs)@tab
+
+
 # Remove columns with more than 50% NAs: 
 eColiMatShrt <- eColiMat
 eColiMatShrt <- eColiMatShrt[, which(colMeans(!is.na(eColiMatShrt)) > 0.5)]
@@ -28,7 +35,7 @@ header.want <- c(grep("Strain",header),grep("Assembly",header))
 anno.want <- anno[header.want]
 # View(anno.want)
 
-phenAll <- read.csv("/local/workdir/hcm59/Ecoli/R_analyses/phenotypesDogs171819.csv")
+phenAll <- read.csv("/workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_PhenoForScoary_OxPolRm.csv")
 # phenAll <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
 eColirnames <- rownames(eColiMatShrt)
 eColirnames
@@ -139,7 +146,16 @@ sig.loci.indiv <- treeWASTest2$treeWAS.combined$treeWAS
 sigSnpsTerm <- treeWASTest2$terminal$sig.snps
 sigSnpsSimul <- treeWASTest2$simultaneous$sig.snps
 sigSnpsSubse <- treeWASTest2$subsequent$sig.snps
+write.csv(sigSnpsTerm,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/sigSNPsTerm_amikacin.csv")
 
 ## No Significant SNPs found with simultaneous score 
 
 plot_sig_snps(treeWASTest2$terminal$corr.dat,treeWASTest2$terminal$corr.sim, sig.snps = treeWASTest2$terminal$sig.snps)
+
+phenRec <- treeWASTest2$dat$phen.reconstruction
+snpRec <- treeWASTest2$dat$snps.reconstruction
+phenTree <- treeWAS::plot_phen(Tree2, phen.nodes = phenRec, snp.nodes = snpRec[,1], par(pin=c(5,10)))
+
+write.tree(phenTree,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/testTree.nw")
+
+# write.treeWAS(,filename="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/sigSNPsTerm_amikacin.csv")
