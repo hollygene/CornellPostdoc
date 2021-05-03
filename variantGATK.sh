@@ -1,44 +1,33 @@
+
+
+raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling"
+unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
+
+
+
+
+
+
 #######################################################################################
 # create a uBAM file
 #######################################################################################
 
-for file in ${raw_data}/*_R1_001.fastq.gz
+for file in ${raw_data}/*_1.fastq
 
 do
 
-FBASE=$(basename $file _R1_001.fastq.gz)
-BASE=${FBASE%_R1_001.fastq.gz}
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144/picard.jar FastqToSam \
-    FASTQ=${raw_data}/${BASE}_R1_001.fastq.gz \
-    FASTQ2=${raw_data}/${BASE}_R2_001.fastq.gz  \
+FBASE=$(basename $file _1.fastq)
+BASE=${FBASE%_1.fastq}
+java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
+    FASTQ=${raw_data}/${BASE}_1.fastq \
+    FASTQ2=${raw_data}/${BASE}_1.fastq  \
     OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
     READ_GROUP_NAME=${BASE} \
-    SAMPLE_NAME=${BASE} \
-    PLATFORM=illumina \
-    SEQUENCING_CENTER=GGBC
+    SAMPLE_NAME=${BASE}
 
 done
 
 
-
-
-for file in ${raw_data}/*R1.fq.gz
-
-do
-  FBASE=$(basename $file R1.fq.gz)
-  BASE=${FBASE%R1.fq.gz}
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144/picard.jar FastqToSam \
-    FASTQ=${raw_data}/${BASE}R1.fq.gz \
-    FASTQ2=${raw_data}/${BASE}R2.fq.gz \
-    OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
-    READ_GROUP_NAME=${BASE} \
-    SAMPLE_NAME=${BASE} \
-    PLATFORM=illumina \
-    SEQUENCING_CENTER=GGBC
-
-done
 
 #######################################################################################
 # mark Illumina adapters
@@ -53,8 +42,7 @@ do
 FBASE=$(basename $file _fastqtosam.bam)
 BASE=${FBASE%_fastqtosam.bam}
 
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144/picard.jar MarkIlluminaAdapters \
+java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
 I=${unmapped_bams}/${BASE}_fastqtosam.bam \
 O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
 M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \

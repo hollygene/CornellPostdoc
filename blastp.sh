@@ -8,4 +8,8 @@ cp /shared_data/genome_db/BLAST_NCBI/swissprot* ./
 
 
 
-blastp -query ./dogEcoli_acc_proteins_out.fasta -db swissprot -out ./dog_verified_host_prots.out
+blastp -outfmt "6 qseqid qaccver saccver pident length mismatch gapopen qstart qend sstart send evalue bitscore" -query ./dogEcoli_acc_proteins_out.fasta -db swissprot -out ./dog_verified_host_prots_tab.out
+
+
+
+# if it doesnt work try replacing each - by hand on command line 
