@@ -30,9 +30,9 @@ blastp -outfmt "6 qseqid sseqid sallseqid qaccver saccver pident length mismatch
 
 
 
-sort -k1,1 -k2,2n file | sort -u -k1,1 dog_verified_host_prots_tab_more.out > test.txt
+sort -k1,1 -k2,2n dog_verified_host_prots_tab_more.out | sort -u -k1,1  > test.txt
 
-
+awk '$2>max[$1]{max[$1]=$2; row[$1]=$0} END{for (i in row) print row[i]}' file
 
 # sort by field one and field two (numeric, reverse) so that min for each key will be top of the group,
 # pick the first for each key by the second sort.

@@ -2,8 +2,8 @@
 
 raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling"
 unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
-
-
+ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333.fasta.gz"
+output_directory="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/Output"
 
 
 
@@ -99,20 +99,19 @@ unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
 #######################################################################################
 
  #index the ref genome
-bwa index ${ref_genome}
+# bwa index ${ref_genome}
 #
-for file in ${raw_data}/*_samtofastq_interleaved.fq
+for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
 
 do
 
 FBASE=$(basename $file _samtofastq_interleaved.fq)
 BASE=${FBASE%_samtofastq_interleaved.fq}
 
-bwa mem -M -p -t 12 ${ref_genome} ${raw_data}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
-
-
+bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
 
 done
+
 
 java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144" -jar  \
 /usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144/picard.jar CreateSequenceDictionary \
