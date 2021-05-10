@@ -29,13 +29,12 @@ blastp -outfmt "6 qseqid sseqid sallseqid qaccver saccver pident length mismatch
 # bitscore means Bit score
 
 
+sort -k1,1 -k15,15nr -k14,14n dog_verified_host_prots_tab_more.out > test1.txt
 
-sort -k1,1 -k2,2n dog_verified_host_prots_tab_more.out | sort -u -k1,1  > test.txt
+sort -u -k1,1 test1.txt > test.txt
 
-awk '$2>max[$1]{max[$1]=$2; row[$1]=$0} END{for (i in row) print row[i]}' file
-
-# sort by field one and field two (numeric, reverse) so that min for each key will be top of the group,
-# pick the first for each key by the second sort.
+The first sort orders the blast output by query name then by the 12th column in descending order (bit score - I think), then by 11th column ascending (evalue I think).
+The second sort picks the first line from each query. Obviously you can skip the first sort if the output is already sorted in the 'correct' order.
 
 
 

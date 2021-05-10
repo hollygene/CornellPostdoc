@@ -2,9 +2,9 @@
 
 raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling"
 unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
-ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333.fasta.gz"
+ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333.fasta"
 output_directory="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/Output"
-
+mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 
 
 
@@ -98,29 +98,30 @@ output_directory="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/Output"
 # Piped Command: works: aligns samples to reference genome. Output is a .sam file
 #######################################################################################
 
- #index the ref genome
+# #gunzip the ref genome
+# gunzip ${ref_genome}
+#  #index the ref genome
 # bwa index ${ref_genome}
+# #
+# for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
 #
-for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
-
-do
-
-FBASE=$(basename $file _samtofastq_interleaved.fq)
-BASE=${FBASE%_samtofastq_interleaved.fq}
-
-bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
-
-done
-
-
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144/picard.jar CreateSequenceDictionary \
-      R=${ref_genome} \
-      O=${ref_genome_dir}/genome.337.dict
+# do
+#
+# FBASE=$(basename $file _samtofastq_interleaved.fq)
+# BASE=${FBASE%_samtofastq_interleaved.fq}
+#
+# bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
+#
+# done
+#
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar CreateSequenceDictionary \
+#       R=${ref_genome} \
+#       O=UP000000625_83333.dict
 
 
 # Piped command: SamToFastq, then bwa mem, then MergeBamAlignment
-mkdir ${mapped_bams}
+# mkdir ${mapped_bams}
 
 for file in ${unmapped_bams}/*_markilluminaadapters.bam
 
@@ -128,18 +129,17 @@ do
 
 FBASE=$(basename $file _markilluminaadapters.bam)
 BASE=${FBASE%_markilluminaadapters.bam}
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144/picard.jar SamToFastq \
+
+java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
 I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
 FASTQ=/dev/stdout \
 CLIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=true NON_PF=true \
 TMP_DIR=${unmapped_bams}/TMP | \
 bwa mem -M -t 7 -p ${ref_genome} /dev/stdin| \
-java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.4.1-Java-1.8.0_144/picard.jar MergeBamAlignment \
+java -jar /programs/picard-tools-2.19.2/picard.jar MergeBamAlignment \
 ALIGNED_BAM=/dev/stdin \
 UNMAPPED_BAM=${unmapped_bams}/${BASE}_fastqtosam.bam \
-OUTPUT=${unmapped_bams}/${BASE}_pipedNewRef.bam \
+OUTPUT=${unmapped_bams}/${BASE}_piped.bam \
 R=${ref_genome} CREATE_INDEX=true ADD_MATE_CIGAR=true \
 CLIP_ADAPTERS=false CLIP_OVERLAPPING_READS=true \
 INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 \
@@ -158,17 +158,16 @@ done
 
 
 
-for file in ${unmapped_bams}/*.sorted.bam
+for file in ${unmapped_bams}/*_piped.bam
 
 do
 
-FBASE=$(basename $file .sorted.bam)
-BASE=${FBASE%.sorted.bam}
+FBASE=$(basename $file _piped.bam)
+BASE=${FBASE%_piped.bam}
 
-time java -Xmx20g -classpath "/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144" -jar  \
-/usr/local/apps/eb/picard/2.16.0-Java-1.8.0_144/picard.jar MarkDuplicates \
+java -jar /programs/picard-tools-2.19.2/picard.jar MarkDuplicates \
 REMOVE_DUPLICATES=TRUE \
-I=${unmapped_bams}/${BASE}.sorted.bam \
+I=${unmapped_bams}/${BASE}_piped.bam \
 O=${mapped_bams}/${BASE}_removedDuplicates.bam \
 M=${unmapped_bams}/${BASE}_removedDupsMetrics.txt
 

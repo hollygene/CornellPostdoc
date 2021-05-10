@@ -20,6 +20,17 @@ g<- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Eco
 write_fasta_out(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dogEcoli_acc_proteins_out.fasta")
 
 
+
+
+# to get sequences from scoary outputs 
+# need to get a file in gene pres abs format that has the matches from scoary 
+
+
+source("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/panaroo_protein_fasta_out.R")
+g<- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv","/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/Amikacin.INT_15_04_2021_1732.results.csv",T)
+write_fasta_out(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Amikacin.fasta")
+
+
 ```
 
 ## Including Plots

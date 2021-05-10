@@ -1,0 +1,322 @@
+---
+title: "scoary_analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=TRUE}
+library(devtools) 
+library(ggplot2)
+library(tools)
+library(purrr)
+library(dplyr)
+library(fuzzyjoin)
+```
+
+
+```{r data,include=TRUE}
+setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/")
+dataFiles <- sapply(Sys.glob("./*.csv"), read.csv, simplify = FALSE, USE.NAMES = TRUE)
+
+gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv")
+gene_key <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_id_key.txt",header=TRUE)
+AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/refgenes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
+
+# test by joining gene key with AMR genes from NCBI 
+# need to make GeneID in gene key lowercase
+key.low <-gene_key %>% mutate(GeneID = tolower(GeneID))
+AMR_genes_NCBI.low <- AMR_genes_NCBI %>% mutate(gene.family = tolower(gene.family))
+test.key <- inner_join(key.low,AMR_genes_NCBI.low,by=c("GeneID"="gene.family"))
+nlevels(as.factor(test.key$GeneID))
+nlevels(as.factor(AMR_genes_NCBI$gene.family))
+##Read files named xyz1111.csv, xyz2222.csv, etc.
+# filenames <- list.files(path="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results", pattern="*.csv")
+# ß
+# ##Create list of data frame names without the ".csv" part 
+# names <- file_path_sans_ext(basename(filenames))
+# 
+# ###Load all files
+# for(i in names){
+#     filepath <- file.path("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results",paste(i,".csv",sep=""))
+#     assign(i, read.delim(filepath,
+#     colClasses="character",
+#     sep = ","))
+# }
+
+
+```
+
+```{r quantify_data, include=TRUE}
+
+sigGenes <- sapply(dataFiles,FUN = function(x) subset(x, Empirical_p<0.05 ),simplify = FALSE,USE.NAMES = TRUE)
+sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),simplify = FALSE,USE.NAMES = TRUE)
+
+
+
+
+# want to do an anti-join from dplyr 
+# this gives all rows from x where there are not matching values in y 
+# x = dataFiles y=AMR_genes_NCBI 
+# this will give us the novel AMR-associated genes 
+
+amikacin <- sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`
+amox_clauv_acid <- sigResistAssoc$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
+amox <- sigResistAssoc$`./Amoxicillin.INT_15_04_2021_1732.results.csv`
+amp <- sigResistAssoc$`./Ampicillin.INT_15_04_2021_1732.results.csv`
+cefalexin <- sigResistAssoc$`./Cefalexin.INT_15_04_2021_1732.results.csv`
+cefazolin <- sigResistAssoc$`./Cefazolin.INT_15_04_2021_1732.results.csv`
+cefovecin <-  sigResistAssoc$`./Cefovecin.INT_15_04_2021_1732.results.csv`
+cefoxitin <- sigResistAssoc$`./Cefoxitin.INT_15_04_2021_1732.results.csv`
+cefpodoxime <- sigResistAssoc$`./Cefpodoxime.INT_15_04_2021_1732.results.csv`
+ceftazidime <- sigResistAssoc$`./Ceftazidime.INT_15_04_2021_1732.results.csv`
+ceftiofur <- sigResistAssoc$`./Ceftiofur.INT_15_04_2021_1732.results.csv`
+cephalexin <- sigResistAssoc$`./Cephalexin.INT_15_04_2021_1732.results.csv`
+cephalothin <- sigResistAssoc$`./Cephalothin.INT_15_04_2021_1732.results.csv`
+chloram <- sigResistAssoc$`./Chloramphenicol.INT_15_04_2021_1732.results.csv`
+clindamycin <- sigResistAssoc$`./Clindamycin.INT_15_04_2021_1732.results.csv`
+doxy <- sigResistAssoc$`./Doxycycline.INT_15_04_2021_1732.results.csv`
+enro <- sigResistAssoc$`./Enrofloxacin.INT_15_04_2021_1732.results.csv`
+erythro <- sigResistAssoc$`./Erythromycin.INT_15_04_2021_1732.results.csv`
+gentamicin <- sigResistAssoc$`./Gentamicin.INT_15_04_2021_1732.results.csv`
+imipenem <- sigResistAssoc$`./Imipenem.INT_15_04_2021_1732.results.csv`
+marbo <- sigResistAssoc$`./Marbofloxacin.INT_15_04_2021_1732.results.csv`
+neo <- sigResistAssoc$`./Neomycin.INT_15_04_2021_1732.results.csv`
+nitro <- sigResistAssoc$`./Nitrofurantoin.INT_15_04_2021_1732.results.csv`
+orbi <- sigResistAssoc$`./Orbifloxacin.INT_15_04_2021_1732.results.csv`
+oxacillin <- sigResistAssoc$`./Oxacillin...2..NaCl.INT_15_04_2021_1732.results.csv`
+penicillin.G <- sigResistAssoc$`./Penicillin.G.INT_15_04_2021_1732.results.csv`
+penicillin <- sigResistAssoc$`./Penicillin.INT_15_04_2021_1732.results.csv`
+piperacillin <- sigResistAssoc$`./Piperacillin.INT_15_04_2021_1732.results.csv`
+pipTazo <- sigResistAssoc$`./Piperacillin.Tazobactam.INT_15_04_2021_1732.results.csv`
+prado <- sigResistAssoc$`./Pradofloxacin.INT_15_04_2021_1732.results.csv`
+tetracycline <- sigResistAssoc$`./Tetracycline.INT_15_04_2021_1732.results.csv`
+ticarc_clauv_acid <- sigResistAssoc$`./Ticarcillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
+ticarcillin <- sigResistAssoc$`./Ticarcillin.INT_15_04_2021_1732.results.csv`
+tobramycin <- sigResistAssoc$`./Tobramycin.INT_15_04_2021_1732.results.csv`
+trimeth_sulfameth <- sigResistAssoc$`./Trimethoprim.Sulfamethoxazole.INT_15_04_2021_1732.results.csv`
+
+
+
+# first need to combine our scoary results with the gene_key
+amikacin_anno <- inner_join(gene_key,amikacin,by=c("Query"="Gene"))
+# what is missing?
+# amikacin_anno.missing <- anti_join(amikacin_anno,gene_key,by=c("Gene"="PanGene"))
+# discrepancy is genes that are core genes not accessory - these are omitted from the gene_key and therefore do not show up in the output here 
+# did we find any novel genes?
+# probelm: case sensitivity
+amikacin.low <- amikacin_anno %>% mutate(GeneID = tolower(GeneID))
+# let's try this again 
+# anti-join: are there any novel genes
+amikacin_novel <- anti_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+# inner-join: are there any known genes 
+amikacin_known <- inner_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+
+
+n_genes <- function(x) {
+ x.anno <- inner_join(x,gene_key,by=c("Gene"="Query"))
+ x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
+ x.novel <- anti_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+ x.known <- inner_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+ n.novel <- nrow(x.novel)
+ n.known <- nrow(x.known)
+ n <- list(x.novel,x.known)
+ return(n)
+}
+
+test.fun <- n_genes(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`)
+
+#loop over dataSig 
+
+classify_genes <- lapply(sigResistAssoc, FUN = n_genes)
+class(dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
+typeof(dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
+typeof(gene_key$PanGene)
+
+```
+
+
+```{r accGenomeAnalysis,include=TRUE}
+amikacin <- dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`
+
+amikacin_gene_presAbs <- inner_join(gene_pres_abs, amikacin,by=c("Gene" = "Gene"))
+cefalexin_gene_presAbs <-  inner_join(gene_pres_abs, cefalexin,by=c("Gene" = "Gene"))
+ceftiofur_gene_presAbs <- inner_join(gene_pres_abs, ceftiofur,by=c("Gene" = "Gene"))
+
+get_nt_fasta <- function(antibiotic) {
+ x <- inner_join(gene_pres_abs, antibiotic,by=c("Gene" = "Gene"))
+ y <- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,T)
+write_fasta_out(g, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",antibiotic,".fasta"))
+} 
+
+get_nt_fasta(amikacin)
+
+
+write.csv(amikacin_gene_presAbs,file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/Amikacin_genePresAbs.csv")
+
+write.csv(ceftiofur_gene_presAbs,file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/ceftiofur_gene_presAbss.csv")
+
+
+source("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/panaroo_protein_fasta_out.R")
+g<- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv","/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/ceftiofur_gene_presAbss.csv",T)
+
+write_fasta_out_nt <- function(genepa_comb, path_out){
+  # write out protein fasta
+  sink(path_out)
+  for (i in 1:nrow(genepa_comb)){
+    name = noquote(paste(">",genepa_comb[i,9],sep=""))
+    cat(name,sep="\n")
+    ln <- noquote(as.character(genepa_comb[i,6]))
+    cat(ln)
+    cat("\n")
+  }
+  sink()
+}
+
+
+write_fasta_out(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/cefalexin_p.fasta")
+
+write_fasta_out_nt(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/cefalexin_nts.fasta")
+
+
+
+
+
+```
+
+
+
+
+```{r scoaryPlots,include=TRUE}
+# from https://github.com/cimendes/scoaryPlots
+
+if (!require("hexbin")){
+  install.packages("hexbin",dependencies = TRUE)
+  library('hexbin')
+}
+
+#read chosen file
+file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/Ampicillin.INT_15_04_2021_1732.results.csv"
+filename = basename(file)
+
+data=read.csv(file, header=TRUE, sep=',')
+
+#select data by benjamin corrected p-value
+data.df=data.frame(data)
+#names(data.df)
+data.df.sub=subset(data.df,Benjamini_H_p<0.05)
+
+# ****** I am making my own script here ********* # 
+# I want to know how many genes are significantly correlated with resistance (positive PT)
+ # I also want to know WHAT those genes are and what they DO (GO analysis - will use another script later for this)
+  # First step: filter by empircal p value (this takes into account the tree) 
+  data.df.sub=subset(data.df,Empirical_p<0.05) 
+    # Next: extract columns interested in - # posititves present in, sensitivity, and specificity 
+    data.df.sub2 <- data.df.sub[, c("Gene", "Non.unique.Gene.name","Annotation","Number_pos_present_in","Sensitivity","Specificity","Empirical_p")]
+# how many genes are significantly correlated with resistance phenotype?
+    # plot number positive present in by Empirical_p? 
+    ggplot(data=data.df.sub2, mapping = aes( data.df.sub2$Empirical_p, data.df.sub2$Number_pos_present_in,col=data.df.sub2$Specificity) ) + geom_point()
+    
+    
+    
+    
+ ## ******* end of my own script ************ ## 
+    
+    
+    
+    
+    
+#Select data
+positive_present_in=data.df.sub[,4]
+negative_present_in=data.df.sub[,5]
+
+#save plot
+png(paste(file,"_scatterplot_gray.png"), width=480, height=480)
+
+#create plot
+
+cols <- colorRampPalette(c("darkblue", "red"))
+bANDw <- colorRampPalette(c("lightgray","black"))
+
+#plot - gray scale
+bin<-hexbin(negative_present_in,positive_present_in)
+#cols <- colorRampPalette(c("lightgray","black"))
+plot(bin, main=filename,colorcut = seq(0,1,length.out=15),
+     colramp = function(n) bANDw(15))
+dev.off()
+
+#plot - colours
+png(paste(file,"_scatterplot_colour.png"), width=480, height=480)
+#cols <- colorRampPalette(c("darkblue","red"))
+plot(hexbin(negative_present_in,positive_present_in), main = filename ,
+     colorcut = seq(0,1,length.out=15),
+     colramp = function(n) cols(15))
+dev.off()
+
+#plot - control - all data
+positive_present_in_alldata=data.df[,4]
+negative_present_in_alldata=data.df[,5]
+png(paste(file,"_alldata.png"), width=480, height=480)
+#cols <- colorRampPalette(c("darkblue","red"))
+plot(hexbin(negative_present_in_alldata,positive_present_in_alldata), main = filename ,
+     colorcut = seq(0,1,length.out=15),
+     colramp = function(n) cols(15))
+dev.off()
+
+
+#Exclusive accessory genome (10% range)
+max.Number_pos_present_in=max(positive_present_in)
+range.Number_pos_present_in=max.Number_pos_present_in-max.Number_pos_present_in*0.1
+subset.exclusive=subset(data.df,Number_pos_present_in>=range.Number_pos_present_in & Number_neg_present_in == 0)
+if (length(row.names(subset.exclusive)) != 0){
+  write.table(subset.exclusive, file=paste(file,"exclusive_present_range.csv"), sep=";", row.names = FALSE)
+  } else{
+  print(paste("No value to print in ", file, "exclusive present"))
+  }
+max.Number_neg_present_in=max(negative_present_in)
+range.Number_neg_present_in=max.Number_neg_present_in-max.Number_neg_present_in*0.1
+subset.absent=subset(data.df,Number_pos_present_in==0 & max.Number_neg_present_in >= range.Number_neg_present_in)
+if (length(row.names(subset.absent)) != 0){
+  write.table(subset.absent, file=paste(file,"exclusive_absent_range.csv"), sep=";", row.names = FALSE)
+  } else{
+  
+  print(paste("No value to print in ", file, "exclusive absent"))
+  }
+
+
+
+
+```
+
+
+```{r GO analysis, include=TRUE}
+# Load in data from GO analysis
+
+
+
+
+
+
+
+```
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
