@@ -144,23 +144,38 @@ amikacin <- dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`
 amikacin_gene_presAbs <- inner_join(gene_pres_abs, amikacin,by=c("Gene" = "Gene"))
 cefalexin_gene_presAbs <-  inner_join(gene_pres_abs, cefalexin,by=c("Gene" = "Gene"))
 ceftiofur_gene_presAbs <- inner_join(gene_pres_abs, ceftiofur,by=c("Gene" = "Gene"))
+name="amk"
 
-get_nt_fasta <- function(antibiotic) {
- x <- inner_join(gene_pres_abs, antibiotic,by=c("Gene" = "Gene"))
- y <- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,T)
-write_fasta_out(g, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",antibiotic,".fasta"))
+get_prot_seq_hm <- function(path_to_gene_data, x, acc_only=T){
+  ## inputs:
+  #     path_to_gene_data = "path/gene_data.csv"
+  #     path_to_gene_pres_abs = "path/gene_presence_absence_roary.csv"
+  #     acc_only = T if you want accessory genes sequences, F if you want all gene sequences 
+  
+  #read in gene data (contains sequences) and gene presence absence matrix
+  genedf <- read.csv(path_to_gene_data)
+  genepa <- x
+  n = genepa[1,5]
+  #only retain distinct protein sequences (only want one sequence per gene)
+  genedf_f <- genedf %>% distinct(prot_sequence,.keep_all=T)
+  
+  #get gene presence absence matrix in long format
+  genepa_l <- suppressWarnings(genepa %>% gather(key = "seqid", val = "annotation_id",-colnames(genepa[1:14]))) 
+  
+  #combine two dataframes
+  genepa_comb <- left_join(genedf_f, genepa_l, by="annotation_id")
+  
+  #only keep one protein sequence per gene
+  genepa_comb <- genepa_comb %>% distinct(Gene, .keep_all=T)
+  
+  
+  if (acc_only == T){
+    #keep accessory genes
+    genepa_comb <- genepa_comb %>% filter(No..isolates <= n*.95)
+  }
+  
+  return(genepa_comb)
 } 
-
-get_nt_fasta(amikacin)
-
-
-write.csv(amikacin_gene_presAbs,file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/Amikacin_genePresAbs.csv")
-
-write.csv(ceftiofur_gene_presAbs,file = "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/ceftiofur_gene_presAbss.csv")
-
-
-source("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/panaroo_protein_fasta_out.R")
-g<- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv","/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/ceftiofur_gene_presAbss.csv",T)
 
 write_fasta_out_nt <- function(genepa_comb, path_out){
   # write out protein fasta
@@ -175,10 +190,14 @@ write_fasta_out_nt <- function(genepa_comb, path_out){
   sink()
 }
 
+get_nt_fasta <- function(antibiotic,name) {
+ x <- inner_join(gene_pres_abs, antibiotic,by=c("Gene" = "Gene"))
+ y <- get_prot_seq_hm("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,T)
+write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",name,".fasta",sep=""))
+} 
 
-write_fasta_out(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/cefalexin_p.fasta")
 
-write_fasta_out_nt(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/cefalexin_nts.fasta")
+get_nt_fasta(cefalexin,"cefalexin")
 
 
 

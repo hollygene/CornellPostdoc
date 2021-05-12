@@ -2,7 +2,7 @@
 
 raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling"
 unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
-ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333.fasta"
+ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333_DNA.fasta"
 output_directory="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/Output"
 mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 
@@ -12,20 +12,20 @@ mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 # create a uBAM file
 #######################################################################################
 
-# for file in ${raw_data}/*_1.fastq
-#
-# do
-#
-# FBASE=$(basename $file _1.fastq)
-# BASE=${FBASE%_1.fastq}
-# java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
-#     FASTQ=${raw_data}/${BASE}_1.fastq \
-#     FASTQ2=${raw_data}/${BASE}_1.fastq  \
-#     OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
-#     READ_GROUP_NAME=${BASE} \
-#     SAMPLE_NAME=${BASE}
-#
-# done
+for file in ${raw_data}/*_1.fastq
+
+do
+
+FBASE=$(basename $file _1.fastq)
+BASE=${FBASE%_1.fastq}
+java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
+    FASTQ=${raw_data}/${BASE}_1.fastq \
+    FASTQ2=${raw_data}/${BASE}_1.fastq  \
+    OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
+    READ_GROUP_NAME=${BASE} \
+    SAMPLE_NAME=${BASE}
+
+done
 
 
 
@@ -35,22 +35,22 @@ mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 #
 # mkdir ${unmapped_bams}/TMP
 #
-# for file in ${unmapped_bams}/*_fastqtosam.bam
-#
-# do
-#
-# FBASE=$(basename $file _fastqtosam.bam)
-# BASE=${FBASE%_fastqtosam.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
-# I=${unmapped_bams}/${BASE}_fastqtosam.bam \
-# O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-# M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
-# TMP_DIR=${unmapped_bams}/TMP \
-# USE_JDK_DEFLATER=true \
-# USE_JDK_INFLATER=true
-#
-# done
+for file in ${unmapped_bams}/*_fastqtosam.bam
+
+do
+
+FBASE=$(basename $file _fastqtosam.bam)
+BASE=${FBASE%_fastqtosam.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
+I=${unmapped_bams}/${BASE}_fastqtosam.bam \
+O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
+TMP_DIR=${unmapped_bams}/TMP \
+USE_JDK_DEFLATER=true \
+USE_JDK_INFLATER=true
+
+done
 
 
 #######################################################################################
@@ -58,70 +58,22 @@ mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 # #
 #
 #
-# for file in ${unmapped_bams}/*_markilluminaadapters.bam
-#
-# do
-#
-# FBASE=$(basename $file _markilluminaadapters.bam)
-# BASE=${FBASE%_markilluminaadapters.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
-#       I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-#       MODE=VERBOSE
-#
-# done
+for file in ${unmapped_bams}/*_markilluminaadapters.bam
+
+do
+
+FBASE=$(basename $file _markilluminaadapters.bam)
+BASE=${FBASE%_markilluminaadapters.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
+      I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+      MODE=VERBOSE
+
+done
 
 #######################################################################################
 # convert BAM to FASTQ and discount adapter sequences using SamToFastq
 #######################################################################################
-
-# for file in ${unmapped_bams}/*_markilluminaadapters.bam
-#
-# do
-#
-# FBASE=$(basename $file _markilluminaadapters.bam)
-# BASE=${FBASE%_markilluminaadapters.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
-# I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-# FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
-# CLIPPING_ATTRIBUTE=XT \
-# CLIPPING_ACTION=2 \
-# INTERLEAVE=true \
-# NON_PF=true \
-# TMP_DIR=${unmapped_bams}/TMP
-#
-# done
-
-
-#######################################################################################
-# Piped Command: works: aligns samples to reference genome. Output is a .sam file
-#######################################################################################
-
-# #gunzip the ref genome
-# gunzip ${ref_genome}
-#  #index the ref genome
-# bwa index ${ref_genome}
-# #
-# for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
-#
-# do
-#
-# FBASE=$(basename $file _samtofastq_interleaved.fq)
-# BASE=${FBASE%_samtofastq_interleaved.fq}
-#
-# bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
-#
-# done
-#
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar CreateSequenceDictionary \
-#       R=${ref_genome} \
-#       O=UP000000625_83333.dict
-
-
-# Piped command: SamToFastq, then bwa mem, then MergeBamAlignment
-# mkdir ${mapped_bams}
 
 for file in ${unmapped_bams}/*_markilluminaadapters.bam
 
@@ -132,21 +84,69 @@ BASE=${FBASE%_markilluminaadapters.bam}
 
 java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
 I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-FASTQ=/dev/stdout \
-CLIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=true NON_PF=true \
-TMP_DIR=${unmapped_bams}/TMP | \
-bwa mem -M -t 7 -p ${ref_genome} /dev/stdin| \
-java -jar /programs/picard-tools-2.19.2/picard.jar MergeBamAlignment \
-ALIGNED_BAM=/dev/stdin \
-UNMAPPED_BAM=${unmapped_bams}/${BASE}_fastqtosam.bam \
-OUTPUT=${unmapped_bams}/${BASE}_piped.bam \
-R=${ref_genome} CREATE_INDEX=true ADD_MATE_CIGAR=true \
-CLIP_ADAPTERS=false CLIP_OVERLAPPING_READS=true \
-INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 \
-PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS \
+FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
+CLIPPING_ATTRIBUTE=XT \
+CLIPPING_ACTION=2 \
+INTERLEAVE=true \
+NON_PF=true \
 TMP_DIR=${unmapped_bams}/TMP
 
 done
+
+
+#######################################################################################
+# Piped Command: works: aligns samples to reference genome. Output is a .sam file
+#######################################################################################
+
+#gunzip the ref genome
+gunzip ${ref_genome}
+ #index the ref genome
+bwa index ${ref_genome}
+#
+for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
+
+do
+
+FBASE=$(basename $file _samtofastq_interleaved.fq)
+BASE=${FBASE%_samtofastq_interleaved.fq}
+
+bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
+
+done
+
+
+java -jar /programs/picard-tools-2.19.2/picard.jar CreateSequenceDictionary \
+      R=${ref_genome} \
+      O=UP000000625_83333.dict
+
+
+# Piped command: SamToFastq, then bwa mem, then MergeBamAlignment
+# mkdir ${mapped_bams}
+
+# for file in ${unmapped_bams}/*_markilluminaadapters.bam
+#
+# do
+#
+# FBASE=$(basename $file _markilluminaadapters.bam)
+# BASE=${FBASE%_markilluminaadapters.bam}
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
+# I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+# FASTQ=/dev/stdout \
+# CLIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=true NON_PF=true \
+# TMP_DIR=${unmapped_bams}/TMP | \
+# bwa mem -M -t 7 -p ${ref_genome} /dev/stdin| \
+# java -jar /programs/picard-tools-2.19.2/picard.jar MergeBamAlignment \
+# ALIGNED_BAM=/dev/stdin \
+# UNMAPPED_BAM=${unmapped_bams}/${BASE}_fastqtosam.bam \
+# OUTPUT=${unmapped_bams}/${BASE}_piped.bam \
+# R=${ref_genome} CREATE_INDEX=true ADD_MATE_CIGAR=true \
+# CLIP_ADAPTERS=false CLIP_OVERLAPPING_READS=true \
+# INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 \
+# PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS \
+# TMP_DIR=${unmapped_bams}/TMP
+#
+# done
 
 
 # # ###################################################################################################
@@ -157,21 +157,20 @@ done
 # # ###################################################################################################
 
 
-
-for file in ${unmapped_bams}/*_piped.bam
-
-do
-
-FBASE=$(basename $file _piped.bam)
-BASE=${FBASE%_piped.bam}
-
-java -jar /programs/picard-tools-2.19.2/picard.jar MarkDuplicates \
-REMOVE_DUPLICATES=TRUE \
-I=${unmapped_bams}/${BASE}_piped.bam \
-O=${mapped_bams}/${BASE}_removedDuplicates.bam \
-M=${unmapped_bams}/${BASE}_removedDupsMetrics.txt
-
-done
+# for file in ${unmapped_bams}/*_piped.bam
+#
+# do
+#
+# FBASE=$(basename $file _piped.bam)
+# BASE=${FBASE%_piped.bam}
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar MarkDuplicates \
+# REMOVE_DUPLICATES=TRUE \
+# I=${unmapped_bams}/${BASE}_piped.bam \
+# O=${mapped_bams}/${BASE}_removedDuplicates.bam \
+# M=${unmapped_bams}/${BASE}_removedDupsMetrics.txt
+#
+# done
 
 
 #
@@ -181,29 +180,37 @@ done
 # # will need to do this separtely for haploid and diploid samples
 # ###################################################################################################
 # ###################################################################################################
-# #
-module load ${GATK_module}
+#
 
-# D1 samples
-mkdir ${mapped_bams}/D1
+# need to index reference genome
+# samtools faidx ${ref_genome}
 
-cp ${mapped_bams}/*D1* ${mapped_bams}/D1
+# also need to index input files
+# for file in ${mapped_bams}/*_removedDuplicates.bam
+#
+# do
+#
+# FBASE=$(basename $file _removedDuplicates.bam)
+# BASE=${FBASE%_removedDuplicates.bam}
+#
+# samtools index ${mapped_bams}/${BASE}_removedDuplicates.bam
+#
+# done
 
 
-
-for file in ${mapped_bams}/D1/${BASE}*_removedDuplicates.bam
+for file in ${mapped_bams}/*_removedDuplicates.bam
 
 do
 
 FBASE=$(basename $file _removedDuplicates.bam)
 BASE=${FBASE%_removedDuplicates.bam}
 
-time gatk HaplotypeCaller \
+/programs/gatk4/gatk HaplotypeCaller \
      -R ${ref_genome} \
      -ERC GVCF \
-     -I ${mapped_bams}/D1/${BASE}_removedDuplicates.bam \
-     -ploidy 2 \
-     -O ${mapped_bams}/D1/${BASE}_variants.g.vcf
+     -I ${mapped_bams}/${BASE}_removedDuplicates.bam \
+     -ploidy 1 \
+     -O ${mapped_bams}/${BASE}_variants.g.vcf
 
 done
 
@@ -295,7 +302,7 @@ time gatk HaplotypeCaller \
 -R ${ref_genome} \
 -ERC GVCF \
 -I ${mapped_bams}/D1/${BASE}_recalibratedNewRef.bam \
--ploidy 2 \
+-ploidy 1 \
 -O ${mapped_bams}/D1/${BASE}_variants.Recal.g.vcf
 
 done
@@ -370,7 +377,7 @@ time gatk CombineGVCFs \
 #
 time gatk GenotypeGVCFs \
 -R ${ref_genome} \
--ploidy 2 \
+-ploidy 1 \
 --variant ${mapped_bams}/D1/D1_FullCohort.g.vcf \
 -O ${mapped_bams}/D1/D1_FullCohort.vcf
 
