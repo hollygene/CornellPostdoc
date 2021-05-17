@@ -12,20 +12,20 @@ mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 # create a uBAM file
 #######################################################################################
 
-for file in ${raw_data}/*_1.fastq
-
-do
-
-FBASE=$(basename $file _1.fastq)
-BASE=${FBASE%_1.fastq}
-java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
-    FASTQ=${raw_data}/${BASE}_1.fastq \
-    FASTQ2=${raw_data}/${BASE}_1.fastq  \
-    OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
-    READ_GROUP_NAME=${BASE} \
-    SAMPLE_NAME=${BASE}
-
-done
+# for file in ${raw_data}/*_1.fastq
+#
+# do
+#
+# FBASE=$(basename $file _1.fastq)
+# BASE=${FBASE%_1.fastq}
+# java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
+#     FASTQ=${raw_data}/${BASE}_1.fastq \
+#     FASTQ2=${raw_data}/${BASE}_1.fastq  \
+#     OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
+#     READ_GROUP_NAME=${BASE} \
+#     SAMPLE_NAME=${BASE}
+#
+# done
 
 
 
@@ -35,22 +35,22 @@ done
 #
 # mkdir ${unmapped_bams}/TMP
 #
-for file in ${unmapped_bams}/*_fastqtosam.bam
-
-do
-
-FBASE=$(basename $file _fastqtosam.bam)
-BASE=${FBASE%_fastqtosam.bam}
-
-java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
-I=${unmapped_bams}/${BASE}_fastqtosam.bam \
-O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
-TMP_DIR=${unmapped_bams}/TMP \
-USE_JDK_DEFLATER=true \
-USE_JDK_INFLATER=true
-
-done
+# for file in ${unmapped_bams}/*_fastqtosam.bam
+#
+# do
+#
+# FBASE=$(basename $file _fastqtosam.bam)
+# BASE=${FBASE%_fastqtosam.bam}
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
+# I=${unmapped_bams}/${BASE}_fastqtosam.bam \
+# O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+# M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
+# TMP_DIR=${unmapped_bams}/TMP \
+# USE_JDK_DEFLATER=true \
+# USE_JDK_INFLATER=true
+#
+# done
 
 
 #######################################################################################
@@ -58,40 +58,40 @@ done
 # #
 #
 #
-for file in ${unmapped_bams}/*_markilluminaadapters.bam
-
-do
-
-FBASE=$(basename $file _markilluminaadapters.bam)
-BASE=${FBASE%_markilluminaadapters.bam}
-
-java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
-      I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-      MODE=VERBOSE
-
-done
+# for file in ${unmapped_bams}/*_markilluminaadapters.bam
+#
+# do
+#
+# FBASE=$(basename $file _markilluminaadapters.bam)
+# BASE=${FBASE%_markilluminaadapters.bam}
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
+#       I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+#       MODE=VERBOSE
+#
+# done
 
 #######################################################################################
 # convert BAM to FASTQ and discount adapter sequences using SamToFastq
 #######################################################################################
 
-for file in ${unmapped_bams}/*_markilluminaadapters.bam
-
-do
-
-FBASE=$(basename $file _markilluminaadapters.bam)
-BASE=${FBASE%_markilluminaadapters.bam}
-
-java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
-I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
-CLIPPING_ATTRIBUTE=XT \
-CLIPPING_ACTION=2 \
-INTERLEAVE=true \
-NON_PF=true \
-TMP_DIR=${unmapped_bams}/TMP
-
-done
+# for file in ${unmapped_bams}/*_markilluminaadapters.bam
+#
+# do
+#
+# FBASE=$(basename $file _markilluminaadapters.bam)
+# BASE=${FBASE%_markilluminaadapters.bam}
+#
+# java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
+# I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+# FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
+# CLIPPING_ATTRIBUTE=XT \
+# CLIPPING_ACTION=2 \
+# INTERLEAVE=true \
+# NON_PF=true \
+# TMP_DIR=${unmapped_bams}/TMP
+#
+# done
 
 
 #######################################################################################
@@ -99,9 +99,15 @@ done
 #######################################################################################
 
 #gunzip the ref genome
-gunzip ${ref_genome}
+# gunzip ${ref_genome}
  #index the ref genome
 bwa index ${ref_genome}
+
+#ref genome seems to have spaces
+sed 's/\s*$//g' UP000000625_83333_DNA.fasta > UP000000625_83333_DNA_spRm.fasta
+
+bwa index ${ref_genome}
+
 #
 for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
 
@@ -110,7 +116,8 @@ do
 FBASE=$(basename $file _samtofastq_interleaved.fq)
 BASE=${FBASE%_samtofastq_interleaved.fq}
 
-bwa mem -M -p -t 12 ${ref_genome} ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
+bwa mem -M -p -t 12 /workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333_DNA_spRm.fasta \
+${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
 
 done
 

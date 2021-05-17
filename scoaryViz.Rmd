@@ -14,6 +14,7 @@ library(tools)
 library(purrr)
 library(dplyr)
 library(fuzzyjoin)
+library(tidyr)
 ```
 
 
@@ -130,22 +131,18 @@ test.fun <- n_genes(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`)
 
 #loop over dataSig 
 
-classify_genes <- lapply(sigResistAssoc, FUN = n_genes)
-class(dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
-typeof(dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
-typeof(gene_key$PanGene)
+
 
 ```
 
 
 ```{r accGenomeAnalysis,include=TRUE}
-amikacin <- dataSig$`./Amikacin.INT_15_04_2021_1732.results.csv`
-
 amikacin_gene_presAbs <- inner_join(gene_pres_abs, amikacin,by=c("Gene" = "Gene"))
 cefalexin_gene_presAbs <-  inner_join(gene_pres_abs, cefalexin,by=c("Gene" = "Gene"))
 ceftiofur_gene_presAbs <- inner_join(gene_pres_abs, ceftiofur,by=c("Gene" = "Gene"))
 name="amk"
-
+x=amikacin_gene_presAbs
+path_to_gene_data="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv"
 get_prot_seq_hm <- function(path_to_gene_data, x, acc_only=T){
   ## inputs:
   #     path_to_gene_data = "path/gene_data.csv"
@@ -197,9 +194,13 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 } 
 
 
-get_nt_fasta(cefalexin,"cefalexin")
+get_nt_fasta(imipenem,"imipenem")
 
 
+
+
+# Want to get a fasta file of the sequences from the CARD output 
+# Need to query these produced fasta files with the contigs from CARD 
 
 
 
