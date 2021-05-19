@@ -55,9 +55,6 @@ nlevels(as.factor(AMR_genes_NCBI$gene.family))
 sigGenes <- sapply(dataFiles,FUN = function(x) subset(x, Empirical_p<0.05 ),simplify = FALSE,USE.NAMES = TRUE)
 sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),simplify = FALSE,USE.NAMES = TRUE)
 
-
-
-
 # want to do an anti-join from dplyr 
 # this gives all rows from x where there are not matching values in y 
 # x = dataFiles y=AMR_genes_NCBI 
@@ -65,38 +62,40 @@ sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),sim
 
 amikacin <- sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`
 amox_clauv_acid <- sigResistAssoc$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
-amox <- sigResistAssoc$`./Amoxicillin.INT_15_04_2021_1732.results.csv`
+# amox <- sigResistAssoc$`./Amoxicillin.INT_15_04_2021_1732.results.csv`
 amp <- sigResistAssoc$`./Ampicillin.INT_15_04_2021_1732.results.csv`
 cefalexin <- sigResistAssoc$`./Cefalexin.INT_15_04_2021_1732.results.csv`
+#cefalexin and cephalexin are the SAME THING, combine?
+cephalexin <- sigResistAssoc$`./Cephalexin.INT_15_04_2021_1732.results.csv`
+cefalexin.comb <- rbind(cefalexin,cephalexin)
 cefazolin <- sigResistAssoc$`./Cefazolin.INT_15_04_2021_1732.results.csv`
 cefovecin <-  sigResistAssoc$`./Cefovecin.INT_15_04_2021_1732.results.csv`
-cefoxitin <- sigResistAssoc$`./Cefoxitin.INT_15_04_2021_1732.results.csv`
+# cefoxitin <- sigResistAssoc$`./Cefoxitin.INT_15_04_2021_1732.results.csv`
 cefpodoxime <- sigResistAssoc$`./Cefpodoxime.INT_15_04_2021_1732.results.csv`
 ceftazidime <- sigResistAssoc$`./Ceftazidime.INT_15_04_2021_1732.results.csv`
-ceftiofur <- sigResistAssoc$`./Ceftiofur.INT_15_04_2021_1732.results.csv`
-cephalexin <- sigResistAssoc$`./Cephalexin.INT_15_04_2021_1732.results.csv`
-cephalothin <- sigResistAssoc$`./Cephalothin.INT_15_04_2021_1732.results.csv`
+# ceftiofur <- sigResistAssoc$`./Ceftiofur.INT_15_04_2021_1732.results.csv`
+# cephalothin <- sigResistAssoc$`./Cephalothin.INT_15_04_2021_1732.results.csv`
 chloram <- sigResistAssoc$`./Chloramphenicol.INT_15_04_2021_1732.results.csv`
-clindamycin <- sigResistAssoc$`./Clindamycin.INT_15_04_2021_1732.results.csv`
+# clindamycin <- sigResistAssoc$`./Clindamycin.INT_15_04_2021_1732.results.csv`
 doxy <- sigResistAssoc$`./Doxycycline.INT_15_04_2021_1732.results.csv`
 enro <- sigResistAssoc$`./Enrofloxacin.INT_15_04_2021_1732.results.csv`
-erythro <- sigResistAssoc$`./Erythromycin.INT_15_04_2021_1732.results.csv`
+# erythro <- sigResistAssoc$`./Erythromycin.INT_15_04_2021_1732.results.csv`
 gentamicin <- sigResistAssoc$`./Gentamicin.INT_15_04_2021_1732.results.csv`
 imipenem <- sigResistAssoc$`./Imipenem.INT_15_04_2021_1732.results.csv`
 marbo <- sigResistAssoc$`./Marbofloxacin.INT_15_04_2021_1732.results.csv`
-neo <- sigResistAssoc$`./Neomycin.INT_15_04_2021_1732.results.csv`
-nitro <- sigResistAssoc$`./Nitrofurantoin.INT_15_04_2021_1732.results.csv`
+# neo <- sigResistAssoc$`./Neomycin.INT_15_04_2021_1732.results.csv`
+# nitro <- sigResistAssoc$`./Nitrofurantoin.INT_15_04_2021_1732.results.csv`
 orbi <- sigResistAssoc$`./Orbifloxacin.INT_15_04_2021_1732.results.csv`
-oxacillin <- sigResistAssoc$`./Oxacillin...2..NaCl.INT_15_04_2021_1732.results.csv`
-penicillin.G <- sigResistAssoc$`./Penicillin.G.INT_15_04_2021_1732.results.csv`
-penicillin <- sigResistAssoc$`./Penicillin.INT_15_04_2021_1732.results.csv`
-piperacillin <- sigResistAssoc$`./Piperacillin.INT_15_04_2021_1732.results.csv`
+# oxacillin <- sigResistAssoc$`./Oxacillin...2..NaCl.INT_15_04_2021_1732.results.csv`
+# penicillin.G <- sigResistAssoc$`./Penicillin.G.INT_15_04_2021_1732.results.csv`
+# penicillin <- sigResistAssoc$`./Penicillin.INT_15_04_2021_1732.results.csv`
+# piperacillin <- sigResistAssoc$`./Piperacillin.INT_15_04_2021_1732.results.csv`
 pipTazo <- sigResistAssoc$`./Piperacillin.Tazobactam.INT_15_04_2021_1732.results.csv`
 prado <- sigResistAssoc$`./Pradofloxacin.INT_15_04_2021_1732.results.csv`
 tetracycline <- sigResistAssoc$`./Tetracycline.INT_15_04_2021_1732.results.csv`
-ticarc_clauv_acid <- sigResistAssoc$`./Ticarcillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
-ticarcillin <- sigResistAssoc$`./Ticarcillin.INT_15_04_2021_1732.results.csv`
-tobramycin <- sigResistAssoc$`./Tobramycin.INT_15_04_2021_1732.results.csv`
+# ticarc_clauv_acid <- sigResistAssoc$`./Ticarcillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
+# ticarcillin <- sigResistAssoc$`./Ticarcillin.INT_15_04_2021_1732.results.csv`
+# tobramycin <- sigResistAssoc$`./Tobramycin.INT_15_04_2021_1732.results.csv`
 trimeth_sulfameth <- sigResistAssoc$`./Trimethoprim.Sulfamethoxazole.INT_15_04_2021_1732.results.csv`
 
 
@@ -189,7 +188,7 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 } 
 
 
-get_nt_fasta(tobramycin,"tobramycin")
+get_nt_fasta(cefalexin.comb,"cefalexin.comb")
 
 
 
