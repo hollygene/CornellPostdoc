@@ -29,12 +29,12 @@ blastp -outfmt "6 qseqid sseqid sallseqid qaccver saccver pident length mismatch
 # bitscore means Bit score
 
 
-sort -k1,1 -k15,15nr -k14,14n dog_verified_host_prots_tab_more.out > test1.txt
-
-sort -u -k1,1 test1.txt > test.txt
-
-The first sort orders the blast output by query name then by the 12th column in descending order (bit score - I think), then by 11th column ascending (evalue I think).
-The second sort picks the first line from each query. Obviously you can skip the first sort if the output is already sorted in the 'correct' order.
+# sort -k1,1 -k15,15nr -k14,14n dog_verified_host_prots_tab_more.out > test1.txt
+#
+# sort -u -k1,1 test1.txt > test.txt
+#
+# The first sort orders the blast output by query name then by the 15th column in descending order (bit score - I think), then by 14th column ascending (evalue I think).
+# The second sort picks the first line from each query. Obviously you can skip the first sort if the output is already sorted in the 'correct' order.
 
 
 

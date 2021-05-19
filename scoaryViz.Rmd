@@ -19,12 +19,12 @@ library(tidyr)
 
 
 ```{r data,include=TRUE}
-setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results/")
+setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/Scoary_Results/")
 dataFiles <- sapply(Sys.glob("./*.csv"), read.csv, simplify = FALSE, USE.NAMES = TRUE)
 
 gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv")
-gene_key <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_id_key.txt",header=TRUE)
-AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/refgenes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
+gene_key <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_id_key.txt",header=TRUE)
+AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/refgenes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
 
 # test by joining gene key with AMR genes from NCBI 
 # need to make GeneID in gene key lowercase
@@ -137,12 +137,7 @@ test.fun <- n_genes(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`)
 
 
 ```{r accGenomeAnalysis,include=TRUE}
-amikacin_gene_presAbs <- inner_join(gene_pres_abs, amikacin,by=c("Gene" = "Gene"))
-cefalexin_gene_presAbs <-  inner_join(gene_pres_abs, cefalexin,by=c("Gene" = "Gene"))
-ceftiofur_gene_presAbs <- inner_join(gene_pres_abs, ceftiofur,by=c("Gene" = "Gene"))
-name="amk"
-x=amikacin_gene_presAbs
-path_to_gene_data="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv"
+
 get_prot_seq_hm <- function(path_to_gene_data, x, acc_only=T){
   ## inputs:
   #     path_to_gene_data = "path/gene_data.csv"
@@ -194,7 +189,7 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 } 
 
 
-get_nt_fasta(imipenem,"imipenem")
+get_nt_fasta(tobramycin,"tobramycin")
 
 
 
@@ -206,7 +201,33 @@ get_nt_fasta(imipenem,"imipenem")
 
 ```
 
+```{r AMRFinder, include=TRUE}
+# load in AMRFinder results combined 
+amrResultsAll <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/AMRFinderResultsCombined.csv",header=TRUE)
 
+# need to correlate the run (SRR******) with the Assembly (GCA****) naming conventions 
+anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+
+# want Run (ID used in AMRFinder data) and assembly (ID used in Scoary data)
+header <- colnames(anno)
+header.want <- c(grep("Run",header),grep("Assembly",header))
+anno.want <- anno[header.want]
+
+
+
+
+# need to extract the lines that match what isolates we have (the 601 dog genomes that are definitely dogs and we have phenotypic data for)
+# get the gene presence-absence matrix in long format 
+genePA_long <- suppressWarnings(gene_pres_abs %>% gather(key = "seqid", val = "annotation_id",-colnames(gene_pres_abs[1:14]))) 
+
+  
+
+
+
+
+
+
+```
 
 
 ```{r scoaryPlots,include=TRUE}
