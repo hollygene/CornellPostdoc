@@ -55,6 +55,9 @@ nlevels(as.factor(AMR_genes_NCBI$gene.family))
 sigGenes <- sapply(dataFiles,FUN = function(x) subset(x, Empirical_p<0.05 ),simplify = FALSE,USE.NAMES = TRUE)
 sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),simplify = FALSE,USE.NAMES = TRUE)
 
+# also filter by bonferroni p 
+sigResistAssocBonf <- sapply(sigResistAssoc,FUN = function(x) subset(x, Bonferroni_p<0.05),simplify = FALSE,USE.NAMES = TRUE)
+
 # want to do an anti-join from dplyr 
 # this gives all rows from x where there are not matching values in y 
 # x = dataFiles y=AMR_genes_NCBI 
@@ -188,7 +191,7 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 } 
 
 
-get_nt_fasta(cefalexin.comb,"cefalexin.comb")
+get_nt_fasta(trimeth_sulfameth,"trimeth_sulfameth")
 
 
 
@@ -200,9 +203,11 @@ get_nt_fasta(cefalexin.comb,"cefalexin.comb")
 
 ```
 
-```{r AMRFinder, include=TRUE}
+```{r data_wrangling, include=TRUE}
 # load in AMRFinder results combined 
 amrResultsAll <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMRFinder_results/AMRFinderResultsCombined.csv",header=TRUE)
+nlevels(as.factor(amrResultsAll$Isolate))
+#942 levels here 
 
 # need to correlate the run (SRR******) with the Assembly (GCA****) naming conventions 
 anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
@@ -213,18 +218,130 @@ header.want <- c(grep("Run",header),grep("Assembly",header))
 anno.want <- anno[header.want]
 
 
+# need to extract the lines from AMRFinder data that match what isolates we have (the 601 dog genomes that are definitely dogs and we have phenotypic data for)
 
-
-# need to extract the lines that match what isolates we have (the 601 dog genomes that are definitely dogs and we have phenotypic data for)
-# get the gene presence-absence matrix in long format 
+# get the gene presence-absence matrix in long format first
 genePA_long <- suppressWarnings(gene_pres_abs %>% gather(key = "seqid", val = "annotation_id",-colnames(gene_pres_abs[1:14]))) 
-
+#seqid is the one we want in this one (GCA*****.1)
+seqid <- levels(as.factor(genePA_long$seqid))
+seqid <- as.data.frame(seqid)
+# combine that with the annotation file so we can get out the 601 seqs we have
+anno.want2 <- inner_join(anno.want, seqid, by=c("Assembly"="seqid"))
   
+# get the 601 sequences from amrResultsAll
+amrResults601 <- inner_join(amrResultsAll,anno.want2,by=c("Isolate"="Run"))
+nlevels(as.factor(amrResults601$Isolate))
+# 554 levels here 
+# what am I missing?
+missingSamples <- anti_join(anno.want2,amrResultsAll,by=c("Run"="Isolate"))
+#output these to a file so I can download them onto the cluster and run AMRFinder on them 
+write.csv(missingSamples$Run,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/missingfrom601.csv")
 
 
+#Ran AMRFinder, now need to read in the output for the missing samples 
+rest_of_samples <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210519_160358.csv")
+#combine with the original list of samples 
+dog_samples <- rbind(amrResultsAll, rest_of_samples)
+# get out the ones we want 
+dog_samples_601 <- inner_join(dog_samples,anno.want2,by=c("Isolate"="Run"))
+#make sure it has the correct number of levels 
+nlevels(as.factor(dog_samples_601$Isolate))
+# how am I still missing one??
+missingStill <- anti_join(anno.want2,dog_samples_601,by=c("Run"="Isolate"))
+# this one didn't have a "Run" column filled in 
+# did some NCBI digging and found it 
+# details on Github issue 
+
+# read in the new sample's ARG table 
+last_sample <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ARG_table_20210520_103455.csv")
+
+#combine them all together finally 
+all_dogs <- rbind(dog_samples_601,last_sample)
+#make sure it has the correct number of levels 
+nlevels(as.factor(all_dogs$Isolate))
+# success! 
 
 
+```
 
+```{r AMRFinderCorr, include=TRUE}
+# Want to match our Scoary outputs to the AMRFinder outputs and find what matches and what doesn't match, for each Antibiotic tested
+
+all_dogs_AMRFinder <- all_dogs
+#make all gene names lowercase for ease of comparison 
+all_dogs_AMRFinder.low <- all_dogs_AMRFinder %>% mutate(Gene = tolower(Gene))
+# inner join with Gene = GeneID
+amk_amrF <- inner_join(amikacin.low,all_dogs_AMRFinder.low,by=c("GeneID"="Gene"))
+clavamox_amrF <- inner_join(amox_clauv_acid,all_dogs_AMRFinder.low,by=c("GeneID"="Gene"))
+
+x=amikacin
+n_genes <- function(x) {
+ x.anno <- inner_join(x,key.low,by=c("Gene"="Query"))
+ x.missing <- anti_join(x,key.low,by=c("Gene"="Query"))
+ x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
+ # x.novel <- anti_join(x.low, all_dogs_AMRFinder.low,by=c("GeneID" = "Gene"))
+ known.1 <- grepl(all_dogs_AMRFinder.low$Gene, x.low$Gene)
+ known.2 <- grepl(all_dogs_AMRFinder.low, x$Query)
+ # n.novel <- nrow(x.novel)
+ n.known <- nrow(x.known)
+ # n <- list(x.novel,x.known)
+ return(n.known)
+}
+
+test.fun <- n_genes(tetracycline)
+
+
+```
+
+```{r create itol files, include=TRUE}
+
+#Script from Kristina Ceres
+
+## read in scoary results and gene presence absence matrix
+# (we already have these)
+# setwd("~/PhD/ecoli_host_adaptation/dog_confirmed_host/")
+# genepa <- read.csv("gene_presence_absence_roary.csv")
+# clavamox <- read.csv("Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv")
+
+# select significant results
+clavamox <- amox_clauv_acid %>% filter(Empirical_p < 0.05 & Bonferroni_p < 0.05) 
+clavamox$log_or <- log10(clavamox$Odds_ratio)
+clavamox_l <- c(clavamox$Gene)
+
+# filter gene presence absence matrix to keep only genes significanctly
+# associated with clavamox resistance
+genepa_clavamox <- gene_pres_abs %>% filter(Gene %in% clavamox_l)
+genepa_clavamox_combined <- left_join(genepa_clavamox, clavamox)
+genepa_filtered <- genepa_clavamox[,15:ncol(genepa_clavamox)]
+rownames(genepa_filtered) = genepa_clavamox$Gene
+
+# create matrix to store future ITOL table
+gene_mat <- matrix(NA, nrow=nrow(genepa_filtered), ncol=ncol(genepa_filtered))
+
+# populate matrix with log odds ratio if gene is present, 
+# -2 if gene is absent (-2 chosen to aid in coloring on ITOL scale)
+for (r in 1:nrow(genepa_filtered)){
+  for (c in 1:ncol(genepa_filtered)){
+    if (genepa_filtered[r,c] != ""){
+      gene_mat[r,c]= genepa_clavamox_combined$log_or[r] 
+    } else{
+      gene_mat[r,c]= -2#0
+    }
+  }
+}
+
+colnames(gene_mat) = colnames(genepa_filtered)
+rownames(gene_mat) = rownames(genepa_filtered)
+
+gene_mat_itol <- t(gene_mat)
+
+# write out table for ITOL 
+write.table(gene_mat_itol,paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/Scoary_Results/",name,".txt",sep=""), quote=F)
+
+## get phenotype data in itol format 
+pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+pheno <- pheno %>% dplyr::select(X,Amoxicillin.Clavulanic.Acid.INT)
+write.table(pheno, "clavamox_pheno_4itol.txt",quote=F, row.names = F)
 
 ```
 
@@ -332,11 +449,28 @@ if (length(row.names(subset.absent)) != 0){
 
 
 ```{r GO analysis, include=TRUE}
-# Load in data from GO analysis
+# Get gene names from each abx 
+# Use gene key and inner_join 
+# Try with the sapply/lapply function
+class(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
+class(key.low$Query)
+genekeyRn <- key.low
+colnames(genekeyRn) <- c("Gene","ID")
+sigResistAssoc_genes <- sapply(sigResistAssoc_chr,FUN = function(x) inner_join(x,genekeyRn,by=character(),copy=TRUE),simplify = FALSE,USE.NAMES = TRUE)
 
 
+tog <- inner_join(amikacin,genekeyRn,by=c("Gene"="Gene"))
+abxGenes <- as.data.frame(tog$ID)
+write.table(abxGenes, file=paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/",".txt"))
 
 
+get_genes <- function(abx,name) {
+tog <- inner_join(abx,genekeyRn,by=c("Gene"="Gene"))
+abxGenes <- as.data.frame(tog$ID)
+write.table(abxGenes, file=paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/",name,".txt",sep=""))
+}
+
+get_genes(amikacin,"amikacin")
 
 
 
