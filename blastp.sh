@@ -8,8 +8,8 @@ cp /shared_data/genome_db/BLAST_NCBI/nr* ./
 
 
 
-blastp -outfmt "6 qseqid sseqid qaccver pident length mismatch gapopen qstart qend sstart send evalue bitscore" \
--query /workdir/hcm59/Ecoli/SNPs/dog_verified_host/dogEcoli_acc_proteins_out.fasta -db nr -out ./dog_verified_host_prots_nr_shorter.out -num_threads 36 -max_target_seqs 5
+blastp -outfmt "6 qseqid sseqid sacc sgi qaccver pident length mismatch gapopen qstart qend sstart send evalue bitscore" \
+-query /workdir/hcm59/Ecoli/SNPs/dog_verified_host/dogEcoli_acc_proteins_out.fasta -db nr -out ./ecoli_acc_proteins_blastp_accVer.out -num_threads 36 -max_target_seqs 5
 
 # Outputs:
 # qseqid means Query Seq-id
@@ -28,14 +28,12 @@ blastp -outfmt "6 qseqid sseqid qaccver pident length mismatch gapopen qstart qe
 # evalue means Expect value
 # bitscore means Bit score
 
-
-sort -k1,1 -k15,15nr -k14,14n dog_verified_host_prots_tab_oneSeq.out > oneSeq_filt_1.txt
-
-sort -u -k1,1 oneSeq_filt_1.txt > oneSeq_filt_1_sort.txt
-
-# The first sort orders the blast output by query name then by the 15th column in descending order (bit score - I think), then by 14th column ascending (evalue I think).
-# The second sort picks the first line from each query. Obviously you can skip the first sort if the output is already sorted in the 'correct' order.
-
+### Sorting in Excel:
+# sort by "qseqid" A-Z
+# then "bitscore" Largest -> smallest
+# then "evalue" Smallest -> Largest
+# Use the following awk command to pick the first line of each query:
+awk '!seen[$1]++' dog_verified_host_prots_nr_excel.txt > dog_verified_host_prots_nr_filt.txt
 
 
 #    qgi means Query GI

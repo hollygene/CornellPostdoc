@@ -6,7 +6,7 @@
 # command to run QC
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate bacWGS
-bacWGS_readQC.py --threads 4 *.fastq > PRJNA318589_readQC.tsv
+bacWGS_readQC.py --threads 4 *.fastq > rest_of_601_readQC.tsv
 
 
 

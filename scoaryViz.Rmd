@@ -23,14 +23,15 @@ setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_
 dataFiles <- sapply(Sys.glob("./*.csv"), read.csv, simplify = FALSE, USE.NAMES = TRUE)
 
 gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv")
-gene_key <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_id_key.txt",header=TRUE)
-AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/refgenes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
+gene_key <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gi_gene_key_all_acc.csv",header=TRUE)
+AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/AMRFinder_known_genes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
+
 
 # test by joining gene key with AMR genes from NCBI 
 # need to make GeneID in gene key lowercase
-key.low <-gene_key %>% mutate(GeneID = tolower(GeneID))
+key.low <- gene_key %>% mutate(qseqid = tolower(qseqid))
 AMR_genes_NCBI.low <- AMR_genes_NCBI %>% mutate(gene.family = tolower(gene.family))
-test.key <- inner_join(key.low,AMR_genes_NCBI.low,by=c("GeneID"="gene.family"))
+test.key <- inner_join(key.low,AMR_genes_NCBI.low,by=c("qseqid"="gene.family"))
 nlevels(as.factor(test.key$GeneID))
 nlevels(as.factor(AMR_genes_NCBI$gene.family))
 ##Read files named xyz1111.csv, xyz2222.csv, etc.
@@ -51,6 +52,25 @@ nlevels(as.factor(AMR_genes_NCBI$gene.family))
 ```
 
 ```{r quantify_data, include=TRUE}
+
+# annotate the scoary output with genbank ids 
+library(rentrez)
+
+# have to break up into chunks of 300 
+chunk1 <- gene_key$GI[1:300]
+chunk2 <- gene_key$GI[301:600]
+chunk3 <- gene_key$GI[601:900]
+chunk4 <- gene_key$GI[901:1200]
+chunk5 <- gene_key$GI[1201:1500]
+chunk6 <- gene_key$GI[1501:1800]
+chunk7 <- gene_key$GI[1801:1933]
+
+upload <- entrez_post(db="omim", id=chunk1)
+upload
+GI_match <- entrez_summary(db = "nucleotide", id =gene_key$GI)
+GI_match$caption
+
+
 
 sigGenes <- sapply(dataFiles,FUN = function(x) subset(x, Empirical_p<0.05 ),simplify = FALSE,USE.NAMES = TRUE)
 sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),simplify = FALSE,USE.NAMES = TRUE)
@@ -193,13 +213,8 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 
 get_nt_fasta(trimeth_sulfameth,"trimeth_sulfameth")
 
-
-
-
 # Want to get a fasta file of the sequences from the CARD output 
 # Need to query these produced fasta files with the contigs from CARD 
-
-
 
 ```
 
@@ -297,23 +312,26 @@ test.fun <- n_genes(tetracycline)
 
 #Script from Kristina Ceres
 
+# Make into a function 
+
 ## read in scoary results and gene presence absence matrix
 # (we already have these)
 # setwd("~/PhD/ecoli_host_adaptation/dog_confirmed_host/")
 # genepa <- read.csv("gene_presence_absence_roary.csv")
 # clavamox <- read.csv("Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv")
 
-# select significant results
-clavamox <- amox_clauv_acid %>% filter(Empirical_p < 0.05 & Bonferroni_p < 0.05) 
-clavamox$log_or <- log10(clavamox$Odds_ratio)
-clavamox_l <- c(clavamox$Gene)
+create_itol_files <- function(abx,fileName,phenoName) {
+  # select significant results
+abx_filt <- abx %>% filter(Empirical_p < 0.05 & Bonferroni_p < 0.05) 
+abx_filt$log_or <- log10(abx_filt$Odds_ratio)
+abx_filt_l <- c(abx_filt$Gene)
 
 # filter gene presence absence matrix to keep only genes significanctly
 # associated with clavamox resistance
-genepa_clavamox <- gene_pres_abs %>% filter(Gene %in% clavamox_l)
-genepa_clavamox_combined <- left_join(genepa_clavamox, clavamox)
-genepa_filtered <- genepa_clavamox[,15:ncol(genepa_clavamox)]
-rownames(genepa_filtered) = genepa_clavamox$Gene
+genepa_abx_filt <- gene_pres_abs %>% filter(Gene %in% abx_filt_l)
+genepa_abx_filt_combined <- left_join(genepa_abx_filt, abx_filt)
+genepa_filtered <- genepa_abx_filt[,15:ncol(genepa_abx_filt)]
+rownames(genepa_filtered) = genepa_abx_filt$Gene
 
 # create matrix to store future ITOL table
 gene_mat <- matrix(NA, nrow=nrow(genepa_filtered), ncol=ncol(genepa_filtered))
@@ -323,7 +341,7 @@ gene_mat <- matrix(NA, nrow=nrow(genepa_filtered), ncol=ncol(genepa_filtered))
 for (r in 1:nrow(genepa_filtered)){
   for (c in 1:ncol(genepa_filtered)){
     if (genepa_filtered[r,c] != ""){
-      gene_mat[r,c]= genepa_clavamox_combined$log_or[r] 
+      gene_mat[r,c]= genepa_abx_filt_combined$log_or[r] 
     } else{
       gene_mat[r,c]= -2#0
     }
@@ -340,8 +358,13 @@ write.table(gene_mat_itol,paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacteria
 
 ## get phenotype data in itol format 
 pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
-pheno <- pheno %>% dplyr::select(X,Amoxicillin.Clavulanic.Acid.INT)
-write.table(pheno, "clavamox_pheno_4itol.txt",quote=F, row.names = F)
+pheno <- pheno %>% dplyr::select(X,phenoName)
+write.table(pheno, paste("pheno_4itol",phenoName,".txt",sep=""),quote=F, row.names = F)
+}
+
+create_itol_files()
+
+ 
 
 ```
 

@@ -53,5 +53,5 @@ write_fasta_out <- function(genepa_comb, path_out){
   sink()
 }
   
-
+write_fasta_out(gene_pres_abs, "ecoli_acc_proteins_out.fasta")
 
