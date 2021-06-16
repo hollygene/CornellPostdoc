@@ -23,52 +23,34 @@ setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_
 dataFiles <- sapply(Sys.glob("./*.csv"), read.csv, simplify = FALSE, USE.NAMES = TRUE)
 
 gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv")
-gene_key <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gi_gene_key_all_acc.csv",header=TRUE)
+
+blastp <- read.table("/Users/hcm59/Box/Holly/Dog_E_coli_project/ecoli_acc_proteins_blastp_accVer_unique.out",header=FALSE)
+colnames(blastp) <- c("qseqid","sseqid","sacc","sgi","qaccver","pident","length","mismatch","gapopen","qstart","qend","sstart","send","evalue","bitscore")
+gene_key <- blastp[,c(1,3)]  
 AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/AMRFinder_known_genes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
+write.csv(gene_key, file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_key_")
+# gene_key <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gi_gene_key_all_acc.csv",header=TRUE)
+
+# read in giant matrix of gene data 
+# gene_data <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv")
 
 
-# test by joining gene key with AMR genes from NCBI 
-# need to make GeneID in gene key lowercase
-key.low <- gene_key %>% mutate(qseqid = tolower(qseqid))
-AMR_genes_NCBI.low <- AMR_genes_NCBI %>% mutate(gene.family = tolower(gene.family))
-test.key <- inner_join(key.low,AMR_genes_NCBI.low,by=c("qseqid"="gene.family"))
-nlevels(as.factor(test.key$GeneID))
-nlevels(as.factor(AMR_genes_NCBI$gene.family))
-##Read files named xyz1111.csv, xyz2222.csv, etc.
-# filenames <- list.files(path="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results", pattern="*.csv")
-# ß
-# ##Create list of data frame names without the ".csv" part 
-# names <- file_path_sans_ext(basename(filenames))
-# 
-# ###Load all files
-# for(i in names){
-#     filepath <- file.path("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Scoary_Results",paste(i,".csv",sep=""))
-#     assign(i, read.delim(filepath,
-#     colClasses="character",
-#     sep = ","))
-# }
-
+# get the refseq protein and refseq nucleotide IDs into a new dataframe by themselves, without the .1
+AMR_genes_NCBI_refseq <- cbind(AMR_genes_NCBI$refseq.protein,AMR_genes_NCBI$refseq.nucleotide)
+class(AMR_genes_NCBI_refseq)
+AMR_genes_NCBI_refseq <- as.data.frame(AMR_genes_NCBI_refseq)
+colnames(AMR_genes_NCBI_refseq) <- c("refSeqProt","refSeqNuc")
+AMR_genes_NCBI_refSeqProt <- substr(AMR_genes_NCBI_refseq$refSeqProt, 1, regexpr("\\.", AMR_genes_NCBI_refseq$refSeqProt)-1)
+AMR_genes_NCBI_refSeqNuc <- substr(AMR_genes_NCBI_refseq$refSeqNuc, 1, regexpr("\\.", AMR_genes_NCBI_refseq$refSeqNuc)-1)
+AMR_genes_NCBI_refseq_clean <- cbind(AMR_genes_NCBI_refSeqProt,AMR_genes_NCBI_refSeqNuc)
+class(AMR_genes_NCBI_refseq_clean)
+AMR_genes_NCBI_refseq_clean <- as.data.frame(AMR_genes_NCBI_refseq_clean)
 
 ```
 
 ```{r quantify_data, include=TRUE}
 
 # annotate the scoary output with genbank ids 
-library(rentrez)
-
-# have to break up into chunks of 300 
-chunk1 <- gene_key$GI[1:300]
-chunk2 <- gene_key$GI[301:600]
-chunk3 <- gene_key$GI[601:900]
-chunk4 <- gene_key$GI[901:1200]
-chunk5 <- gene_key$GI[1201:1500]
-chunk6 <- gene_key$GI[1501:1800]
-chunk7 <- gene_key$GI[1801:1933]
-
-upload <- entrez_post(db="omim", id=chunk1)
-upload
-GI_match <- entrez_summary(db = "nucleotide", id =gene_key$GI)
-GI_match$caption
 
 
 
@@ -124,32 +106,32 @@ trimeth_sulfameth <- sigResistAssoc$`./Trimethoprim.Sulfamethoxazole.INT_15_04_2
 
 
 # first need to combine our scoary results with the gene_key
-amikacin_anno <- inner_join(gene_key,amikacin,by=c("Query"="Gene"))
+amikacin_anno <- inner_join(gene_key,amikacin,by=c("qseqid"="Gene"))
 # what is missing?
-# amikacin_anno.missing <- anti_join(amikacin_anno,gene_key,by=c("Gene"="PanGene"))
-# discrepancy is genes that are core genes not accessory - these are omitted from the gene_key and therefore do not show up in the output here 
+amikacin_anno.missing <- anti_join(amikacin,amikacin_anno,by=c("Gene"="qseqid"))
+# discrepancy is genes that are core genes not accessory - these are omitted from the gene_key and therefore do not show up in the output here
 # did we find any novel genes?
 # probelm: case sensitivity
-amikacin.low <- amikacin_anno %>% mutate(GeneID = tolower(GeneID))
-# let's try this again 
+# amikacin.low <- amikacin_anno %>% mutate(GeneID = tolower(GeneID))
+# let's try this again
 # anti-join: are there any novel genes
-amikacin_novel <- anti_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
-# inner-join: are there any known genes 
-amikacin_known <- inner_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+# amikacin_novel <- anti_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+# inner-join: are there any known genes
+# amikacin_known <- inner_join(amikacin.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
 
 
-n_genes <- function(x) {
- x.anno <- inner_join(x,gene_key,by=c("Gene"="Query"))
- x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
- x.novel <- anti_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
- x.known <- inner_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
- n.novel <- nrow(x.novel)
- n.known <- nrow(x.known)
- n <- list(x.novel,x.known)
- return(n)
-}
-
-test.fun <- n_genes(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`)
+# n_genes <- function(x) {
+#  x.anno <- inner_join(x,gene_key,by=c("Gene"="Query"))
+#  x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
+#  x.novel <- anti_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+#  x.known <- inner_join(x.low, AMR_genes_NCBI.low,by=c("GeneID" = "gene.family"))
+#  n.novel <- nrow(x.novel)
+#  n.known <- nrow(x.known)
+#  n <- list(x.novel,x.known)
+#  return(n)
+# }
+# 
+# test.fun <- n_genes(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`)
 
 #loop over dataSig 
 
@@ -211,7 +193,8 @@ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ g
 } 
 
 
-get_nt_fasta(trimeth_sulfameth,"trimeth_sulfameth")
+# get_nt_fasta(sigResistAssocBonf$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`,"clavamox")
+
 
 # Want to get a fasta file of the sequences from the CARD output 
 # Need to query these produced fasta files with the contigs from CARD 
@@ -285,25 +268,26 @@ nlevels(as.factor(all_dogs$Isolate))
 all_dogs_AMRFinder <- all_dogs
 #make all gene names lowercase for ease of comparison 
 all_dogs_AMRFinder.low <- all_dogs_AMRFinder %>% mutate(Gene = tolower(Gene))
+amikacin.low <- amikacin %>% mutate(Gene= tolower(Gene))
 # inner join with Gene = GeneID
-amk_amrF <- inner_join(amikacin.low,all_dogs_AMRFinder.low,by=c("GeneID"="Gene"))
-clavamox_amrF <- inner_join(amox_clauv_acid,all_dogs_AMRFinder.low,by=c("GeneID"="Gene"))
+amk_amrF <- inner_join(amikacin.low,all_dogs_AMRFinder.low,by=c("Gene"="Gene"))
+clavamox_amrF <- inner_join(amox_clauv_acid,all_dogs_AMRFinder.low,by=c("Gene"="Gene"))
 
 x=amikacin
-n_genes <- function(x) {
- x.anno <- inner_join(x,key.low,by=c("Gene"="Query"))
- x.missing <- anti_join(x,key.low,by=c("Gene"="Query"))
- x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
- # x.novel <- anti_join(x.low, all_dogs_AMRFinder.low,by=c("GeneID" = "Gene"))
- known.1 <- grepl(all_dogs_AMRFinder.low$Gene, x.low$Gene)
- known.2 <- grepl(all_dogs_AMRFinder.low, x$Query)
- # n.novel <- nrow(x.novel)
- n.known <- nrow(x.known)
- # n <- list(x.novel,x.known)
- return(n.known)
-}
-
-test.fun <- n_genes(tetracycline)
+# # n_genes <- function(x) {
+#  x.anno <- inner_join(x,key.low,by=c("Gene"="qseqid"))
+#  x.missing <- anti_join(x,key.low,by=c("Gene"="Query"))
+#  x.low <- x.anno %>% mutate(GeneID = tolower(GeneID))
+#  # x.novel <- anti_join(x.low, all_dogs_AMRFinder.low,by=c("GeneID" = "Gene"))
+#  known.1 <- grepl(all_dogs_AMRFinder.low$Gene, x.low$Gene)
+#  known.2 <- grepl(all_dogs_AMRFinder.low, x$Query)
+#  # n.novel <- nrow(x.novel)
+#  n.known <- nrow(x.known)
+#  # n <- list(x.novel,x.known)
+#  return(n.known)
+# }
+# 
+# # test.fun <- n_genes(tetracycline)
 
 
 ```
@@ -320,6 +304,10 @@ test.fun <- n_genes(tetracycline)
 # genepa <- read.csv("gene_presence_absence_roary.csv")
 # clavamox <- read.csv("Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv")
 
+setwd("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/")
+abx=amp
+fileName="amikacin"
+phenoName="Amikacin.INT"
 create_itol_files <- function(abx,fileName,phenoName) {
   # select significant results
 abx_filt <- abx %>% filter(Empirical_p < 0.05 & Bonferroni_p < 0.05) 
@@ -354,20 +342,96 @@ rownames(gene_mat) = rownames(genepa_filtered)
 gene_mat_itol <- t(gene_mat)
 
 # write out table for ITOL 
-write.table(gene_mat_itol,paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/Scoary_Results/",name,".txt",sep=""), quote=F)
+write.table(gene_mat_itol,paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/Scoary_Results/gene_mat_itol",fileName,".txt",sep=""), quote=F)
 
 ## get phenotype data in itol format 
 pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
-pheno <- pheno %>% dplyr::select(X,phenoName)
-write.table(pheno, paste("pheno_4itol",phenoName,".txt",sep=""),quote=F, row.names = F)
+pheno <- pheno %>% dplyr::select(X,all_of(phenoName))
+write.table(pheno, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/pheno_4itol",fileName,".txt",sep=""),quote=F, row.names = F)
 }
 
-create_itol_files()
+create_itol_files(trimeth_sulfameth,"trimeth_sulfameth","Trimethoprim.Sulfamethoxazole.INT")
 
  
 
+
+
+create_itol_files_emp_p <- function(abx,fileName,phenoName) {
+  # select significant results
+abx_filt <- abx %>% filter(Empirical_p < 0.05 & Bonferroni_p < 0.05) 
+abx_filt$log_or <- log10(abx_filt$Odds_ratio)
+abx_filt_l <- c(abx_filt$Gene)
+
+# filter gene presence absence matrix to keep only genes significanctly
+# associated with clavamox resistance
+genepa_abx_filt <- gene_pres_abs %>% filter(Gene %in% abx_filt_l)
+genepa_abx_filt_combined <- left_join(genepa_abx_filt, abx_filt)
+genepa_filtered <- genepa_abx_filt[,15:ncol(genepa_abx_filt)]
+rownames(genepa_filtered) = genepa_abx_filt$Gene
+
+# create matrix to store future ITOL table
+gene_mat <- matrix(NA, nrow=nrow(genepa_filtered), ncol=ncol(genepa_filtered))
+
+# populate matrix with log odds ratio if gene is present, 
+# -2 if gene is absent (-2 chosen to aid in coloring on ITOL scale)
+for (r in 1:nrow(genepa_filtered)){
+  for (c in 1:ncol(genepa_filtered)){
+    if (genepa_filtered[r,c] != ""){
+      gene_mat[r,c]= genepa_abx_filt_combined$Empirical_p[r] 
+    } else{
+      gene_mat[r,c]= 0#0
+    }
+  }
+}
+
+colnames(gene_mat) = colnames(genepa_filtered)
+rownames(gene_mat) = rownames(genepa_filtered)
+
+gene_mat_itol <- t(gene_mat)
+
+# write out table for ITOL 
+write.table(gene_mat_itol,paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/Scoary_Results/gene_mat_itol",fileName,".txt",sep=""), quote=F)
+
+## get phenotype data in itol format 
+pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+pheno <- pheno %>% dplyr::select(X,all_of(phenoName))
+write.table(pheno, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/pheno_4itol",fileName,".txt",sep=""),quote=F, row.names = F)
+}
+
+create_itol_files_emp_p(prado,"prado_emp_p","Pradofloxacin.INT")
+
+pradoGenes <- prado$Gene
+write.table(prado,"/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/prado.txt")
+prado.fixed <- read.table("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/prado.txt",header=TRUE)
+sigGenesPrado <- pradoGenes %in% gene_key$qseqid
+
+
 ```
 
+```{r ggTree, include=TRUE}
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# 
+# BiocManager::install("treeio")
+library(treeio)
+
+dogTree <- read.tree("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_gb_snp_sites.fasta.treefile")
+
+dogTreePhy <- as.phylo(dogTree)
+
+library(ape)
+x <- as_tibble(dogTree)
+x
+
+
+pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+
+y <- full_join(x, pheno, by =c("label"="X"))
+y
+
+as.treedata(y)
+
+```
 
 ```{r scoaryPlots,include=TRUE}
 # from https://github.com/cimendes/scoaryPlots
@@ -470,7 +534,6 @@ if (length(row.names(subset.absent)) != 0){
 
 ```
 
-
 ```{r GO analysis, include=TRUE}
 # Get gene names from each abx 
 # Use gene key and inner_join 
@@ -498,15 +561,111 @@ get_genes(amikacin,"amikacin")
 
 
 ```
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r heatmap, include=TRUE,echo=FALSE}
+# get giant matrix of all sig (emp p < 0.05) assoc genes for all abx
+# annotate each abx with its name 
+amikacin["Abx"] <- "amikacin"
+amp["Abx"] <- "ampicillin"
+amox_clauv_acid["Abx"] <- "amox_clauv_acid"
+cefalexin.comb["Abx"] <- "cefalexin"
+cefazolin["Abx"] <- "cefazolin"
+cefovecin["Abx"] <- "cefovecin"
+cefpodoxime["Abx"] <- "cefpodoxime"
+ceftazidime["Abx"] <- "ceftazidime"
+chloram["Abx"] <- "chloramphenicol"
+doxy["Abx"] <- "doxycycline"
+enro["Abx"] <- "enrofloxacin"
+gentamicin["Abx"] <- "gentamicin"
+imipenem["Abx"] <- "imipenem"
+marbo["Abx"] <- "marbofloxacin"
+orbi["Abx"] <- "orbifloxacin"
+pipTazo["Abx"] <- "pipTazo"
+prado["Abx"] <- "prado"
+tetracycline["Abx"] <- "tetracycline"
+trimeth_sulfameth["Abx"] <- "trimeth_sulfameth"
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+giantMatrixAllAbxSig <- rbind(amikacin,amp,amox_clauv_acid,cefalexin.comb,cefazolin,cefpodoxime,chloram,doxy,enro,gentamicin,imipenem,marbo,orbi,pipTazo,tetracycline,trimeth_sulfameth)
+# further break it down to bonferonni p < 0.05 
+giantMatrixAllAbxSigEmpBonf <- subset(giantMatrixAllAbxSig, Bonferroni_p<0.05) #, simplify = FALSE,USE.NAMES = TRUE)
 
-```{r cars}
-summary(cars)
+# extract out only the columns we're interested in (can always get the others later)
+giantMatrixAllAbxSigEmpBonfSml <- giantMatrixAllAbxSigEmpBonf[,c(1,3,10,12,19,20)]
+as.factor(giantMatrixAllAbxSigEmpBonfSml$Gene)
+nlevels(as.factor(giantMatrixAllAbxSigEmpBonfSml$Gene))
+
+
+# want a new column with the number of times that gene is seen in the entire dataset
+library(dplyr)
+giantMatrixAllAbxSigEmpBonfSmlCount <- giantMatrixAllAbxSigEmpBonfSml %>% group_by(Gene) %>% mutate(Count=n_distinct(Abx))
+# yay! This is exactly what I want! 
+
+library(ggplot2)
+library(viridis)
+heatmap <- ggplot(giantMatrixAllAbxSigEmpBonfSmlCount, aes(x = Abx, Gene)) +
+  geom_tile(aes(fill = Count)) + theme_classic() + theme(axis.text.y = element_text(size = 2),axis.text.x = element_text(angle=45,vjust=0.5,size = 8)) # + scale_fill_viridis(option="magma",direction=-1)
+
+
+pdf("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/Visualizations/heatmap1.pdf")
+heatmap
+dev.off()
+
+
+
+# Okay let's try pheatmap now, because it allows us to cluster things and also makes way prettier heatmaps :) 
+library(pheatmap)
+ 
+# need to convert data into a numerical matrix 
+# with abx as column names, and genes as row names, counts as the numerical values
+#get just these columns out 
+
+# try hierarchical clustering manually first 
+# using Odds ratio and/or empirical p value 
+str(giantMatrixAllAbxSigEmpBonfSmlCount)
+clusters <- hclust(dist(giantMatrixAllAbxSigEmpBonfSmlCount[, 1,3]))
+
+ecoliMatrix <- giantMatrixAllAbxSigEmpBonfSmlCount[,c(1,2,6,7)]
+
+library(tidyr)
+# The arguments to spread():
+# - data: Data object
+# - key: Name of column containing the new column names
+# - value: Name of column containing values
+library(reshape2)
+
+data_wide <- dcast(ecoliMatrix, Gene + Annotation ~ Abx, value.var="Count")
+data_wide
+
+
+heatmap_data <- data_wide[,c(1,3:18)]
+str(heatmap_data)
+typeof(heatmap_data)
+heatmap_data <- as.data.frame(heatmap_data)
+typeof(heatmap_data)
+heatmap_data_num <- heatmap_data %>% as.numeric(heatmap_data[,c(2:17)])
+pheatmap(heatmap_data,main = "pheatmap default",cluster_rows = F, cluster_cols = F)
+
+# now that we have that in order, let's actually go in and manually add in our annotations 
+library(DataEditR)
+data_wideAnno <- data_edit(data_wide,save_as = "ecoliMatrixWide_anno.txt",code="wideMatrixAnno.R")
+data_edit(data_wide, )
+
+testHeatmap <- pheatmap(data_wide, 
+         color = diverging_hcl(7,palette = "Blue-Red 2"),
+         annotation_col= my_sample_col,
+         annotation_colors = ann_colors,
+         cluster_rows = FALSE,
+         gaps_row = head(as.numeric(cumsum(gaps)),-1), 
+         cutree_cols = 3,
+         fontsize = 5,
+         fontsize_col = 8,
+         show_rownames = FALSE
+         )
+
+
 ```
+
+
 
 ## Including Plots
 

@@ -1,8 +1,8 @@
 
 
-raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling"
+raw_data="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/fastqs"
 unmapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams"
-ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333_DNA.fasta"
+ref_genome="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/CP023367_E_coli_strain_1428_complete_genome.fasta"
 output_directory="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/Output"
 mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 
@@ -12,20 +12,20 @@ mapped_bams="/workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/mapped_bams"
 # create a uBAM file
 #######################################################################################
 
-# for file in ${raw_data}/*_1.fastq
-#
-# do
-#
-# FBASE=$(basename $file _1.fastq)
-# BASE=${FBASE%_1.fastq}
-# java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
-#     FASTQ=${raw_data}/${BASE}_1.fastq \
-#     FASTQ2=${raw_data}/${BASE}_1.fastq  \
-#     OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
-#     READ_GROUP_NAME=${BASE} \
-#     SAMPLE_NAME=${BASE}
-#
-# done
+for file in ${raw_data}/*_1.fastq
+
+do
+
+FBASE=$(basename $file _1.fastq)
+BASE=${FBASE%_1.fastq}
+java -jar /programs/picard-tools-2.19.2/picard.jar FastqToSam \
+    FASTQ=${raw_data}/${BASE}_1.fastq \
+    FASTQ2=${raw_data}/${BASE}_2.fastq  \
+    OUTPUT=${unmapped_bams}/${BASE}_fastqtosam.bam \
+    READ_GROUP_NAME=${BASE} \
+    SAMPLE_NAME=${BASE}
+
+done
 
 
 

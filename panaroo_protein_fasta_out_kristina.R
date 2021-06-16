@@ -1,8 +1,7 @@
 # file usage in R:
 # code below outputs one protein sequence for each accessory gene 
 # source("panaroo_protein_fasta_out.R")
-# g<- get_prot_seq("gene_data.csv","gene_presence_absence_roary.csv",T)
-# write_fasta_out(g, "ecoli_acc_proteins_out.fasta")
+
 
 
 library(dplyr)
@@ -53,5 +52,5 @@ write_fasta_out <- function(genepa_comb, path_out){
   sink()
 }
   
-write_fasta_out(gene_pres_abs, "ecoli_acc_proteins_out.fasta")
-
+g<- get_prot_seq("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv","/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv",F)
+write_fasta_out(g, "/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/ecoli_all_proteins_out.fasta")
