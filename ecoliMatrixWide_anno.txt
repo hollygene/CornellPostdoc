@@ -1,0 +1,734 @@
+"","Gene","Annotation","amox_clauv_acid","ampicillin","cefalexin","cefazolin","cefovecin","cefpodoxime","ceftazidime","chloramphenicol","doxycycline","enrofloxacin","gentamicin","marbofloxacin","orbifloxacin","prado","tetracycline","trimeth_sulfameth"
+"aac3","aac3","aminoglycoside 3-N-acetyltransferase;aminoglycoside N-acetyltransferase AAC(3)-IId",NA,6,NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,NA,6,6
+"aadA~~~aadA1","aadA~~~aadA1","AadA family aminoglycoside 3''-O-nucleotidyltransferase;ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA1",NA,NA,NA,4,NA,4,NA,4,NA,NA,NA,NA,NA,NA,NA,4
+"aadA1","aadA1","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA1",NA,NA,NA,4,NA,NA,NA,4,4,NA,NA,NA,NA,NA,NA,4
+"aadA3","aadA3","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA22;ANT(3'') family aminoglycoside nucleotidyltransferase;ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA3;ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2",NA,NA,NA,NA,NA,NA,NA,4,4,NA,NA,NA,NA,NA,4,4
+"ampC","ampC","CMY2/MIR/ACT/EC family class C beta-lactamase;beta-lactamase;serine hydrolase",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"aph6I","aph6I","hypothetical protein;APH(6)-I family aminoglycoside O-phosphotransferase;aminoglycoside O-phosphotransferase APH(6)-Id",NA,6,NA,NA,NA,NA,NA,6,6,NA,NA,6,NA,NA,6,6
+"cas1e","cas1e","CRISPR-associated protein Cas1;type I-E CRISPR-associated endonuclease Cas1",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"cas2","cas2","type I-E CRISPR-associated endoribonuclease Cas2",NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA,2
+"cas3","cas3","CRISPR-associated helicase Cas3';CRISPR-associated helicase/endonuclease Cas3;CRISPR-associated endonuclease Cas3''",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"cas6e","cas6e","type I-E CRISPR-associated protein Cas6/Cse3/CasE",NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA
+"ccdB","ccdB","plasmid maintenance protein CcdB;cytotoxin;type II toxin-antitoxin system toxin CcdB",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"chrA","chrA","chromate efflux transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"cpsG","cpsG","phosphomannomutase;phosphomannomutase CpsG",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"crcB","crcB","fluoride efflux transporter CrcB",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"dfrA12","dfrA12","trimethoprim-resistant dihydrofolate reductase DfrA12",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"djlC","djlC","J domain-containing protein;co-chaperone DjlC;hypothetical protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"dsdA","dsdA","D-serine ammonia-lyase",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,NA,4
+"elaD","elaD","deubiquitinase;protease elaD;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"eno","eno","phosphopyruvate hydratase;enolase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"espX5~~~yjcF","espX5~~~yjcF","pentapeptide repeat-containing protein;T3SS effector pentapeptide repeat protein EspX5;pentapeptide repeat protein YjcF;hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"fdnG","fdnG","formate dehydrogenase-N subunit alpha",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA
+"floR","floR","chloramphenicol/florfenicol efflux MFS transporter FloR",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"frlA","frlA","fructoselysine/psicoselysine transporter",NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,3,NA,NA,NA,NA
+"frlB","frlB","fructoselysine 6-phosphate deglycase",NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,3,NA,NA,NA,NA
+"frlC","frlC","fructoselysine 3-epimerase",NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,3,NA,NA,NA,NA
+"frlD","frlD","fructoselysine 6-kinase",NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,3,NA,NA,NA,NA
+"group_10099","group_10099","O-antigen ligase family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1010","group_1010","hypothetical protein;pilus protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10124","group_10124","IS66 family transposase;IS66-like element ISEc8 family transposase",NA,NA,NA,NA,NA,2,NA,NA,NA,2,NA,NA,NA,NA,NA,NA
+"group_1014","group_1014","hypothetical protein",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1015","group_1015","antirestriction protein ArdA",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10181","group_10181","PilN family type IVB pilus formation outer membrane protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10211","group_10211","LysR family transcriptional regulator;DNA-binding transcriptional regulator;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_10218","group_10218","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_10282","group_10282","lipoprotein bor;increased serum survival lipoprotein Iss",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_10284","group_10284","6-phospho-alpha-glucosidase;inactive 6-phospho-alpha-glucosidase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_10295","group_10295","tail fiber assembly protein;phage tail protein",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10334","group_10334","replication regulatory protein RepA",NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10348","group_10348","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_10356","group_10356","type I toxin-antitoxin system toxin Ldr family protein;small toxic polypeptide LdrA/LdrC;small toxic polypeptide LdrB",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_10385","group_10385","helix-turn-helix domain-containing protein;transposase;IS200/IS605 family element transposase accessory protein TnpB",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10428","group_10428","hypothetical protein",NA,NA,NA,7,NA,7,NA,7,7,NA,NA,7,NA,NA,7,7
+"group_10432","group_10432","hypothetical protein;DNA-binding protein",NA,NA,NA,5,NA,NA,NA,NA,NA,5,NA,5,5,NA,NA,5
+"group_1045","group_1045","conjugation system SOS inhibitor PsiB",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1046","group_1046","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10461","group_10461","site-specific integrase;tyrosine-type recombinase/integrase",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,NA,5,5
+"group_10476","group_10476","hypothetical protein;DUF3363 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,4,4,NA,NA,NA,NA,NA,4,4
+"group_10500","group_10500","DeoR family transcriptional regulator",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10554","group_10554","phosphatase PAP2 family protein",NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,6,6,NA,6,NA
+"group_10557","group_10557","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_10594","group_10594","DUF2773 domain-containing bactofilin;DUF2773 domain-containing protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10598","group_10598","5-carboxymethyl-2-hydroxymuconate Delta-isomerase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_10621","group_10621","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_10640","group_10640","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_10684","group_10684","TrmB family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_10710","group_10710","type I-E CRISPR-associated protein Cas7/Cse4/CasC",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1078","group_1078","hypothetical protein;type III secretion protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10787","group_10787","hypothetical protein",NA,NA,NA,3,NA,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10802","group_10802","HEAT repeat domain-containing protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_10815","group_10815","DUF1440 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,2,NA,NA
+"group_10891","group_10891","phage portal protein",NA,NA,NA,5,NA,5,NA,NA,NA,5,NA,5,5,NA,NA,NA
+"group_1099","group_1099","hypothetical protein;threonine-rich inner membrane protein GfcA",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA
+"group_1112","group_1112","histidine kinase;EscU/YscU/HrcU family type III secretion system export apparatus switch protein;flagellar biosynthesis protein FlhB;hypothetical protein;flhB HrpN YscU SpaS family protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1164","group_1164","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_11686","group_11686","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1169","group_1169","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1171","group_1171","neurotensin receptor R8",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2
+"group_11751","group_11751","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_11753","group_11753","conjugal transfer protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_11754","group_11754","radical SAM protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_11756","group_11756","AlpA family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_11757","group_11757","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1181","group_1181","type-F conjugative transfer system protein TraW;conjugal transfer protein TraW;hypothetical protein",NA,3,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"group_1183","group_1183","conjugal transfer protein TraA",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_11973","group_11973","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_11978","group_11978","relaxase/mobilization nuclease domain-containing protein;relaxase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_11980","group_11980","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1215","group_1215","shufflon protein B;shufflon protein D'",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1234","group_1234","LuxR family transcriptional regulator;invasion protein",7,NA,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1237","group_1237","trimethoprim-resistant dihydrofolate reductase DfrA15;trimethoprim-resistant dihydrofolate reductase DfrA7;trimethoprim-resistant dihydrofolate reductase DfrA5;trimethoprim-resistant dihydrofolate reductase DfrA14;trimethoprim-resistant dihydrofolate reductase DfrA1;trimethoprim-resistant dihydrofolate reductase DfrA17",NA,8,NA,NA,NA,NA,NA,NA,8,8,8,8,8,NA,8,8
+"group_1248","group_1248","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1249","group_1249","DUF1327 domain-containing protein;YdfR family protein;hypothetical protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1331","group_1331","quaternary ammonium compound efflux SMR transporter QacL;EamA family transporter",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,6,NA,NA,NA
+"group_13341","group_13341","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13342","group_13342","radical SAM protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13343","group_13343","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13344","group_13344","competence CoiA-like family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13345","group_13345","site-specific DNA-methyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13346","group_13346","shufflon system plasmid conjugative transfer pilus tip adhesin PilV",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13348","group_13348","lysis protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_13349","group_13349","alpha/beta hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1352","group_1352","antitermination protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,4,NA
+"group_13814","group_13814","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_1401","group_1401","DUF3596 domain-containing protein;site-specific integrase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_1408","group_1408","epoxyqueuosine reductase QueH",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_14135","group_14135","HNH endonuclease",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_1425","group_1425","replication initiation protein",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1437","group_1437","bifunctional siderophore receptor/adhesin Iha",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_1462","group_1462","trimethoprim-resistant dihydrofolate reductase DfrA7;trimethoprim-resistant dihydrofolate reductase DfrA5;trimethoprim-resistant dihydrofolate reductase DfrA14;trimethoprim-resistant dihydrofolate reductase DfrA15;trimethoprim-resistant dihydrofolate reductase DfrA1;trimethoprim-resistant dihydrofolate reductase DfrA17",NA,NA,NA,NA,NA,NA,NA,NA,6,6,NA,6,6,NA,6,6
+"group_1463","group_1463","hypothetical protein;DUF262 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,3,NA,NA,NA,NA
+"group_1466","group_1466","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_1469","group_1469","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,2,NA,NA,NA
+"group_1475","group_1475","transcription termination factor NusG;conjugal transfer protein TraB",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_148","group_148","invasion protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1509","group_1509","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA
+"group_1511","group_1511","ArgR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_1514","group_1514","hypothetical protein;IS1380 family transposase;IS1380-like element ISEc9 family transposase",13,13,13,13,13,13,13,NA,13,13,13,13,NA,13,13,NA
+"group_1520","group_1520","surface exclusion protein;entry exclusion protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_15598","group_15598","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_15599","group_15599","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_15601","group_15601","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_15602","group_15602","DNA-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1569","group_1569","BCCT family transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,5,5
+"group_1573","group_1573","fimbrial protein;long polar fimbria major subunit LpfA-O113",NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1574","group_1574","fimbrial protein",NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1575","group_1575","type IV conjugative transfer system pilin TraA;pilin",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_1576","group_1576","pili assembly chaperone",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16249","group_16249","IS21-like element ISEc12 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,2
+"group_16250","group_16250","ATP-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,2
+"group_1626","group_1626","DUF945 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16327","group_16327","EamA family transporter;hypothetical protein",NA,NA,NA,NA,NA,6,NA,NA,6,6,NA,6,NA,NA,6,6
+"group_16328","group_16328","tetracycline efflux MFS transporter Tet(A)",NA,NA,NA,NA,NA,NA,NA,NA,4,NA,NA,4,NA,NA,4,4
+"group_16330","group_16330","hypothetical protein;DUF3363 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,4,4,NA,NA,NA,NA,NA,4,4
+"group_16331","group_16331","cysteine hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16332","group_16332","sulfonamide-resistant dihydropteroate synthase Sul2",NA,8,NA,NA,NA,NA,NA,8,8,8,8,8,NA,NA,8,8
+"group_16333","group_16333","APH(6)-I family aminoglycoside O-phosphotransferase;hypothetical protein;aminoglycoside O-phosphotransferase APH(6)-Id",NA,6,NA,NA,NA,NA,NA,6,6,NA,NA,6,NA,NA,6,6
+"group_16334","group_16334","relaxase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,NA,NA,3,NA
+"group_16335","group_16335","tetracycline resistance transcriptional repressor TetR(A);TetR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,5,5,NA,5,NA,NA,5,5
+"group_16337","group_16337","transcriptional regulator",NA,7,NA,NA,NA,NA,NA,7,7,7,NA,7,NA,NA,7,7
+"group_16338","group_16338","phosphotransferase;aminoglycoside phosphotransferase APH(3');aminoglycoside O-phosphotransferase APH(3'')-Ib",NA,7,NA,NA,NA,NA,NA,7,7,NA,7,7,NA,NA,7,7
+"group_16339","group_16339","hypothetical protein;replication protein C;replication protein",NA,NA,NA,NA,NA,NA,NA,NA,5,5,NA,5,NA,NA,5,5
+"group_16340","group_16340","oxacillin-hydrolyzing class D beta-lactamase OXA-1",NA,NA,NA,NA,6,6,NA,NA,NA,6,6,6,6,NA,NA,NA
+"group_16341","group_16341","fluoroquinolone-acetylating aminoglycoside 6'-N-acetyltransferase AAC(6')-Ib-cr5",NA,NA,NA,NA,6,6,NA,NA,NA,6,6,6,6,NA,NA,NA
+"group_16353","group_16353","plasmid transfer ATPase TraJ",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16354","group_16354","conjugal transfer protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16355","group_16355","hypothetical protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16356","group_16356","histidine phosphatase family protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16361","group_16361","phospholipase D family protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16362","group_16362","conjugal transfer protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16363","group_16363","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16373","group_16373","LysR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16374","group_16374","chloramphenicol/florfenicol efflux MFS transporter FloR",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16375","group_16375","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16376","group_16376","aminoglycoside N-acetyltransferase AAC(3)-IId",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,NA,NA,3
+"group_16377","group_16377","AAA family ATPase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16378","group_16378","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16379","group_16379","tunicamycin resistance protein;AAA family ATPase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,2,NA
+"group_16380","group_16380","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16381","group_16381","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16382","group_16382","DUF3883 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16383","group_16383","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16384","group_16384","DUF3883 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_164","group_164","IS6-like element IS6100 family transposase;hypothetical protein;DDE-type integrase/transposase/recombinase;IS6 family transposase;IS6-like element IS26 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,2
+"group_16451","group_16451","hypothetical protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16452","group_16452","hypothetical protein;IS91 family transposase;transposase",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16454","group_16454","tetracycline efflux MFS transporter Tet(B)",NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,NA,4,NA
+"group_16455","group_16455","TetR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,NA,4,NA
+"group_16456","group_16456","TetR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,NA,4,NA
+"group_16457","group_16457","ArsR family transcriptional regulator;winged helix-turn-helix transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16458","group_16458","ArsR family transcriptional regulator;winged helix-turn-helix transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,5,5,NA,5,5,NA,5,NA
+"group_16459","group_16459","antibiotic biosynthesis monooxygenase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16460","group_16460","amino acid-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16461","group_16461","LysR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16462","group_16462","sodium/glutamate symporter",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16463","group_16463","amino acid-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16464","group_16464","sodium/glutamate symporter",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16465","group_16465","AraC family transcriptional regulator;transposase;helix-turn-helix domain-containing protein",NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,5,NA,NA,5,NA
+"group_16466","group_16466","antibiotic biosynthesis monooxygenase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16467","group_16467","sodium/glutamate symporter;lipopolysaccharide core heptose(II) kinase RfaY",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16468","group_16468","IS4 family transposase;IS4-like element ISVsa5 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"group_16469","group_16469","tetracyline resistance-associated transcriptional repressor TetC;transposase",NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,NA,4,NA
+"group_16470","group_16470","AraC family transcriptional regulator;transposase;helix-turn-helix domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,5,5,NA,5,5,NA,5,NA
+"group_16471","group_16471","LysR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16516","group_16516","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16519","group_16519","aminoglycoside O-phosphotransferase APH(3')-Ia",5,NA,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"group_16530","group_16530","GNAT family N-acetyltransferase",NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,6,NA,NA,6,6
+"group_16531","group_16531","type A-1 chloramphenicol O-acetyltransferase",NA,NA,NA,NA,NA,NA,NA,7,7,7,NA,7,7,NA,7,7
+"group_16565","group_16565","hypothetical protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16566","group_16566","DUF3927 domain-containing protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_16660","group_16660","flippase;oligosaccharide flippase family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_16678","group_16678","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16728","group_16728","abortive phage infection protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,NA,4
+"group_16770","group_16770","DUF4756 family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16802","group_16802","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_16948","group_16948","IS4-like element ISVsa5 family transposase;IS4 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_16958","group_16958","transposase family protein;transposase;DDE-type integrase/transposase/recombinase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_16959","group_16959","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA1;aminoglycoside nucleotidyltransferase",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1710","group_1710","conjugal transfer protein TraR",NA,NA,NA,NA,NA,NA,NA,4,4,NA,NA,4,4,NA,NA,NA
+"group_1719","group_1719","DUF905 domain-containing protein",NA,3,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,3,NA,NA,NA
+"group_17272","group_17272","hypothetical protein;IS6-like element IS26 family transposase",NA,4,NA,NA,NA,NA,NA,NA,4,NA,NA,NA,NA,NA,4,4
+"group_17282","group_17282","DEAD/DEAH box helicase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17291","group_17291","SLATT domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_17340","group_17340","IS5 family transposase;IS5-like element IS903 family transposase;transposase;IS5-like element IS903B family transposase",NA,NA,NA,4,NA,4,NA,NA,NA,NA,NA,NA,NA,NA,4,4
+"group_17342","group_17342","prepilin-type N-terminal cleavage/methylation domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17356","group_17356","conjugal transfer protein TraD",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_17357","group_17357","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17375","group_17375","IS1 family transposase;IS1-like element IS1A family transposase;IS1-like element IS1B family transposase",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,3,NA
+"group_17382","group_17382","IS1 family transposase;IS1-like element IS1B family transposase;IS1-like element IS1A family transposase",NA,4,NA,NA,NA,NA,NA,NA,4,NA,NA,4,NA,NA,4,NA
+"group_17386","group_17386","reverse transcriptase;RNA-directed DNA polymerase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_17408","group_17408","IS6-like element IS26 family transposase;IS6-like element IS1006 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,4,NA
+"group_17465","group_17465","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_17466","group_17466","replication protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_17477","group_17477","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17478","group_17478","helix-turn-helix transcriptional regulator;XRE family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17479","group_17479","DNA-directed RNA polymerase subunit beta;lipoprotein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_17480","group_17480","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_1758","group_1758","molecular chaperone HscC;Hsp70 family protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1835","group_1835","enterotoxin",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_1864","group_1864","transporter;MHS family MFS transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_1889","group_1889","type IV secretion system protein TraC;hypothetical protein;conjugal transfer protein TraC",NA,NA,NA,8,8,8,NA,8,8,NA,NA,8,8,NA,8,NA
+"group_1924","group_1924","RepB family plasmid replication initiator protein",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,NA,5,5
+"group_1925","group_1925","transcriptional regulator;serine/threonine protein kinase",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,NA,5,5
+"group_1995","group_1995","methyltransferase domain-containing protein",NA,NA,NA,NA,NA,3,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"group_1998","group_1998","glycosyltransferase family 1 protein;glycosyltransferase family 4 protein",NA,NA,NA,7,NA,NA,NA,7,7,7,NA,7,7,NA,7,NA
+"group_2000","group_2000","hypothetical protein;iraD leader peptide",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_2018","group_2018","plasmid SOS inhibition protein A",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_203","group_203","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_2042","group_2042","DUF1281 domain-containing protein;aerotaxis sensor receptor flavoprotein;DUF4113 domain-containing protein;hypothetical protein",NA,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,7
+"group_2048","group_2048","exclusion-determining protein;ethanolamine utilization protein EutE;ethanolamine utilization protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2049","group_2049","colicin;colicin-Ia;hypothetical protein;colicin transporter;colicin Ia family protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2069","group_2069","peptidoglycan-binding protein;lytic transglycosylase domain-containing protein;transglycosylase SLT domain-containing protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2102","group_2102","fimbrial-like protein",NA,NA,NA,NA,NA,NA,NA,NA,5,5,NA,5,5,NA,5,NA
+"group_2103","group_2103","molecular chaperone",NA,NA,NA,NA,NA,NA,NA,NA,6,6,NA,6,6,NA,6,6
+"group_2115","group_2115","autotransporter outer membrane beta-barrel domain-containing protein;autotransporter-associated beta strand;autotransporter barrel domain-containing lipoprotein;hypothetical protein;transporter",NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2126","group_2126","ParB/RepB/Spo0J family partition protein;hypothetical protein;chromosome partitioning protein ParB",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2137","group_2137","DUF2713 family protein;hypothetical protein;DUF2713 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2147","group_2147","helix-turn-helix transcriptional regulator;LuxR family transcriptional regulator",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2181","group_2181","YscQ/HrcQ family type III secretion apparatus protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2212","group_2212","hypothetical protein;DUF1380 domain-containing protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2267","group_2267","hypothetical protein;tyrosine kinase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA
+"group_227","group_227","hypothetical protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2291","group_2291","ParB/RepB/Spo0J family partition protein;hypothetical protein;chromosome partitioning protein ParB",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2292","group_2292","hypothetical protein",NA,NA,NA,3,NA,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2319","group_2319","class A extended-spectrum beta-lactamase CTX-M-14;class A extended-spectrum beta-lactamase CTX-M-15",NA,11,11,11,11,11,NA,NA,11,11,NA,11,11,11,11,NA
+"group_2363","group_2363","ParA family protein",NA,NA,NA,3,NA,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2364","group_2364","hypothetical protein",NA,NA,NA,3,NA,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2374","group_2374","lysine 6-monooxygenase;L-lysine N6-monooxygenase",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"group_2394","group_2394","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_240","group_240","DUF2686 family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2448","group_2448","transporter;pilus assembly protein;hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2449","group_2449","Rpn family recombination-promoting nuclease/putative transposase",NA,4,NA,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2451","group_2451","CesD/SycD/LcrH family type III secretion system chaperone;tetratricopeptide repeat protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2481","group_2481","EscJ/YscJ/HrcJ family type III secretion inner membrane ring protein;hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2520","group_2520","hypothetical protein;DotA/TraY family protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2521","group_2521","positive regulator for repZ translation;hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2523","group_2523","peptidase;translesion error-prone DNA polymerase V autoproteolytic subunit",NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2524","group_2524","DUF4942 domain-containing protein",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2569","group_2569","type-F conjugative transfer system secretin TraK",NA,NA,4,NA,NA,4,NA,NA,4,NA,NA,NA,NA,NA,4,NA
+"group_2592","group_2592","relaxase;hypothetical protein",NA,NA,NA,NA,8,8,NA,NA,8,8,NA,8,8,NA,8,8
+"group_2595","group_2595","hypothetical protein",NA,NA,NA,5,NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,5
+"group_2655","group_2655","conjugal transfer protein TraC",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2664","group_2664","hypothetical protein",NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA,3,NA,NA,NA
+"group_2674","group_2674","class A extended-spectrum beta-lactamase CTX-M-14;class A extended-spectrum beta-lactamase CTX-M-15",13,13,13,13,13,13,NA,NA,13,13,13,13,13,13,13,NA
+"group_2675","group_2675","colicin;hypothetical protein;colicin transporter",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2678","group_2678","conjugal transfer protein TraG;conjugal transfer mating pair stabilization protein TraG",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_2686","group_2686","replication regulatory protein RepA;replication protein RepA;hypothetical protein;replication protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_2697","group_2697","fimbrial chaperone",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2698","group_2698","fimbrial biogenesis outer membrane usher protein;fimbria/pilus outer membrane usher protein;hypothetical protein",NA,NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2699","group_2699","hypothetical protein;pili assembly chaperone",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2717","group_2717","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_2721","group_2721","LysR family transcriptional regulator;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_2739","group_2739","DUF4049 domain-containing protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2756","group_2756","protein tyrosine phosphatase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_2776","group_2776","acyl-CoA dehydrogenase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_28","group_28","IS30-like element IS30H family transposase;IS30-like element IS30 family transposase;IS30 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2806","group_2806","hypothetical protein;fimbrial protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_2850","group_2850","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2867","group_2867","phage portal protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_2869","group_2869","molybdopterin-guanine dinucleotide biosynthesis protein MobC",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2874","group_2874","DUF968 domain-containing protein;pdcB",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_2889","group_2889","nikA protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_2891","group_2891","recombinase family protein;adenine-specific DNA-methyltransferase;510-methylenetetrahydrofolate reductase;metal-dependent hydrolase",NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,NA,NA,5,5
+"group_2929","group_2929","DUF957 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_2942","group_2942","fimbrial protein;fimbrial subunit ElfA",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_297","group_297","DUF945 domain-containing protein;DUF932 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_2979","group_2979","hypothetical protein;PTS transporter subunit EIIA;HTH domain-containing protein;transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_2990","group_2990","ISAs1 family transposase;ISAs1-like element ISEc5 family transposase;ISAs1-like element ISEc1 family transposase;transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_3006","group_3006","hypothetical protein",NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,2,NA
+"group_3032","group_3032","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_3060","group_3060","conjugation system SOS inhibitor PsiB",NA,2,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3099","group_3099","xanthine dehydrogenase family protein molybdopterin-binding subunit;oxidoreductase;molybdopterin-dependent oxidoreductase;xanthine dehydrogenase family protein subunit M",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3148","group_3148","DUF905 domain-containing protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3183","group_3183","DUF987 domain-containing protein;DUF987 family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA
+"group_3197","group_3197","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3242","group_3242","restriction endonuclease subunit S",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_3245","group_3245","type-F conjugative transfer system pilin assembly protein TrbC",NA,NA,NA,7,7,7,NA,7,7,NA,NA,NA,7,NA,7,NA
+"group_3256","group_3256","RepA leader peptide Tap",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,4,4,4,NA,NA,NA
+"group_3268","group_3268","type I toxin-antitoxin system Hok family toxin",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_3289","group_3289","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_3312","group_3312","single-stranded DNA-binding protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,4,NA,NA,NA
+"group_3351","group_3351","hypothetical protein",NA,NA,NA,6,6,NA,NA,NA,NA,6,NA,NA,6,6,6,NA
+"group_3361","group_3361","hypothetical protein",5,5,NA,NA,5,5,NA,NA,NA,NA,NA,NA,5,NA,NA,NA
+"group_340","group_340","DUF1472 domain-containing protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_341","group_341","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_342","group_342","type VI secretion system tip protein VgrG;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_3434","group_3434","DUF1380 domain-containing protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3435","group_3435","DUF1380 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA
+"group_3467","group_3467","S-methylmethionine permease",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_3471","group_3471","YfcC family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_3493","group_3493","conjugal transfer protein TraH",NA,NA,NA,8,8,8,NA,8,8,NA,NA,8,8,NA,8,NA
+"group_3504","group_3504","hypothetical protein",NA,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,6,NA
+"group_3528","group_3528","chromosome partitioning protein ParB;ParB/RepB/Spo0J family partition protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_3566","group_3566","ATP-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_3573","group_3573","fertility inhibition protein FinO;conjugal transfer protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_3581","group_3581","DUF1472 domain-containing protein;YubH family protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3643","group_3643","antirestriction protein",NA,4,NA,NA,NA,4,4,NA,NA,NA,NA,NA,4,NA,NA,NA
+"group_3655","group_3655","conjugal transfer protein TrbA",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_3696","group_3696","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_3697","group_3697","complement resistance protein TraT;hypothetical protein",NA,3,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"group_3737","group_3737","DUF4238 domain-containing protein",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_380","group_380","DUF4132 domain-containing protein;WGR and DUF4132 domain-containing protein;molybdate metabolism regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_3824","group_3824","IS66 family insertion sequence hypothetical protein;IS66 family insertion sequence element accessory protein TnpB;transposase",NA,NA,NA,NA,NA,3,NA,NA,NA,3,NA,NA,3,NA,NA,NA
+"group_3831","group_3831","AAA family ATPase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_3845","group_3845","GNAT family N-acetyltransferase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_3846","group_3846","resolvase;NTP-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,NA,NA,4,4
+"group_3847","group_3847","conjugal transfer protein TraE",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3849","group_3849","Tn3 family transposase;Tn3-like element TnAs3 family transposase;DUF4158 domain-containing protein;Tn3-like element TnAs1 family transposase;hypothetical protein;transposase",NA,7,NA,7,NA,7,NA,7,7,NA,NA,NA,NA,NA,7,7
+"group_3852","group_3852","hypothetical protein",2,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3854","group_3854","hypothetical protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3855","group_3855","recombinase family protein;helix-turn-helix domain-containing protein;hypothetical protein",5,5,NA,5,NA,NA,NA,5,NA,NA,NA,NA,NA,NA,NA,5
+"group_3857","group_3857","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,2,NA,NA,NA
+"group_3861","group_3861","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_3892","group_3892","hypothetical protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_3907","group_3907","replication protein RepA4;replication protein;hypothetical protein",NA,7,NA,NA,7,7,NA,NA,7,NA,NA,7,7,NA,7,NA
+"group_3921","group_3921","capsule assembly Wzi family protein",NA,NA,NA,NA,NA,7,NA,7,7,7,NA,7,7,NA,7,NA
+"group_3933","group_3933","hypothetical protein;RHS repeat protein;RHS repeat family protein;type IV secretion protein Rhs;RHS element protein;RHS repeat-associated core domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_3938","group_3938","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_3975","group_3975","IS1 family transposase;IS1-like element IS1A family transposase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,6,6,6,6,6,NA,6,NA
+"group_3993","group_3993","resolvase",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,NA,NA,4,4
+"group_3996","group_3996","DUF1281 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_4008","group_4008","recombinase family protein;helix-turn-helix domain-containing protein",NA,4,NA,4,NA,NA,NA,4,NA,NA,NA,NA,NA,NA,4,NA
+"group_4019","group_4019","Tn3 family transposase;hypothetical protein;Tn3-like element TnAs1 family transposase;transposase",NA,NA,NA,NA,6,NA,NA,NA,6,6,NA,6,6,NA,6,NA
+"group_4032","group_4032","GTPase family protein",NA,NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,6,NA,6,6
+"group_4035","group_4035","replication C family protein;replication protein C;replication protein",NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,6,NA,NA,6,6
+"group_4067","group_4067","polysaccharide export protein",NA,NA,NA,NA,NA,7,NA,7,7,7,NA,7,7,NA,7,NA
+"group_4110","group_4110","p-aminobenzoyl-glutamate hydrolase subunit A",NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4152","group_4152","antitoxin of toxin-antitoxin stability system",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA
+"group_4248","group_4248","4-hydroxyphenylacetate degradation bifunctional isomerase/decarboxylase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_4268","group_4268","hypothetical protein;DUF1472 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_4271","group_4271","DUF2787 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_428","group_428","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,2,NA,NA,NA
+"group_4288","group_4288","molybdopterin-guanine dinucleotide biosynthesis protein MobC",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4407","group_4407","PstS family phosphate ABC transporter substrate-binding protein;phosphate ABC transporter substrate-binding protein;hypothetical protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4411","group_4411","RusA family crossover junction endodeoxyribonuclease",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_4413","group_4413","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4421","group_4421","transposase;Tn3-like element Tn3 family transposase;Tn3 family transposase;DUF4158 domain-containing protein",NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4432","group_4432","proQ/FINO family protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4434","group_4434","abortive infection protein",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4438","group_4438","hypothetical protein;cobalamin biosynthesis protein CobW",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_4455","group_4455","AbrB/MazE/SpoVT family DNA-binding domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_4458","group_4458","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4459","group_4459","colicin transporter;colicin 1B immunity protein",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4461","group_4461","esterase-like activity of phytase family protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,NA,4,4
+"group_4483","group_4483","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4493","group_4493","polysaccharide biosynthesis tyrosine autokinase",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_4494","group_4494","type II toxin-antitoxin system VapC family toxin;PIN domain-containing protein",NA,NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA
+"group_4537","group_4537","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2
+"group_4543","group_4543","DNA repair protein RadC",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4570","group_4570","S-methyl-5-thioribose kinase",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,5,5
+"group_4594","group_4594","RusA family crossover junction endodeoxyribonuclease;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_4605","group_4605","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4617","group_4617","AbrB/MazE/SpoVT family DNA-binding domain-containing protein",NA,NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA
+"group_4618","group_4618","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_4619","group_4619","DNA helicase UvrD",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_4628","group_4628","relaxosome protein TraM",NA,3,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,3,NA,NA,NA
+"group_4637","group_4637","site-specific integrase;tyrosine-type recombinase/integrase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4642","group_4642","DUF977 family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,5,5,NA,NA
+"group_4675","group_4675","AAA family ATPase;ATP-dependent endonuclease",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_4709","group_4709","mannose-1-phosphate guanylyltransferase/mannose-6-phosphate isomerase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_4710","group_4710","ABC transporter permease;O99 family O-antigen ABC transporter permease subunit Wzm;O9 family O-antigen ABC transporter permease subunit Wzm",NA,NA,NA,NA,NA,3,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"group_4711","group_4711","ABC transporter ATP-binding protein;O9 family O-antigen ABC transporter ATP-binding protein Wzt",NA,NA,NA,NA,NA,3,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"group_4742","group_4742","DNA repair protein;hypothetical protein;DUF4113 domain-containing protein;translesion error-prone DNA polymerase V subunit UmuC;Y-family DNA polymerase",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4745","group_4745","GGDEF domain-containing protein;diguanylate cyclase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_4784","group_4784","relaxase NikB;relaxase/mobilization nuclease domain-containing protein;IncI1-type relaxase NikB",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4794","group_4794","IS110 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,2,NA,NA,NA
+"group_4805","group_4805","IS3 family transposase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA
+"group_4826","group_4826","conjugal transfer protein TrbA;IncI1-type conjugal transfer protein TrbA;hypothetical protein",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4831","group_4831","conjugal transfer protein TrbC;TraM recognition domain-containing protein",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4838","group_4838","DUF262 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4847","group_4847","IS66 family insertion sequence element accessory protein TnpB;IS66 family insertion sequence hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4863","group_4863","Rpn family recombination-promoting nuclease/putative transposase",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4866","group_4866","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2
+"group_4880","group_4880","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2
+"group_4889","group_4889","ethanolamine utilization protein EutE;exclusion-determining protein;ethanolamine utilization protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_4892","group_4892","plasmid-partitioning protein;ParB/RepB/Spo0J family plasmid partition protein",NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA
+"group_4893","group_4893","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4896","group_4896","Tn3 family transposase;transposase;Tn3-like element TnAs3 family transposase",NA,11,NA,11,NA,11,11,11,11,11,NA,11,11,NA,11,11
+"group_4909","group_4909","conjugative transfer relaxase/helicase TraI;hypothetical protein;DNA helicase;traI domain protein;AAA family ATPase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_4913","group_4913","IS5-like element ISKpn26 family transposase;IS5-like element IS5 family transposase;IS5/IS1182 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_4933","group_4933","IS4-like element IS4 family transposase;IS4 family transposase;transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_4954","group_4954","IS21 family transposase;transposase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_497","group_497","GNAT family N-acetyltransferase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_4989","group_4989","DNA cytosine methyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_499","group_499","glutathione S-transferase;type VII secretion-associated protein",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5037","group_5037","arginine deiminase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_504","group_504","conjugal transfer protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_505","group_505","lipopolysaccharide core heptose(II)-phosphate phosphatase;histidine phosphatase family protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5067","group_5067","phage major capsid protein",NA,NA,NA,5,NA,5,NA,NA,NA,5,NA,5,5,NA,NA,NA
+"group_5070","group_5070","transposase;IS66 family insertion sequence hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_5078","group_5078","PilI type IV pilus biogenesis protein;pilus assembly protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_508","group_508","LysR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5080","group_5080","DUF2254 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA
+"group_5125","group_5125","ISL3-like element ISKox3 family transposase;ISL3 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA
+"group_5141","group_5141","IS5/IS1182 family transposase;IS5 family transposase;IS5-like element IS903 family transposase;transposase;IS5-like element IS903B family transposase",NA,NA,NA,6,NA,6,NA,NA,NA,6,NA,6,6,NA,6,NA
+"group_5158","group_5158","single-stranded DNA-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_5175","group_5175","protease;omptin family outer membrane protease",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_5189","group_5189","antimicrobial resistance protein Mig-14",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_5190","group_5190","NAD-dependent epimerase/dehydratase family protein",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_5211","group_5211","Hok/Gef family protein",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5291","group_5291","DUF1391 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_5303","group_5303","hypothetical protein;GTPase",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5344","group_5344","conjugal transfer protein TraF",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5365","group_5365","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_5373","group_5373","hypothetical protein",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5374","group_5374","type IV conjugative transfer system protein TraV;type IV conjugative transfer system lipoprotein TraV",NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5392","group_5392","IS3 family transposase;transposase;IS3-like element IS600 family transposase",NA,NA,NA,9,NA,NA,NA,NA,9,9,9,9,9,9,9,9
+"group_54","group_54","transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_5419","group_5419","LuxR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,2,NA,NA,NA,NA
+"group_5424","group_5424","MFS transporter",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_5435","group_5435","MFS transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,3,NA,NA,3
+"group_5517","group_5517","putative C-S lyase",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5548","group_5548","3-(3-hydroxy-phenyl)propionate transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_5551","group_5551","acetaldehyde dehydrogenase (acetylating)",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_5667","group_5667","type I toxin-antitoxin system Hok family toxin",NA,6,NA,NA,NA,NA,NA,NA,6,6,NA,6,6,NA,6,NA
+"group_5678","group_5678","antitoxin PemI",NA,12,12,12,12,12,NA,NA,12,12,12,12,12,12,12,NA
+"group_5680","group_5680","cysteine hydrolase",NA,NA,NA,NA,7,7,NA,NA,7,7,NA,7,7,NA,7,NA
+"group_5683","group_5683","cupin fold metalloprotein WbuC family",NA,11,11,11,11,11,NA,NA,11,11,NA,11,11,11,11,NA
+"group_5686","group_5686","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA5",NA,10,NA,NA,NA,10,NA,10,10,10,10,10,10,NA,10,10
+"group_5687","group_5687","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA5",NA,NA,NA,NA,NA,NA,NA,NA,6,6,NA,6,6,NA,6,6
+"group_5688","group_5688","quaternary ammonium compound efflux SMR transporter QacE delta 1",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_5689","group_5689","quaternary ammonium compound efflux SMR transporter QacE delta 1",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,3,3
+"group_5690","group_5690","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,4,4,4,NA,NA,NA
+"group_5691","group_5691","trimethoprim-resistant dihydrofolate reductase DfrA12",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_5692","group_5692","DUF1010 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_5693","group_5693","DUF1010 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_5695","group_5695","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_5696","group_5696","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_57","group_57","fimbrial biogenesis outer membrane usher protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_570","group_570","PdcA protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_5700","group_5700","IS6-like element IS6100 family transposase",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5701","group_5701","type VII secretion-associated protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,6,6,6,6,NA,6,6
+"group_5702","group_5702","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,6,6,6,6,NA,6,6
+"group_5703","group_5703","TetR/AcrR family transcriptional regulator",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5706","group_5706","TetR/AcrR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,6,6,6,6,NA,6,6
+"group_5707","group_5707","MFS transporter",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5708","group_5708","Mph(A) family macrolide 2'-phosphotransferase",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5709","group_5709","hypothetical protein",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_5710","group_5710","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_5713","group_5713","ABC transporter ATP-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_5714","group_5714","ABC transporter permease",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_5716","group_5716","DUF2318 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_572","group_572","toxin ArtA;protein ArtA",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_5720","group_5720","protein disulfide oxidoreductase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_5723","group_5723","conjugal transfer protein TrbA",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5724","group_5724","DsbC family protein",NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5725","group_5725","conjugal transfer protein TrbC",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5735","group_5735","conjugal transfer protein TraV",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5736","group_5736","ATP-binding protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5737","group_5737","TraS protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5738","group_5738","conjugal transfer protein TraP",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5740","group_5740","conjugal transfer protein TraN",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5741","group_5741","conjugal transfer protein TraM",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5742","group_5742","conjugal transfer protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5743","group_5743","plasmid transfer ATPase TraJ",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5744","group_5744","conjugal transfer protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5745","group_5745","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5746","group_5746","conjugal transfer protein TraF",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5747","group_5747","shufflon protein C'",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5748","group_5748","prepilin peptidase",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5749","group_5749","lytic transglycosylase domain-containing protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_575","group_575","phage integrase family protein",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5751","group_5751","pilus assembly protein PilR",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5752","group_5752","ATP-binding protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5753","group_5753","pilus assembly protein PilP",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5754","group_5754","pili assembly chaperone",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5755","group_5755","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5759","group_5759","class A broad-spectrum beta-lactamase TEM-1",10,10,NA,10,NA,NA,NA,10,10,10,10,10,NA,NA,10,10
+"group_5760","group_5760","class A broad-spectrum beta-lactamase TEM-1",9,9,NA,9,NA,NA,NA,9,9,9,9,NA,NA,NA,9,9
+"group_5762","group_5762","korC",NA,NA,NA,NA,NA,NA,NA,4,NA,4,NA,4,4,NA,NA,NA
+"group_5766","group_5766","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_579","group_579","hypothetical protein;IS1380 family transposase;IS1380-like element ISEc9 family transposase",11,11,11,11,11,11,11,NA,11,11,NA,11,NA,NA,11,NA
+"group_5833","group_5833","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_5914","group_5914","type II toxin-antitoxin system death-on-curing family toxin",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_5915","group_5915","type II toxin-antitoxin system Phd/YefM family antitoxin",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,2,NA
+"group_5925","group_5925","recombinase",NA,NA,NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5930","group_5930","LuxR family transcriptional regulator",6,NA,NA,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5931","group_5931","lipocalin family protein",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5932","group_5932","lipocalin family protein",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_5933","group_5933","beta-lactamase",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6053","group_6053","hypothetical protein",NA,NA,NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6151","group_6151","IS256 family transposase",NA,NA,NA,7,NA,7,7,7,7,NA,NA,NA,7,NA,7,NA
+"group_6152","group_6152","IS256 family transposase",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,NA,NA,6,NA
+"group_6156","group_6156","hypothetical protein",NA,NA,NA,5,NA,NA,5,5,5,NA,NA,NA,NA,NA,5,NA
+"group_6159","group_6159","chloramphenicol efflux MFS transporter CmlA1",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_617","group_617","hypothetical protein",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6177","group_6177","broad-spectrum mercury transporter MerE",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"group_6178","group_6178","mercury resistance co-regulator MerD",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"group_6180","group_6180","organomercurial transporter MerC",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"group_619","group_619","transposase;DUF3330 domain-containing protein;hypothetical protein",NA,10,NA,10,NA,10,NA,10,10,10,NA,10,10,NA,10,10
+"group_620","group_620","transposase;DUF3330 domain-containing protein;EAL domain-containing protein;hypothetical protein",NA,9,NA,NA,NA,9,NA,9,9,9,NA,9,9,NA,9,9
+"group_6201","group_6201","SDR family oxidoreductase",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,NA,NA,6,NA
+"group_6202","group_6202","SDR family oxidoreductase",NA,NA,NA,3,NA,NA,NA,3,NA,NA,NA,NA,NA,NA,3,NA
+"group_6203","group_6203","hypothetical protein",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,NA,NA,6,NA
+"group_6204","group_6204","hypothetical protein",NA,NA,NA,4,NA,NA,NA,4,4,NA,NA,NA,NA,NA,4,NA
+"group_6205","group_6205","sulfonamide-resistant dihydropteroate synthase Sul3",NA,NA,NA,3,NA,NA,NA,3,NA,NA,NA,NA,NA,NA,3,NA
+"group_6241","group_6241","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_6298","group_6298","type I deoxyribonuclease HsdR",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_6331","group_6331","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2
+"group_6334","group_6334","DUF927 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_6390","group_6390","lipopolysaccharide core heptose(II)-phosphate phosphatase",4,NA,NA,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6391","group_6391","lipopolysaccharide core heptose(II)-phosphate phosphatase",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6435","group_6435","MFS transporter",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6438","group_6438","toxin-antitoxin system antitoxin component AbrB family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_6472","group_6472","ornithine carbamoyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_6498","group_6498","antirestriction protein",NA,3,NA,3,NA,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6538","group_6538","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_6547","group_6547","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2
+"group_6660","group_6660","helix-turn-helix domain-containing protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6674","group_6674","anti-adapter protein IraM",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA
+"group_6691","group_6691","N-acetyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2
+"group_6717","group_6717","type I toxin-antitoxin system Ibs family toxin",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,4,NA,NA
+"group_6729","group_6729","DNA cytosine methyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_6740","group_6740","aldolase",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6752","group_6752","amidohydrolase;p-aminobenzoyl-glutamate hydrolase subunit B",NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6764","group_6764","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_6765","group_6765","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_6787","group_6787","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_6822","group_6822","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,NA,4
+"group_6824","group_6824","homocysteine S-methyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_6905","group_6905","SpnT protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_6922","group_6922","N-acetylneuraminate lyase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_6949","group_6949","helix-turn-helix transcriptional regulator;hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_6987","group_6987","IS3 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_6990","group_6990","carbamate kinase",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_7002","group_7002","sce7725 family protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_7031","group_7031","type II toxin-antitoxin system HigB family toxin;mRNA interferase HigB",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_7054","group_7054","N-acetylneuraminic acid channel protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_7059","group_7059","glycosyltransferase family 2 protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_7158","group_7158","4-hydroxyphenylacetate catabolism regulatory protein HpaA",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_7225","group_7225","IS200/IS605 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_7256","group_7256","fimbrial family protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_7262","group_7262","DNA methylase",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,5,5
+"group_7282","group_7282","N-acetylmannosamine kinase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_7294","group_7294","MFS transporter",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_732","group_732","4-hydroxyphenylacetate 3-monooxygenase reductase subunit",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_7373","group_7373","DUF977 family protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA
+"group_7374","group_7374","Rpn family recombination-promoting nuclease/putative transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_7397","group_7397","iron/manganese ABC transporter permease subunit SitD",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_7427","group_7427","alpha/beta hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_7454","group_7454","DUF1471 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2
+"group_7468","group_7468","conjugal transfer relaxosome protein TraY",NA,3,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,3,NA,NA,NA
+"group_7511","group_7511","alcohol dehydrogenase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_7524","group_7524","RNA-directed DNA polymerase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_7538","group_7538","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7570","group_7570","DUF4158 domain-containing protein;Tn3-like element Tn5403 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,3,NA,NA,NA,NA
+"group_758","group_758","type I toxin-antitoxin system Ibs family toxin",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7601","group_7601","hypothetical protein",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7613","group_7613","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA,NA
+"group_7614","group_7614","glycosyltransferase family 2 protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_7621","group_7621","alpha/beta hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_7631","group_7631","LysR family transcriptional regulator",NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7706","group_7706","post-segregation killing protein PndC",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7707","group_7707","hypothetical protein",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7786","group_7786","plasmid SOS inhibition protein A",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7872","group_7872","type I toxin-antitoxin system toxin Ldr family protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_7894","group_7894","pilus assembly protein PilS;pilus assembly protein PilX",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_792","group_792","TetR/AcrR family transcriptional regulator;TetR family transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,NA,NA,3
+"group_8013","group_8013","transposase;transposase family protein;IS3 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_8093","group_8093","pilus assembly protein PilV",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8102","group_8102","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA
+"group_8180","group_8180","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,5,NA,5,NA
+"group_8198","group_8198","hypothetical protein;biofilm development YmgB/AriR family protein",NA,NA,NA,NA,NA,NA,NA,5,NA,5,NA,5,5,NA,5,NA
+"group_8316","group_8316","cupin fold metalloprotein WbuC family",NA,12,12,12,12,12,NA,NA,12,12,NA,12,12,12,12,12
+"group_8318","group_8318","hypothetical protein;sulfonamide-resistant dihydropteroate synthase Sul1",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_8319","group_8319","hypothetical protein;sulfonamide-resistant dihydropteroate synthase Sul1",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,3,3
+"group_8321","group_8321","PadR family transcriptional regulator;helix-turn-helix transcriptional regulator",NA,6,NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,NA,6,6
+"group_8322","group_8322","PadR family transcriptional regulator;helix-turn-helix transcriptional regulator",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,5,5,NA,NA,5,5
+"group_8323","group_8323","MFS transporter",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"group_8324","group_8324","TlpA family protein disulfide reductase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_8326","group_8326","ABC transporter permease",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_8328","group_8328","scsC protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
+"group_8333","group_8333","hypothetical protein",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8335","group_8335","Hok/Gef family protein",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8336","group_8336","conjugal transfer protein;IncI1-type conjugal transfer protein TraW",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8338","group_8338","conjugal transfer protein TraO",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8339","group_8339","DNA primase;hypothetical protein;mobilization protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8340","group_8340","conjugal transfer protein TraE",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8341","group_8341","shufflon protein C",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8343","group_8343","conjugal transfer protein TraD",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8345","group_8345","ash family protein;hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8346","group_8346","recombinase family protein;hypothetical protein",NA,2,NA,2,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8349","group_8349","DUF3800 domain-containing protein;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,4,NA,4,NA,4,4,NA,NA,NA
+"group_8353","group_8353","XRE family transcriptional regulator;helix-turn-helix transcriptional regulator",NA,6,6,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_840","group_840","flagellin FliC;FliC/FljB family flagellin",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA
+"group_8405","group_8405","hypothetical protein",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8406","group_8406","recombinase",4,4,NA,4,NA,4,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8407","group_8407","molecular chaperone GroEL",NA,3,NA,3,NA,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8408","group_8408","hypothetical protein;DUF4165 domain-containing protein",NA,NA,NA,4,NA,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8409","group_8409","quaternary ammonium compound efflux SMR transporter SugE;quaternary ammonium compound-resistance protein SugE",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8410","group_8410","quaternary ammonium compound efflux SMR transporter SugE;quaternary ammonium compound-resistance protein SugE",7,7,7,7,7,7,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8415","group_8415","APH(3'') family aminoglycoside O-phosphotransferase;aminoglycoside phosphotransferase APH(3');aminoglycoside O-phosphotransferase APH(3'')-Ib",NA,6,NA,NA,NA,NA,NA,6,6,NA,NA,6,NA,NA,6,6
+"group_8439","group_8439","shufflon protein D'",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8449","group_8449","GNAT family N-acetyltransferase",NA,NA,NA,NA,NA,NA,NA,7,7,7,NA,7,7,NA,7,7
+"group_8462","group_8462","alpha/beta hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"group_8466","group_8466","transcriptional regulator PhoB",NA,NA,NA,NA,NA,2,NA,NA,NA,2,NA,NA,NA,NA,NA,NA
+"group_8471","group_8471","hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8473","group_8473","hypothetical protein",NA,NA,NA,7,NA,7,7,7,7,NA,NA,NA,7,NA,7,NA
+"group_8475","group_8475","ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA3;ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2",NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,NA,3,3
+"group_8481","group_8481","transposase;transposase family protein;DDE-type integrase/transposase/recombinase",NA,6,NA,NA,NA,NA,NA,6,6,NA,6,NA,NA,NA,6,6
+"group_8489","group_8489","hypothetical protein;DUF4165 domain-containing protein",10,NA,10,10,10,10,10,10,10,NA,NA,NA,NA,NA,10,10
+"group_8518","group_8518","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_8521","group_8521","Alw26I/Eco31I/Esp3I family type II restriction adenine-specific DNA-methyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_8578","group_8578","YjhT family mutarotase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_8653","group_8653","phage tail protein;Ig domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_8664","group_8664","conjugal transfer protein TraJ;conjugal transfer transcriptional regulator TraJ",NA,3,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,3,NA,NA,NA
+"group_8675","group_8675","alcohol dehydrogenase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_870","group_870","glutathione S-transferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"group_8831","group_8831","chromate efflux transporter",NA,6,NA,NA,NA,NA,NA,NA,NA,6,6,6,NA,NA,6,6
+"group_8832","group_8832","conjugal transfer protein TraQ",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8848","group_8848","EamA family transporter",NA,NA,NA,NA,7,7,NA,NA,7,7,NA,7,NA,NA,7,7
+"group_8850","group_8850","phospholipase D family protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8851","group_8851","integrase",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8855","group_8855","hypothetical protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8896","group_8896","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"group_8921","group_8921","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA
+"group_8970","group_8970","DNA methylase",NA,3,NA,3,NA,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_8982","group_8982","DUF3927 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA
+"group_9010","group_9010","type 1 fimbria chaperone FimC",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9038","group_9038","Alw26I/Eco31I/Esp3I family type II restriction endonuclease",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_9054","group_9054","ferric iron reductase;IucA/IucC family siderophore biosynthesis protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2
+"group_9133","group_9133","type VI secretion system tube protein Hcp;Hcp family type VI secretion system effector",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9142","group_9142","excisionase family protein;DNA-binding protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"group_9152","group_9152","sel1 repeat family protein",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"group_9164","group_9164","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,4,NA,NA,4,NA,NA,4,4
+"group_9208","group_9208","nucleotidyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,3,NA,NA,NA
+"group_9216","group_9216","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9218","group_9218","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"group_9260","group_9260","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9288","group_9288","histidine phosphatase family protein;CPBP family intramembrane metalloprotease",NA,11,11,11,11,11,NA,NA,11,11,11,11,11,NA,11,NA
+"group_9290","group_9290","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9314","group_9314","protein sok",NA,5,NA,NA,NA,NA,NA,5,NA,5,NA,5,5,NA,NA,NA
+"group_9350","group_9350","integrase;class 1 integron integrase IntI1",NA,10,NA,10,NA,10,NA,10,10,10,NA,10,10,NA,10,10
+"group_9354","group_9354","IS91-like element ISVsa3 family transposase;IS91 family transposase",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"group_9378","group_9378","hypothetical protein",NA,NA,NA,4,4,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9386","group_9386","hemolysin activation protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,4,NA
+"group_9388","group_9388","Tn3-like element Tn3 family transposase;Tn3 family transposase;DUF4158 domain-containing protein",3,3,NA,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9401","group_9401","conjugal transfer protein TraA",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9415","group_9415","galactonate dehydratase",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9418","group_9418","transcriptional regulator",NA,7,NA,NA,NA,NA,NA,7,7,7,NA,7,NA,NA,7,7
+"group_9455","group_9455","DUF3560 domain-containing protein;hydrolase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
+"group_9495","group_9495","macrolide transporter;MFS transporter",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,NA,NA,6,NA
+"group_9499","group_9499","IS5-like element IS5 family transposase",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,4,NA
+"group_9533","group_9533","EAL domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"group_9534","group_9534","EAL domain-containing protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_9540","group_9540","hypothetical protein",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9561","group_9561","hypothetical protein",NA,8,NA,8,8,8,NA,NA,NA,8,NA,8,8,8,NA,NA
+"group_9572","group_9572","lipopolysaccharide core heptose(II) kinase RfaY",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,3,NA,NA,NA,NA
+"group_959","group_959","EscR/YscR/HrcR family type III secretion system export apparatus protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,2,NA
+"group_9604","group_9604","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1
+"group_9674","group_9674","molecular chaperone",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9730","group_9730","DNA resolvase",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,3,NA,NA,NA,NA
+"group_9837","group_9837","DUF1266 domain-containing protein",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9886","group_9886","HK97 family phage prohead protease",NA,NA,NA,5,NA,5,NA,NA,NA,5,NA,5,5,NA,NA,NA
+"group_9887","group_9887","transcriptional regulator",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"group_990","group_990","type 1 fimbrial protein",NA,NA,NA,3,NA,3,NA,3,NA,NA,NA,NA,NA,NA,NA,NA
+"group_9900","group_9900","ShET2/EspL2 family type III secretion system effector toxin;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"group_9981","group_9981","hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaB","hpaB","4-hydroxyphenylacetate 3-monooxygenase oxygenase component",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaD","hpaD","34-dihydroxyphenylacetate 23-dioxygenase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaE","hpaE","5-carboxymethyl-2-hydroxymuconate semialdehyde dehydrogenase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaH","hpaH","2-oxo-hepta-3-ene-17-dioic acid hydratase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaI","hpaI","4-hydroxy-2-oxoheptanedioate aldolase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaR","hpaR","homoprotocatechuate degradation operon regulator HpaR",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hpaX","hpaX","4-hydroxyphenylacetate permease",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"hyfF","hyfF","hydrogenase;hypothetical protein;hydrogenase 4 subunit F",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"intI1","intI1","class 1 integron integrase IntI1",NA,10,NA,NA,NA,10,NA,10,10,10,10,10,10,NA,10,10
+"iraM","iraM","anti-adapter protein IraM",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"iucA","iucA","IucA/IucC family siderophore biosynthesis protein;aerobactin synthase IucA",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"iucB","iucB","N(6)-hydroxylysine O-acetyltransferase",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"iucC","iucC","IucA/IucC family siderophore biosynthesis protein;hypothetical protein;aerobactin synthase IucC",NA,5,NA,NA,5,NA,NA,NA,5,NA,NA,NA,NA,NA,5,5
+"iutA","iutA","TonB-dependent receptor;ferric aerobactin receptor IutA",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,3
+"lnuF","lnuF","lincosamide nucleotidyltransferase Lnu(F)",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"ltrA","ltrA","group II intron reverse transcriptase/maturase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA
+"mdtM","mdtM","multidrug efflux MFS transporter MdtM",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"meaB","meaB","methylmalonyl Co-A mutase-associated GTPase MeaB",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"melB","melB","melibiose:sodium transporter MelB",NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"merA","merA","mercury(II) reductase;hypothetical protein",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"merP","merP","mercury resistance system periplasmic binding protein MerP",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"merR","merR","MerR family DNA-binding protein;Hg(II)-responsive transcriptional regulator",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"merT","merT","mercuric ion transporter MerT",NA,5,NA,NA,NA,NA,NA,5,5,NA,NA,NA,NA,NA,5,5
+"mhpR","mhpR","DNA-binding transcriptional activator MhpR",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
+"mphA","mphA","Mph(A) family macrolide 2'-phosphotransferase",NA,7,NA,NA,NA,NA,NA,NA,NA,7,7,7,7,NA,7,7
+"mqsA","mqsA","type II toxin-antitoxin system antitoxin MqsA",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,4,NA
+"mqsR","mqsR","type II toxin-antitoxin system MqsR family toxin;type II toxin-antitoxin system toxin MqsR",NA,NA,NA,NA,NA,NA,NA,NA,NA,4,NA,4,4,NA,4,NA
+"mtnA","mtnA","S-methyl-5-thioribose-1-phosphate isomerase",NA,NA,NA,NA,NA,NA,NA,NA,NA,5,NA,5,5,NA,5,5
+"nanR","nanR","transcriptional regulator NanR",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,3,NA,3,NA,NA,NA
+"nikB","nikB","relaxase NikB;IncI1-type relaxase NikB",NA,NA,NA,3,3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"ompL","ompL","porin OmpL",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"pemK","pemK","type II toxin-antitoxin system PemK/MazF family toxin;mRNA interferase PemK;type II toxin-antitoxin system toxin endoribonuclease PemK",NA,10,NA,10,10,10,NA,NA,10,10,10,10,10,NA,10,NA
+"pilO2","pilO2","type 4b pilus protein PilO2;pilus assembly protein PilO",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"pilP","pilP","type IV pilus biogenesis protein PilP",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"qac","qac","quaternary ammonium compound efflux SMR transporter QacL",NA,NA,NA,NA,NA,NA,NA,3,3,NA,NA,NA,NA,NA,NA,3
+"repE","repE","RepB family plasmid replication initiator protein;replication initiation protein RepE",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,2,NA,NA,NA
+"sat","sat","serine protease autotransporter toxin Sat",NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
+"scpC","scpC","propionyl-CoA:succinate CoA transferase",NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
+"sopA","sopA","plasmid-partitioning protein SopA",NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA
+"ssb","ssb","single-stranded DNA-binding protein",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"sul1","sul1","sulfonamide-resistant dihydropteroate synthase Sul1",NA,NA,NA,NA,NA,NA,NA,NA,NA,3,NA,3,NA,NA,NA,3
+"sul2","sul2","sulfonamide-resistant dihydropteroate synthase Sul2",NA,8,NA,NA,NA,NA,NA,8,8,8,8,8,NA,NA,8,8
+"sul3","sul3","sulfonamide-resistant dihydropteroate synthase Sul3",NA,NA,NA,6,NA,6,6,6,6,NA,NA,NA,NA,NA,6,NA
+"tap","tap","RepA leader peptide Tap",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
+"tetA","tetA","tetracycline efflux MFS transporter Tet(A)",NA,NA,NA,NA,NA,5,NA,NA,5,NA,NA,5,NA,NA,5,5
+"tetB","tetB","tetracycline efflux MFS transporter Tet(B)",NA,NA,NA,NA,NA,NA,NA,NA,4,4,NA,4,NA,NA,4,NA
+"tetC","tetC","transposase;tetracyline resistance-associated transcriptional repressor TetC",NA,NA,NA,NA,NA,5,NA,NA,5,5,NA,5,NA,NA,5,NA
+"tetRA","tetRA","tetracycline resistance transcriptional repressor TetR(A);TetR family transcriptional regulator",NA,NA,NA,NA,7,7,NA,NA,7,7,NA,7,NA,NA,7,7
+"traE","traE","type IV conjugative transfer system protein TraE",NA,3,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"traF","traF","type-F conjugative transfer system pilin assembly protein TraF",NA,3,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"traI","traI","conjugative transfer relaxase/helicase TraI;conjugal transfer nickase/helicase TraI;protein traI;traI domain protein;DNA helicase;conjugative relaxase;AAA family ATPase;hypothetical protein",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA
+"traL","traL","type IV conjugative transfer system protein TraL",NA,3,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"traN","traN","type-F conjugative transfer system mating-pair stabilization protein TraN;conjugal transfer protein TraN",NA,NA,NA,NA,NA,NA,NA,3,NA,NA,NA,3,3,NA,NA,NA
+"traR","traR","IncI1-type conjugal transfer protein TraR;conjugal transfer protein TraR",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"traT","traT","IncI1-type conjugal transfer protein TraT;conjugal transfer protein TraT",6,6,NA,6,6,6,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"traU","traU","conjugal transfer protein TraU;conjugal transfer pilus assembly protein TraU;conjugal transfer protein",NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,NA,2,NA
+"traX","traX","IncI1-type conjugal transfer protein TraX;conjugal transfer protein TraX",NA,5,NA,5,5,5,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"trbB","trbB","IncI1-type conjugal transfer protein TrbB;DsbC family protein",NA,4,NA,4,NA,4,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"trbB~~~trbJ","trbB~~~trbJ","type-F conjugative transfer system pilin assembly thiol-disulfide isomerase TrbB;P-type conjugative transfer protein TrbJ",NA,NA,NA,8,8,8,NA,8,8,NA,NA,8,8,NA,8,NA
+"trbE","trbE","conjugal transfer protein TrbE",NA,NA,NA,NA,NA,NA,NA,2,2,NA,NA,NA,NA,NA,NA,NA
+"tssI","tssI","type VI secretion system tip protein VgrG;type VI secretion protein VgrG;hypothetical protein;type VI secretion protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"wbdA","wbdA","polymannosyl GlcNAc-diphospho-ditransoctacis-undecaprenol 23-alpha-mannosylpolymerase WbdA",NA,NA,NA,NA,NA,3,NA,NA,3,NA,NA,NA,NA,NA,3,NA
+"wbdC","wbdC","N-acetyl-alpha-D-glucosaminyl-diphospho-ditransoctacis-undecaprenol 3-alpha-mannosyltransferase WbdC;glycosyltransferase",NA,NA,NA,7,NA,NA,NA,7,7,7,NA,7,7,NA,7,NA
+"yaeI","yaeI","phosphodiesterase YaeI",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2,NA,NA,NA,NA,2
+"ygeH","ygeH","HilA family transcriptional regulator YgeH;transcriptional regulator;hypothetical protein",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"yggF","yggF","class II fructose-bisphosphatase",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,1,NA

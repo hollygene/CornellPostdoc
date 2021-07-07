@@ -24,11 +24,11 @@ dataFiles <- sapply(Sys.glob("./*.csv"), read.csv, simplify = FALSE, USE.NAMES =
 
 gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_presence_absence_roary.csv")
 
-blastp <- read.table("/Users/hcm59/Box/Holly/Dog_E_coli_project/ecoli_acc_proteins_blastp_accVer_unique.out",header=FALSE)
-colnames(blastp) <- c("qseqid","sseqid","sacc","sgi","qaccver","pident","length","mismatch","gapopen","qstart","qend","sstart","send","evalue","bitscore")
+blastp <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/ecoli_all_unique.out",header=FALSE)
+colnames(blastp) <- c("qseqid","sseqid","sacc","sgi","qaccver","length","mismatch","gapopen","qstart","qend","sstart","send","evalue","bitscore")
 gene_key <- blastp[,c(1,3)]  
 AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/AMRFinder_known_genes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
-write.csv(gene_key, file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_key_")
+write.csv(gene_key, file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_key_all.csv")
 # gene_key <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gi_gene_key_all_acc.csv",header=TRUE)
 
 # read in giant matrix of gene data 
@@ -585,28 +585,39 @@ prado["Abx"] <- "prado"
 tetracycline["Abx"] <- "tetracycline"
 trimeth_sulfameth["Abx"] <- "trimeth_sulfameth"
 
-giantMatrixAllAbxSig <- rbind(amikacin,amp,amox_clauv_acid,cefalexin.comb,cefazolin,cefpodoxime,chloram,doxy,enro,gentamicin,imipenem,marbo,orbi,pipTazo,tetracycline,trimeth_sulfameth)
+giantMatrixAllAbxSig <- rbind(amikacin,amp,amox_clauv_acid,cefalexin.comb,cefazolin,cefovecin, cefpodoxime,ceftazidime, chloram,doxy,enro,gentamicin,imipenem,marbo,orbi,pipTazo, prado, tetracycline,trimeth_sulfameth)
+nlevels(as.factor(giantMatrixAllAbxSig$Abx))
 # further break it down to bonferonni p < 0.05 
 giantMatrixAllAbxSigEmpBonf <- subset(giantMatrixAllAbxSig, Bonferroni_p<0.05) #, simplify = FALSE,USE.NAMES = TRUE)
-
+nlevels(as.factor(giantMatrixAllAbxSigEmpBonf$Abx))
+#3 abx that had 0 genes with bonf < 0.05 (these were: amikacin, impipenem, and pipTazo)
+levels(as.factor(giantMatrixAllAbxSigEmpBonf$Abx))
+# make new column with the number of isolates the gene is found in 
+head(as.numeric(giantMatrixAllAbxSigEmpBonf$Number_pos_present_in))
+giantMatrixAllAbxSigEmpBonf$Number_pos_present_in <- as.numeric(giantMatrixAllAbxSigEmpBonf$Number_pos_present_in )
+giantMatrixAllAbxSigEmpBonf$Number_neg_present_in <- as.numeric(giantMatrixAllAbxSigEmpBonf$Number_neg_present_in)
+giantMatrixAllAbxSigEmpBonf$Number_present_in <- giantMatrixAllAbxSigEmpBonf$Number_pos_present_in + giantMatrixAllAbxSigEmpBonf$Number_neg_present_in
 # extract out only the columns we're interested in (can always get the others later)
-giantMatrixAllAbxSigEmpBonfSml <- giantMatrixAllAbxSigEmpBonf[,c(1,3,10,12,19,20)]
+giantMatrixAllAbxSigEmpBonfSml <- giantMatrixAllAbxSigEmpBonf[,c(1,3,10,12,19,20,21)]
 as.factor(giantMatrixAllAbxSigEmpBonfSml$Gene)
 nlevels(as.factor(giantMatrixAllAbxSigEmpBonfSml$Gene))
-
+nlevels(as.factor(giantMatrixAllAbxSigEmpBonfSml$Abx))
 
 # want a new column with the number of times that gene is seen in the entire dataset
+# What I actually wanted: # of isolates that gene was found in 
+# What I got instead: # of antibiotics that gene was found in 
 library(dplyr)
-giantMatrixAllAbxSigEmpBonfSmlCount <- giantMatrixAllAbxSigEmpBonfSml %>% group_by(Gene) %>% mutate(Count=n_distinct(Abx))
+giantMatrixAllAbxSigEmpBonfSmlCount <- giantMatrixAllAbxSigEmpBonfSml %>% group_by(Gene) %>% mutate(Num_Abx_Pres_In=n_distinct(Abx))
+colnames(giantMatrixAllAbxSigEmpBonfSmlCount)
 # yay! This is exactly what I want! 
 
 library(ggplot2)
 library(viridis)
 heatmap <- ggplot(giantMatrixAllAbxSigEmpBonfSmlCount, aes(x = Abx, Gene)) +
-  geom_tile(aes(fill = Count)) + theme_classic() + theme(axis.text.y = element_text(size = 2),axis.text.x = element_text(angle=45,vjust=0.5,size = 8)) # + scale_fill_viridis(option="magma",direction=-1)
+  geom_tile(aes(fill = Number_present_in)) + theme_classic() + theme(axis.text.y = element_text(size = 2),axis.text.x = element_text(angle=45,vjust=0.5,size = 8))  + scale_fill_viridis(option="magma",direction=-1)
 
 
-pdf("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/Visualizations/heatmap1.pdf")
+pdf("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/Visualizations/heatmap_num_pres_in.pdf")
 heatmap
 dev.off()
 
@@ -622,9 +633,16 @@ library(pheatmap)
 # try hierarchical clustering manually first 
 # using Odds ratio and/or empirical p value 
 str(giantMatrixAllAbxSigEmpBonfSmlCount)
-clusters <- hclust(dist(giantMatrixAllAbxSigEmpBonfSmlCount[, 1,3]))
+# clusters <- hclust(dist(giantMatrixAllAbxSigEmpBonfSmlCount[, 1,3]))
 
-ecoliMatrix <- giantMatrixAllAbxSigEmpBonfSmlCount[,c(1,2,6,7)]
+ecoliMatrix <- giantMatrixAllAbxSigEmpBonfSmlCount[,c(1,2,3,6,7,8)]
+typeof(ecoliMatrix)
+str(ecoliMatrix)
+typeof(ecoliMatrix$Num_Abx_Pres_In)
+ecoliMatrix$Num_Abx_Pres_In <- as.numeric(ecoliMatrix$Num_Abx_Pres_In)
+ecoliMatrix$Number_present_in <- as.numeric(ecoliMatrix$Number_present_in)
+typeof(ecoliMatrix$Num_Abx_Pres_In)
+nlevels(as.factor(ecoliMatrix$Abx))
 
 library(tidyr)
 # The arguments to spread():
@@ -633,35 +651,88 @@ library(tidyr)
 # - value: Name of column containing values
 library(reshape2)
 
-data_wide <- dcast(ecoliMatrix, Gene + Annotation ~ Abx, value.var="Count")
-data_wide
+data_wide_num_abx <- dcast(ecoliMatrix, Gene + Annotation ~ Abx, value.var="Num_Abx_Pres_In")
+data_wide_num_abx
+write.csv(data_wide_num_abx,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/data_wide.csv")
+rownames(data_wide_num_abx) <- data_wide_num_abx$Gene
+heatmap_data_num_abx <- data_wide_num_abx[,c(3:18)]
+str(heatmap_data_num_abx)
+typeof(heatmap_data_num_abx)
+heatmap_data_num_abx <- as.data.frame(heatmap_data_num_abx)
+typeof(heatmap_data_num_abx)
+sigGenesAll <- heatmap_data_num_abx
 
+data_wide_num_iso <- dcast(ecoliMatrix, Gene + Annotation ~ Abx, value.var="Number_present_in")
+data_wide_num_iso
+write.csv(data_wide_num_iso,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/data_wide.csv")
+rownames(data_wide_num_iso) <- data_wide_num_iso$Gene
+heatmap_data_num_iso <- data_wide_num_iso[,c(3:18)]
+str(heatmap_data_num_iso)
+typeof(heatmap_data_num_iso)
+heatmap_data_num_iso <- as.data.frame(heatmap_data_num_iso)
+typeof(heatmap_data_num_iso)
+sigGenesAll <- heatmap_data_num_iso
 
-heatmap_data <- data_wide[,c(1,3:18)]
-str(heatmap_data)
-typeof(heatmap_data)
-heatmap_data <- as.data.frame(heatmap_data)
-typeof(heatmap_data)
-heatmap_data_num <- heatmap_data %>% as.numeric(heatmap_data[,c(2:17)])
+# sigGenesAll <- cbind(rownames(sigGenesAll), data.frame(sigGenesAll, row.names=NULL))
+# sigGenesAllAnno <- inner_join(sigGenesAll,gene_pres_abs,by=c("rownames(sigGenesAll)"="Gene"))
+# sigGenesAllAnno2 <- cbind(sigGenesAllAnno[,c(1,15:17,2:14)])
+# write.csv(sigGenesAllAnno2,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/sigGenesAllAnno.csv")
+
+# Need to break up sigGenesAllAnno file into antibiotic classes
+# Misc: Gentamicin, chloramphenicol, trimeth-sulfameth
+misc <- data_wide[,c(10,13,18)]
+misc.1 <- misc[rowSums(is.na(misc)) != ncol(misc), ]
+write.csv(misc.1,file="miscellaneuous_abx.csv")
+# penicillions: ampicillin, clavamox
+penicillins <- data_wide[,c(3,4)]
+penicillins.1 <- penicillins[rowSums(is.na(penicillins)) != ncol(penicillins), ]
+# cephalosporins: cefalexin, cefazolin, cefovecin, cefpodoxime, ceftazidime
+cephalosporins <- data_wide[,c(5:9)]
+cephalosporins.1 <- cephalosporins[rowSums(is.na(cephalosporins)) != ncol(cephalosporins), ]
+# fluoroquinolones: enrofloxacin, marbofloxacin, orbifloxacin,pradofloxacin 
+fluoroquinolones <- data_wide[,c(12,14:16)]
+fluoroquinolones.1 <- fluoroquinolones[rowSums(is.na(fluoroquinolones)) != ncol(fluoroquinolones), ]
+# tetracyclines: doxycycline, tetracyclineb
+tetracyclines <- data_wide[,c(11,17)]
+tetracyclines.1 <- tetracyclines[rowSums(is.na(tetracyclines)) != ncol(tetracyclines), ]
+
 pheatmap(heatmap_data,main = "pheatmap default",cluster_rows = F, cluster_cols = F)
 
-# now that we have that in order, let's actually go in and manually add in our annotations 
-library(DataEditR)
-data_wideAnno <- data_edit(data_wide,save_as = "ecoliMatrixWide_anno.txt",code="wideMatrixAnno.R")
-data_edit(data_wide, )
 
-testHeatmap <- pheatmap(data_wide, 
-         color = diverging_hcl(7,palette = "Blue-Red 2"),
-         annotation_col= my_sample_col,
-         annotation_colors = ann_colors,
+pdf("misc_heatmap.pdf")
+pheatmap(misc.1, main = "misc",cluster_rows = F, cluster_cols = F,fontsize_row=2.5)
+dev.off()
+
+pdf("penicillins_heatmap.pdf")
+pheatmap(penicillins.1, main = "Penicillins",cluster_rows = F, cluster_cols = F,fontsize_row=2.5)
+dev.off()
+
+pdf("cephalosporins_heatmap.pdf")
+pheatmap(cephalosporins.1, main = "Cephalosporins",cluster_rows = F, cluster_cols = F,fontsize_row=2.5)
+dev.off()
+
+pdf("fluoroquinolones_heatmap.pdf")
+pheatmap(fluoroquinolones.1, main = "Fluroquinolones",cluster_rows = F, cluster_cols = F,fontsize_row=2.5)
+dev.off()
+
+pdf("tetracyclines_heatmap.pdf")
+pheatmap(tetracyclines.1, main = "Tetracyclines",cluster_rows = F, cluster_cols = F,fontsize_row =2.5)
+dev.off()
+
+library(colorspace)
+testHeatmap <- pheatmap(tetracyclines.1, 
+         color = sequential_hcl(13,palette = "Mako"),
          cluster_rows = FALSE,
-         gaps_row = head(as.numeric(cumsum(gaps)),-1), 
-         cutree_cols = 3,
-         fontsize = 5,
+         cluster_cols = FALSE,
+         # gaps_row = head(as.numeric(cumsum(gaps)),-1), 
+         # cutree_cols = 3,
+         fontsize = 2,
          fontsize_col = 8,
-         show_rownames = FALSE
+         show_rownames = TRUE
          )
-
+pdf("test.pdf")
+testHeatmap
+dev.off()
 
 ```
 

@@ -9,7 +9,7 @@ cp /shared_data/genome_db/BLAST_NCBI/nr* ./
 
 
 blastp -outfmt "6 qseqid sseqid sacc sgi qaccver piden length mismatch gapopen qstart qend sstart send evalue bitscore" \
--query /workdir/hcm59/Ecoli/SNPs/dog_verified_host/blastp/ecoli_all_proteins_out.fasta -db nr -out ./ecoli_all.out -num_threads 36 -max_target_seqs 5
+-query /workdir/hcm59/Ecoli/SNPs/dog_verified_host/ecoli_all_proteins_out_corrected.fasta -db nr -out ./ecoli_all_corr_blastp.out -num_threads 36 -max_target_seqs 2
 
 # Outputs:
 # qseqid means Query Seq-id
@@ -35,7 +35,7 @@ blastp -outfmt "6 qseqid sseqid sacc sgi qaccver piden length mismatch gapopen q
 # Use the following awk command to pick the first line of each query:
 awk '!seen[$1]++' ecoli_acc_proteins_blastp_accVer_sort.txt > ecoli_acc_proteins_blastp_accVer_sort_filt.txt
 
-awk -F"\t" '!_[$1]++' ecoli_all_prot_sci_Name.out > ecoli_all_prot_sci_Name_unique.out
+awk -F"\t" '!_[$1]++' ecoli_all.out > ecoli_all_unique.out
 
 #    qgi means Query GI
 #   qacc means Query accesion

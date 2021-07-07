@@ -54,12 +54,12 @@ test$Assembly <- substr(test$Assembly, 1, regexpr("\\.", test$Assembly)-1)
 test$Assembly
 phenAllFinal <- test
 # read in file of dog samples wanted 
-dogsWanted <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenDogs_samples_wanted.txt",header=FALSE)
-colnames(dogsWanted) <- c("Assembly")
+# dogsWanted <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenDogs_samples_wanted.txt",header=FALSE)
+# colnames(dogsWanted) <- c("Assembly")
 # join with phenotype data
-dogs601 <- dplyr::inner_join(phenAll,dogsWanted,by="Assembly")
-write.csv(phenAllFinal,"/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
-
+# dogs601 <- dplyr::inner_join(phenAll,dogsWanted,by="Assembly")
+# write.csv(phenAllFinal,"/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
+dogs601 <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
 ```
 
 ```{r phen_subset,include=FALSE}
@@ -72,7 +72,7 @@ library(reshape2)
 
 
 # find all instances of "SUSC" and replace with 0
-install.packages("tidyverse")
+# install.packages("tidyverse")
 library(tidyverse)
 phen.sub.0 <- Phen %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
 phen.sub.0
@@ -80,7 +80,7 @@ phen.sub.0
 phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
 phen.sub.01.1 <- phen.sub.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
 phen.sub.01.2 <- phen.sub.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
-View(phen.sub.01.2)
+# View(phen.sub.01.2)
 phen.sub.01.3 <- phen.sub.01.2 %>% mutate_all(na_if,"")
 
 
@@ -88,17 +88,17 @@ rownames(phen.sub.01.3) <- dogs601$Assembly
 rownames(phen.sub.01.3)
 View(phen.sub.01.3)
 phen.sub.01.4 <- phen.sub.01.3[,c(1,3:104)]
-View(phen.sub.01.4)
+# View(phen.sub.01.4)
 str(phen.sub.01.4)
 
 #export whole pheno file 
-write.csv(phen.sub.01.4, file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/pheno601Dogs_cleaned.csv")
+# write.csv(phen.sub.01.4, file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/pheno601Dogs_cleaned.csv")
 
 #subset phenotype file into isolation source
 isolationSource601Dogs <- as.data.frame(cbind(rownames(phen.sub.01.4),phen.sub.01.4$Isolation.Source,phen.sub.01.4$Isolation.Source))
 colnames(isolationSource601Dogs) <- c("Sample","Source","SourceClean")
 # export as txt file for use in iTOL 
-write.table(isolationSource601Dogs,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/isolationSourcePheno601Dogs.txt",quote=F, row.names = F)
+# write.table(isolationSource601Dogs,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/isolationSourcePheno601Dogs.txt",quote=F, row.names = F)
 
 
 ```
@@ -151,7 +151,50 @@ isolationSourceClean
 
 ```
 
+```{r pheno_curation, include=FALSE}
+# combine cefalexin and cephalexin columns into one 
+# did this in excel
+# read back in .csv 
+phenCefComb <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819_Cef_Combined.csv")
 
+library(tidyverse)
+phenCefComb.0 <- phenCefComb %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
+phenCefComb.0
+# worked! # now do that to RESIST and convert NOINTP
+phenCefComb.01 <- phenCefComb.0%>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
+phenCefComb.01.1 <- phenCefComb.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
+phenCefComb.01.2 <- phenCefComb.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
+# View(phen.sub.01.2)
+phenCefComb.01.3 <- phenCefComb.01.2 %>% mutate_all(na_if,"")
+
+
+rownames(phenCefComb.01.3) <- dogs601$Assembly
+rownames(phenCefComb.01.3)
+View(phenCefComb.01.3)
+phenCefComb.01.4 <- phenCefComb.01.3[,c(2:336)]
+phenCefCombHeader <- colnames(phenCefComb.01.4)
+phenCefCombHeader
+headr.want <- c(grep("Assembly",phenCefCombHeader),grep("Strain",phenCefCombHeader),grep("Isolation.Source",phenCefCombHeader),grep("Assembly",phenCefCombHeader),grep("sample.ID.",phenCefCombHeader),grep("INT",phenCefCombHeader),grep("specific.host",phenCefCombHeader))
+headr.want 
+phenCefComb.01.4.short <- phenCefComb.01.4[headr.want]
+# table(phenCefComb.01.4.short$Strain.x == phenCefComb.01.4.short$Strain.y)
+write.csv(phenCefComb.01.4.short,file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenoCefComb.csv") 
+# View(phen.sub.01.4)
+str(phen.sub.01.4)
+
+abxOccurences <- read.table(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/abxResistOccurences.txt")
+
+library(ggplot2)
+setwd("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/")
+pdf("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/dist_resist_phenos.pdf")
+qplot(abxOccurences$V2,binwidth=1, geom="histogram"  ,  main = "", 
+      xlab = "# Antibiotics Resistant To", ylab="# Isolates", 
+      fill=I("turquoise"), 
+      col=I("darkturquoise")) + geom_vline(xintercept=2)
+dev.off()
+
+
+```
 
 
 ## R Markdown

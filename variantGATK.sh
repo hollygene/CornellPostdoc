@@ -33,24 +33,24 @@ done
 # mark Illumina adapters
 #######################################################################################
 #
-# mkdir ${unmapped_bams}/TMP
-#
-# for file in ${unmapped_bams}/*_fastqtosam.bam
-#
-# do
-#
-# FBASE=$(basename $file _fastqtosam.bam)
-# BASE=${FBASE%_fastqtosam.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
-# I=${unmapped_bams}/${BASE}_fastqtosam.bam \
-# O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-# M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
-# TMP_DIR=${unmapped_bams}/TMP \
-# USE_JDK_DEFLATER=true \
-# USE_JDK_INFLATER=true
-#
-# done
+mkdir ${unmapped_bams}/TMP
+
+for file in ${unmapped_bams}/*_fastqtosam.bam
+
+do
+
+FBASE=$(basename $file _fastqtosam.bam)
+BASE=${FBASE%_fastqtosam.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar MarkIlluminaAdapters \
+I=${unmapped_bams}/${BASE}_fastqtosam.bam \
+O=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+M=${unmapped_bams}/${BASE}_markilluminaadapters_metrics.txt \
+TMP_DIR=${unmapped_bams}/TMP \
+USE_JDK_DEFLATER=true \
+USE_JDK_INFLATER=true
+
+done
 
 
 #######################################################################################
@@ -58,40 +58,40 @@ done
 # #
 #
 #
-# for file in ${unmapped_bams}/*_markilluminaadapters.bam
-#
-# do
-#
-# FBASE=$(basename $file _markilluminaadapters.bam)
-# BASE=${FBASE%_markilluminaadapters.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
-#       I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-#       MODE=VERBOSE
-#
-# done
+for file in ${unmapped_bams}/*_markilluminaadapters.bam
+
+do
+
+FBASE=$(basename $file _markilluminaadapters.bam)
+BASE=${FBASE%_markilluminaadapters.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar ValidateSamFile \
+      I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+      MODE=VERBOSE
+
+done
 
 #######################################################################################
 # convert BAM to FASTQ and discount adapter sequences using SamToFastq
 #######################################################################################
 
-# for file in ${unmapped_bams}/*_markilluminaadapters.bam
-#
-# do
-#
-# FBASE=$(basename $file _markilluminaadapters.bam)
-# BASE=${FBASE%_markilluminaadapters.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
-# I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-# FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
-# CLIPPING_ATTRIBUTE=XT \
-# CLIPPING_ACTION=2 \
-# INTERLEAVE=true \
-# NON_PF=true \
-# TMP_DIR=${unmapped_bams}/TMP
-#
-# done
+for file in ${unmapped_bams}/*_markilluminaadapters.bam
+
+do
+
+FBASE=$(basename $file _markilluminaadapters.bam)
+BASE=${FBASE%_markilluminaadapters.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
+I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+FASTQ=${unmapped_bams}/${BASE}_samtofastq_interleaved.fq \
+CLIPPING_ATTRIBUTE=XT \
+CLIPPING_ACTION=2 \
+INTERLEAVE=true \
+NON_PF=true \
+TMP_DIR=${unmapped_bams}/TMP
+
+done
 
 
 #######################################################################################
@@ -104,9 +104,9 @@ done
 bwa index ${ref_genome}
 
 #ref genome seems to have spaces
-sed 's/\s*$//g' UP000000625_83333_DNA.fasta > UP000000625_83333_DNA_spRm.fasta
+# sed 's/\s*$//g' UP000000625_83333_DNA.fasta > UP000000625_83333_DNA_spRm.fasta
 
-bwa index ${ref_genome}
+# bwa index ${ref_genome}
 
 #
 for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
@@ -116,7 +116,7 @@ do
 FBASE=$(basename $file _samtofastq_interleaved.fq)
 BASE=${FBASE%_samtofastq_interleaved.fq}
 
-bwa mem -M -p -t 12 /workdir/hcm59/Ecoli/SNPs/GATK_SNP_calling/unmapped_bams/UP000000625_83333_DNA_spRm.fasta \
+bwa mem -M -p -t 12 ${ref_genome} \
 ${unmapped_bams}/${BASE}_samtofastq_interleaved.fq > ${output_directory}/${BASE}_bwa_mem.sam
 
 done
@@ -124,36 +124,36 @@ done
 
 java -jar /programs/picard-tools-2.19.2/picard.jar CreateSequenceDictionary \
       R=${ref_genome} \
-      O=UP000000625_83333.dict
+      O=CP023367_E_coli_strain_1428_complete_genome.dict
 
 
 # Piped command: SamToFastq, then bwa mem, then MergeBamAlignment
-# mkdir ${mapped_bams}
+mkdir ${mapped_bams}
 
-# for file in ${unmapped_bams}/*_markilluminaadapters.bam
-#
-# do
-#
-# FBASE=$(basename $file _markilluminaadapters.bam)
-# BASE=${FBASE%_markilluminaadapters.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
-# I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
-# FASTQ=/dev/stdout \
-# CLIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=true NON_PF=true \
-# TMP_DIR=${unmapped_bams}/TMP | \
-# bwa mem -M -t 7 -p ${ref_genome} /dev/stdin| \
-# java -jar /programs/picard-tools-2.19.2/picard.jar MergeBamAlignment \
-# ALIGNED_BAM=/dev/stdin \
-# UNMAPPED_BAM=${unmapped_bams}/${BASE}_fastqtosam.bam \
-# OUTPUT=${unmapped_bams}/${BASE}_piped.bam \
-# R=${ref_genome} CREATE_INDEX=true ADD_MATE_CIGAR=true \
-# CLIP_ADAPTERS=false CLIP_OVERLAPPING_READS=true \
-# INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 \
-# PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS \
-# TMP_DIR=${unmapped_bams}/TMP
-#
-# done
+for file in ${unmapped_bams}/*_markilluminaadapters.bam
+
+do
+
+FBASE=$(basename $file _markilluminaadapters.bam)
+BASE=${FBASE%_markilluminaadapters.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar SamToFastq \
+I=${unmapped_bams}/${BASE}_markilluminaadapters.bam \
+FASTQ=/dev/stdout \
+CLIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=true NON_PF=true \
+TMP_DIR=${unmapped_bams}/TMP | \
+bwa mem -M -t 7 -p ${ref_genome} /dev/stdin| \
+java -jar /programs/picard-tools-2.19.2/picard.jar MergeBamAlignment \
+ALIGNED_BAM=/dev/stdin \
+UNMAPPED_BAM=${unmapped_bams}/${BASE}_fastqtosam.bam \
+OUTPUT=${unmapped_bams}/${BASE}_piped.bam \
+R=${ref_genome} CREATE_INDEX=true ADD_MATE_CIGAR=true \
+CLIP_ADAPTERS=false CLIP_OVERLAPPING_READS=true \
+INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 \
+PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS \
+TMP_DIR=${unmapped_bams}/TMP
+
+done
 
 
 # # ###################################################################################################
@@ -164,20 +164,20 @@ java -jar /programs/picard-tools-2.19.2/picard.jar CreateSequenceDictionary \
 # # ###################################################################################################
 
 
-# for file in ${unmapped_bams}/*_piped.bam
-#
-# do
-#
-# FBASE=$(basename $file _piped.bam)
-# BASE=${FBASE%_piped.bam}
-#
-# java -jar /programs/picard-tools-2.19.2/picard.jar MarkDuplicates \
-# REMOVE_DUPLICATES=TRUE \
-# I=${unmapped_bams}/${BASE}_piped.bam \
-# O=${mapped_bams}/${BASE}_removedDuplicates.bam \
-# M=${unmapped_bams}/${BASE}_removedDupsMetrics.txt
-#
-# done
+for file in ${unmapped_bams}/*_piped.bam
+
+do
+
+FBASE=$(basename $file _piped.bam)
+BASE=${FBASE%_piped.bam}
+
+java -jar /programs/picard-tools-2.19.2/picard.jar MarkDuplicates \
+REMOVE_DUPLICATES=TRUE \
+I=${unmapped_bams}/${BASE}_piped.bam \
+O=${mapped_bams}/${BASE}_removedDuplicates.bam \
+M=${mapped_bams}/${BASE}_removedDupsMetrics.txt
+
+done
 
 
 #
