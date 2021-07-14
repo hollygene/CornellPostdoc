@@ -262,7 +262,6 @@ def retrieveUniprot(dic):
 		item=item.split('\t')
 		gi_to_uniparc[item]=item
 		toPrint_uniparc.append(item[1])
-
 	#Retrieve uniprot IDs from uniparc
 	params2 = {
 	'from':'UPARC',
@@ -271,12 +270,23 @@ def retrieveUniprot(dic):
 	'query':'	'.join(toPrint_uniparc)
 	}
 
+	# data2 = urllib.parse.urlencode(params2)
+	# request2 = urllib.request.Request(url, data2)
+	# contact = "hmcqueary@cornell.edu" # Please set your email address here to help us debug in case of problems.
+	# request2.add_header('User-Agent', 'Python %s' % contact)
+	# response2 = urllib.request.urlopen(request2)
+	# page2 = response2.read(200000)
+
+
 	data2 = urllib.parse.urlencode(params2)
-	request2 = urllib.request.Request(url, data2)
-	contact = "hmcqueary@cornell.edu" # Please set your email address here to help us debug in case of problems.
-	request2.add_header('User-Agent', 'Python %s' % contact)
-	response2 = urllib.request.urlopen(request2)
-	page2 = response2.read(200000)
+	data2 = data2.encode('utf-8')
+	req2 = urllib.request.Request(url, data2)
+	with urllib.request.urlopen(req2) as f:
+		response2 = f.read()
+	print(response2.decode('utf-8'))
+
+
+##############################################################################################
 
 	uniparc_to_uniprot={}
 	line_uniprot=page2.split('\n')[1:-1]
