@@ -259,7 +259,7 @@ def retrieveUniprot(dic):
 	response=response.decode('utf-8')
 	line_uniparc=response.split('\n')[1:-1]
 	for item in line_uniparc:
-		item=item.split('\t')
+		item=item.split(b'\t')
 		gi_to_uniparc[item]=item
 		toPrint_uniparc.append(item[1])
 
