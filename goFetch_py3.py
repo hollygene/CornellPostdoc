@@ -260,7 +260,7 @@ def retrieveUniprot(dic):
 	line_uniparc=response.split('\n')[1:-1]
 	for item in line_uniparc:
 		item=item.split('\t')
-		gi_to_uniparc[item[0]]=item[1]
+		gi_to_uniparc[item]=item
 		toPrint_uniparc.append(item[1])
 
 	#Retrieve uniprot IDs from uniparc
