@@ -289,10 +289,11 @@ def retrieveUniprot(dic):
 ##############################################################################################
 
 	uniparc_to_uniprot={}
-	line_uniprot=page2.split('\n')[1:-1]
+	response2=response2.decode('utf-8')
+	line_uniprot=response2.split('\n')[1:-1]
 	for item in line_uniprot:
 		item=item.split('\t')
-		uniparc_to_uniprot[item[0]]=item[1]
+		uniparc_to_uniprot[item]=item
 
 	for key, value in list(dic.items()): #genegroup
 		for k,v in list(value[2].items()): #geneID
