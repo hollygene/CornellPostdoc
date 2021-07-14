@@ -273,6 +273,7 @@ def retrieveUniprot(dic):
 
 	data2 = urllib.parse.urlencode(params2)
 	request2 = urllib.request.Request(url, data2)
+	contact = "hmcqueary@cornell.edu" # Please set your email address here to help us debug in case of problems.
 	request2.add_header('User-Agent', 'Python %s' % contact)
 	response2 = urllib.request.urlopen(request2)
 	page2 = response2.read(200000)
