@@ -1,4 +1,4 @@
-python goFetch_py3.py -g /workdir/hcm59/Ecoli/Scoary_analyses/goFetch/gene_presence_absence_roary.csv -i /workdir/hcm59/Ecoli/Scoary_analyses/goFetch/Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv -d '/workdir/hcm59/Ecoli/Scoary_analyses/goFetch/gff_files/'
+python goFetch_py3.py -g /workdir/hcm59/Ecoli/Scoary_analyses/goFetch/gene_PA_example.csv -i /workdir/hcm59/Ecoli/Scoary_analyses/goFetch/clavamox_example.csv -d '/workdir/hcm59/Ecoli/Scoary_analyses/goFetch/gff_files/'
 
 
 
@@ -47,5 +47,5 @@ request.add_header('User-Agent', 'Python %s' % contact)
 with urllib.request.urlopen(req,data=data) as f:
     resp = f.read()
     print(resp)
-response = urllib.request.urlopen(request)
+# response = urllib.request.urlopen(request)
 page = response.read(200000)

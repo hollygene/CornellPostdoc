@@ -1,0 +1,59 @@
+---
+title: "galaxy output visualizations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggpubr)
+library(stringr)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r load_data, include=TRUE}
+staramr_output <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/staramrGalaxy_output.txt",header=TRUE,sep="\t")
+
+# want to get rid of everything after the first .1 so that I can combine datasets with this same type of identifier 
+data_clean_phrase <- c("GCA_012245225.1_PDT000477478.1_genomic.fna", 
+                       "GCA_012246585.1_PDT000477476.1_genomic.fna")
+out <- stringr::str_extract(data_clean_phrase, "^(.*?.1_)") # including the @
+# this leaves me with a trailing underscore (_) - should be easy enough to get rid of 
+out.2 <- str_remove_all(out, "[_]")
+
+# make this into a function so can use it with apply across the entire dataframe
+A <- function(x) {
+  x.1 <- stringr::str_extract(x, "^(.*?.1_)") 
+  out.2 <- str_remove_all(x.1, "[_]")
+  return(out.2)
+}
+
+
+staramr_output_clean <- data.frame( apply(staramr_output[1],2, A), staramr_output[2:11])
+
+
+
+
+
+  
+  
+  
+  
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -26,7 +26,7 @@ gene_pres_abs <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ gen
 
 blastp <- read.table("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/ecoli_all_unique.out",header=FALSE)
 colnames(blastp) <- c("qseqid","sseqid","sacc","sgi","qaccver","length","mismatch","gapopen","qstart","qend","sstart","send","evalue","bitscore")
-gene_key <- blastp[,c(1,3)]  
+gene_key <- blastp[,c(1,3,4)]  
 AMR_genes_NCBI <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/AMRFinder_known_genes_NCBI_3.1.21.tsv",header=TRUE,sep="\t")
 write.csv(gene_key, file="/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gene_key_all.csv")
 # gene_key <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gi_gene_key_all_acc.csv",header=TRUE)
@@ -52,7 +52,7 @@ AMR_genes_NCBI_refseq_clean <- as.data.frame(AMR_genes_NCBI_refseq_clean)
 
 # annotate the scoary output with genbank ids 
 
-
+sigAssocGeneIDs <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/sigAssocGenesIDs.txt",sep="\t",header=FALSE)
 
 sigGenes <- sapply(dataFiles,FUN = function(x) subset(x, Empirical_p<0.05 ),simplify = FALSE,USE.NAMES = TRUE)
 sigResistAssoc <- sapply(sigGenes,FUN = function(x) subset(x, Odds_ratio>1 ),simplify = FALSE,USE.NAMES = TRUE)
@@ -65,44 +65,63 @@ sigResistAssocBonf <- sapply(sigResistAssoc,FUN = function(x) subset(x, Bonferro
 # x = dataFiles y=AMR_genes_NCBI 
 # this will give us the novel AMR-associated genes 
 
-amikacin <- sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`
-amox_clauv_acid <- sigResistAssoc$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
+amikacin <- sigResistAssocBonf$`./Amikacin.INT_15_04_2021_1732.results.csv`
+write.csv(amikacin,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/amikacin_sig_genes.csv")
+amox_clauv_acid <- sigResistAssocBonf$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
+write.csv(amox_clauv_acid,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/clavamox_sig_genes.csv")
+clavamox_sig_IDs <- dplyr::inner_join(sigAssocGeneIDs,amox_clauv_acid,by=c("V1"="Gene"))
 # amox <- sigResistAssoc$`./Amoxicillin.INT_15_04_2021_1732.results.csv`
-amp <- sigResistAssoc$`./Ampicillin.INT_15_04_2021_1732.results.csv`
-cefalexin <- sigResistAssoc$`./Cefalexin.INT_15_04_2021_1732.results.csv`
+amp <- sigResistAssocBonf$`./Ampicillin.INT_15_04_2021_1732.results.csv`
+write.csv(amp,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/amp_sig_genes.csv")
+cefalexin <- sigResistAssocBonf$`./Cefalexin.INT_15_04_2021_1732.results.csv`
 #cefalexin and cephalexin are the SAME THING, combine?
-cephalexin <- sigResistAssoc$`./Cephalexin.INT_15_04_2021_1732.results.csv`
+cephalexin <- sigResistAssocBonf$`./Cephalexin.INT_15_04_2021_1732.results.csv`
 cefalexin.comb <- rbind(cefalexin,cephalexin)
-cefazolin <- sigResistAssoc$`./Cefazolin.INT_15_04_2021_1732.results.csv`
-cefovecin <-  sigResistAssoc$`./Cefovecin.INT_15_04_2021_1732.results.csv`
+write.csv(cefalexin.comb,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/cefalexin_sig_genes.csv")
+cefazolin <- sigResistAssocBonf$`./Cefazolin.INT_15_04_2021_1732.results.csv`
+write.csv(cefazolin,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/cefazolin_sig_genes.csv")
+cefovecin <-  sigResistAssocBonf$`./Cefovecin.INT_15_04_2021_1732.results.csv`
+write.csv(cefovecin,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/cefovecin_sig_genes.csv")
 # cefoxitin <- sigResistAssoc$`./Cefoxitin.INT_15_04_2021_1732.results.csv`
-cefpodoxime <- sigResistAssoc$`./Cefpodoxime.INT_15_04_2021_1732.results.csv`
-ceftazidime <- sigResistAssoc$`./Ceftazidime.INT_15_04_2021_1732.results.csv`
+cefpodoxime <- sigResistAssocBonf$`./Cefpodoxime.INT_15_04_2021_1732.results.csv`
+write.csv(cefpodoxime,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/cefpodoxime_sig_genes.csv")
+ceftazidime <- sigResistAssocBonf$`./Ceftazidime.INT_15_04_2021_1732.results.csv`
+write.csv(ceftazidime,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/ceftazidime_sig_genes.csv")
 # ceftiofur <- sigResistAssoc$`./Ceftiofur.INT_15_04_2021_1732.results.csv`
 # cephalothin <- sigResistAssoc$`./Cephalothin.INT_15_04_2021_1732.results.csv`
-chloram <- sigResistAssoc$`./Chloramphenicol.INT_15_04_2021_1732.results.csv`
+chloram <- sigResistAssocBonf$`./Chloramphenicol.INT_15_04_2021_1732.results.csv`
+write.csv(chloram,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/chloram_sig_genes.csv")
 # clindamycin <- sigResistAssoc$`./Clindamycin.INT_15_04_2021_1732.results.csv`
-doxy <- sigResistAssoc$`./Doxycycline.INT_15_04_2021_1732.results.csv`
-enro <- sigResistAssoc$`./Enrofloxacin.INT_15_04_2021_1732.results.csv`
+doxy <- sigResistAssocBonf$`./Doxycycline.INT_15_04_2021_1732.results.csv`
+write.csv(doxy,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/doxy_sig_genes.csv")
+enro <- sigResistAssocBonf$`./Enrofloxacin.INT_15_04_2021_1732.results.csv`
+write.csv(enro,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/enro_sig_genes.csv")
 # erythro <- sigResistAssoc$`./Erythromycin.INT_15_04_2021_1732.results.csv`
-gentamicin <- sigResistAssoc$`./Gentamicin.INT_15_04_2021_1732.results.csv`
+gentamicin <- sigResistAssocBonf$`./Gentamicin.INT_15_04_2021_1732.results.csv`
+write.csv(gentamicin,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/gentamicin_sig_genes.csv")
 imipenem <- sigResistAssoc$`./Imipenem.INT_15_04_2021_1732.results.csv`
-marbo <- sigResistAssoc$`./Marbofloxacin.INT_15_04_2021_1732.results.csv`
+write.csv(imipenem,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/imipenem_sig_genes.csv")
+marbo <- sigResistAssocBonf$`./Marbofloxacin.INT_15_04_2021_1732.results.csv`
+write.csv(marbo,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/marbo_sig_genes.csv")
 # neo <- sigResistAssoc$`./Neomycin.INT_15_04_2021_1732.results.csv`
 # nitro <- sigResistAssoc$`./Nitrofurantoin.INT_15_04_2021_1732.results.csv`
-orbi <- sigResistAssoc$`./Orbifloxacin.INT_15_04_2021_1732.results.csv`
+orbi <- sigResistAssocBonf$`./Orbifloxacin.INT_15_04_2021_1732.results.csv`
+write.csv(orbi,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/orbi_sig_genes.csv")
 # oxacillin <- sigResistAssoc$`./Oxacillin...2..NaCl.INT_15_04_2021_1732.results.csv`
 # penicillin.G <- sigResistAssoc$`./Penicillin.G.INT_15_04_2021_1732.results.csv`
 # penicillin <- sigResistAssoc$`./Penicillin.INT_15_04_2021_1732.results.csv`
 # piperacillin <- sigResistAssoc$`./Piperacillin.INT_15_04_2021_1732.results.csv`
-pipTazo <- sigResistAssoc$`./Piperacillin.Tazobactam.INT_15_04_2021_1732.results.csv`
-prado <- sigResistAssoc$`./Pradofloxacin.INT_15_04_2021_1732.results.csv`
-tetracycline <- sigResistAssoc$`./Tetracycline.INT_15_04_2021_1732.results.csv`
+pipTazo <- sigResistAssocBonf$`./Piperacillin.Tazobactam.INT_15_04_2021_1732.results.csv`
+write.csv(pipTazo,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/pipTazo_sig_genes.csv")
+prado <- sigResistAssocBonf$`./Pradofloxacin.INT_15_04_2021_1732.results.csv`
+write.csv(prado,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/prado_sig_genes.csv")
+tetracycline <- sigResistAssocBonf$`./Tetracycline.INT_15_04_2021_1732.results.csv`
+write.csv(tetracycline,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/tetracycline_sig_genes.csv")
 # ticarc_clauv_acid <- sigResistAssoc$`./Ticarcillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`
 # ticarcillin <- sigResistAssoc$`./Ticarcillin.INT_15_04_2021_1732.results.csv`
 # tobramycin <- sigResistAssoc$`./Tobramycin.INT_15_04_2021_1732.results.csv`
-trimeth_sulfameth <- sigResistAssoc$`./Trimethoprim.Sulfamethoxazole.INT_15_04_2021_1732.results.csv`
-
+trimeth_sulfameth <- sigResistAssocBonf$`./Trimethoprim.Sulfamethoxazole.INT_15_04_2021_1732.results.csv`
+write.csv(trimeth_sulfameth,"/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/trimeth_sulfameth_sig_genes.csv")
 
 
 # first need to combine our scoary results with the gene_key
@@ -153,13 +172,13 @@ get_prot_seq_hm <- function(path_to_gene_data, x, acc_only=T){
   genepa <- x
   n = genepa[1,5]
   #only retain distinct protein sequences (only want one sequence per gene)
-  genedf_f <- genedf %>% distinct(prot_sequence,.keep_all=T)
+  # genedf_f <- genedf %>% distinct(prot_sequence,.keep_all=T)
   
   #get gene presence absence matrix in long format
   genepa_l <- suppressWarnings(genepa %>% gather(key = "seqid", val = "annotation_id",-colnames(genepa[1:14]))) 
   
   #combine two dataframes
-  genepa_comb <- left_join(genedf_f, genepa_l, by="annotation_id")
+  genepa_comb <- left_join(genedf, genepa_l, by="annotation_id")
   
   #only keep one protein sequence per gene
   genepa_comb <- genepa_comb %>% distinct(Gene, .keep_all=T)
@@ -186,18 +205,102 @@ write_fasta_out_nt <- function(genepa_comb, path_out){
   sink()
 }
 
+write_fasta_out_prot <- function(genepa_comb, path_out){
+  # write out protein fasta
+  sink(path_out)
+  for (i in 1:nrow(genepa_comb)){
+    name = noquote(paste(">",genepa_comb[i,9],sep=""))
+    cat(name,sep="\n")
+    ln <- noquote(as.character(genepa_comb[i,5]))
+    cat(ln)
+    cat("\n")
+  }
+  sink()
+}
+
+
 get_nt_fasta <- function(antibiotic,name) {
  x <- inner_join(gene_pres_abs, antibiotic,by=c("Gene" = "Gene"))
  y <- get_prot_seq_hm("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,T)
 write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",name,".fasta",sep=""))
 } 
 
+get_aa_fasta <- function(antibiotic,name) {
+ x <- inner_join(gene_pres_abs, antibiotic,by=c("Gene" = "Gene"))
+ y <- get_prot_seq_hm("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,F)
+write_fasta_out_prot(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",name,".fasta",sep=""))
+} 
 
-# get_nt_fasta(sigResistAssocBonf$`./Amoxicillin.Clavulanic.Acid.INT_15_04_2021_1732.results.csv`,"clavamox")
+get_aa_fasta(cefalexin.comb,"cefalexin")
+
+######################################################################3
+
+get_prot_seq_mod7.26 <- function(path_to_gene_data, x, acc_only){
+  ## inputs:
+  #     path_to_gene_data = "path/gene_data.csv"
+  #     path_to_gene_pres_abs = "path/gene_presence_absence_roary.csv"
+  #     acc_only = T if you want accessory genes sequences, F if you want all gene sequences 
+  
+  #read in gene data (contains sequences) and gene presence absence matrix
+  genedf <- read.csv(path_to_gene_data)
+  genepa <- x
+  n = genepa[1,5]
+  #only retain distinct protein sequences (only want one sequence per gene)
+  # genedf_f <- genedf %>% distinct(prot_sequence,.keep_all=T)
+  
+  #get gene presence absence matrix in long format
+  genepa_l <- suppressWarnings(genepa %>% gather(key = "seqid", val = "annotation_id",-colnames(genepa[1:14]))) 
+  test <- genepa_l %>% drop_na(annotation_id)
+  #combine two dataframes
+  # genepa_comb <- left_join(genedf_f, genepa_l, by="annotation_id")
+  test_comb <- inner_join(genedf,test,by="annotation_id")
+  #only keep one protein sequence per gene
+  # genepa_comb <- test_comb %>% distinct(Gene, .keep_all=T)
+  # if (acc_only == T){
+  #   #keep accessory genes
+  #   genepa_comb <- genepa_comb %>% filter(No..isolates <= n*.95)
+  # }
+  
+  return(test_comb)
+} 
 
 
-# Want to get a fasta file of the sequences from the CARD output 
-# Need to query these produced fasta files with the contigs from CARD 
+write_fasta_out_name_nt <- function(genepa_comb, path_out,pheno){
+  # write out protein fasta
+  sink(path_out)
+  for (i in 1:nrow(genepa_comb)){
+    name = noquote(paste(">",genepa_comb[i,9],"_",genepa_comb[i,1],"_",pheno,sep=""))
+    cat(name,sep="\n")
+    ln <- noquote(as.character(genepa_comb[i,6]))
+    cat(ln)
+    cat("\n")
+  }
+  sink()
+}
+
+pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+cefalexin.pheno <- as.data.frame(cbind(pheno$X,pheno$Cefalexin.INT))
+cefalexin.resist.isolates <- dplyr::filter(cefalexin.pheno,V2=='1')
+genePA_resist.cefalexin <- inner_join(genePA_long,cefalexin.resist.isolates,by=c("seqid"="V1"))
+nlevels(as.factor(genePA_resist.cefalexin$Gene))
+# get_aa_fasta <- function(antibiotic,name) {
+ x <- inner_join(genePA_resist.cefalexin, cefalexin.comb,by=c("Gene" = "Gene"))
+ y <- get_prot_seq_mod7.26("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,F)
+ y.sort <- y[order(y$Gene),]
+ write_fasta_out_name_nt(y.sort, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","cefalexin_R",".fasta",sep=""),"R")
+# } 
+
+# pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+# cefalexin.pheno <- as.data.frame(cbind(pheno$X,pheno$Cefalexin.INT))
+cefalexin.susc.isolates <- dplyr::filter(cefalexin.pheno,V2=='0')
+genePA_susc.cefalexin <- inner_join(genePA_long,cefalexin.susc.isolates,by=c("seqid"="V1"))
+nlevels(as.factor(genePA_susc.cefalexin$Gene))
+# get_aa_fasta <- function(antibiotic,name) {
+ x <- inner_join(genePA_susc.cefalexin, cefalexin.comb,by=c("Gene" = "Gene"))
+ y <- get_prot_seq_mod7.26("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,F)
+ write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","cefalexin_susc",".fasta",sep=""))
+# }
+
 
 ```
 
@@ -539,13 +642,13 @@ if (length(row.names(subset.absent)) != 0){
 # Use gene key and inner_join 
 # Try with the sapply/lapply function
 class(sigResistAssoc$`./Amikacin.INT_15_04_2021_1732.results.csv`$Gene)
-class(key.low$Query)
-genekeyRn <- key.low
-colnames(genekeyRn) <- c("Gene","ID")
-sigResistAssoc_genes <- sapply(sigResistAssoc_chr,FUN = function(x) inner_join(x,genekeyRn,by=character(),copy=TRUE),simplify = FALSE,USE.NAMES = TRUE)
+# class(key.low$Query)
+# genekeyRn <- key.low
+# colnames(genekeyRn) <- c("Gene","ID")
+# sigResistAssoc_genes <- sapply(sigResistAssoc_chr,FUN = function(x) inner_join(x,gene_key,by=character(),copy=TRUE),simplify = FALSE,USE.NAMES = TRUE)
 
 
-tog <- inner_join(amikacin,genekeyRn,by=c("Gene"="Gene"))
+tog <- inner_join(amikacin,gene_key,by=c("Gene"="Gene"))
 abxGenes <- as.data.frame(tog$ID)
 write.table(abxGenes, file=paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/Holly_Analyses/",".txt"))
 
@@ -561,6 +664,22 @@ get_genes(amikacin,"amikacin")
 
 
 ```
+
+
+```{r compare, include=FALSE,echo=FALSE}
+library(dplyr)
+sigAssocGenesAll <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/sigAssocGenesScoary.txt",header=TRUE)
+allPangenomeIDs <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/pangenome_identifiers_ALL.csv",header=FALSE)
+colnames(sigAssocGenesAll)
+colnames(allPangenomeIDs)
+test <- dplyr::inner_join(sigAssocGenesAll,allPangenomeIDs,by=c("rownames.sigGenesAll."="V1"))
+missing <- dplyr::anti_join(sigAssocGenesAll,test,by="rownames.sigGenesAll.")
+
+
+
+```
+
+
 
 ```{r heatmap, include=TRUE,echo=FALSE}
 # get giant matrix of all sig (emp p < 0.05) assoc genes for all abx
