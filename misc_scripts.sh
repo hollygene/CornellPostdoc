@@ -33,3 +33,17 @@ awk '{ print substr( $0, 1, length($0)-2 ) }' FS='\t' contigs_amca_trim.txt > CA
 
 #Extract sequences with names in file name.list, one sequence name per line:
 seqtk subseq amp.fasta CARD_amp.txt$2 > output.fasta
+
+
+
+
+# grep a gff3 file
+for file in /Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gff\ files/ST131/*.gff
+
+do
+
+FBASE=$(basename $file .gff)
+BASE=${FBASE%.gff}
+grep -F -f /Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gff\ files/ST131/contigs_to_grep_IncFIIB.txt /Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gff\ files/ST131/${BASE}.gff > ${BASE}_plasmidContigs_IncFIIB.gff
+
+done

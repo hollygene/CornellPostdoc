@@ -1,0 +1,32 @@
+### Mapping using reference genome
+
+# of coronavirus sequences
+
+# using bwa and bowtie2
+
+bowtie2 -x /workdir/hcm59/panCoV/Ref_Genomes/mink/mink -1 /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/mink710361gel-334005160/mink710361gel_S9_L001_R1_001.fastq.gz  -2 /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/mink710361gel-334005160/mink710361gel_S9_L001_R2_001.fastq.gz -S mink.sam
+
+
+
+
+## FastQC on amplicons
+
+
+for file in ${unmapped_bams}/*_samtofastq_interleaved.fq
+
+do
+
+FBASE=$(basename $file _samtofastq_interleaved.fq)
+BASE=${FBASE%_samtofastq_interleaved.fq}
+
+
+
+for file in /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/*/*.fastq.gz
+
+do
+FBASE=${basename $file .fastq.gz}
+BASE=${FBASE%.fastq.gz}
+
+fastQC ${BASE}.fastq.gz
+
+done

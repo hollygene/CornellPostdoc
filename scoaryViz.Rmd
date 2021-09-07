@@ -15,6 +15,7 @@ library(purrr)
 library(dplyr)
 library(fuzzyjoin)
 library(tidyr)
+
 ```
 
 
@@ -231,7 +232,7 @@ get_aa_fasta <- function(antibiotic,name) {
 write_fasta_out_prot(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/",name,".fasta",sep=""))
 } 
 
-get_aa_fasta(cefalexin.comb,"cefalexin")
+get_aa_fasta(imipenem,"cefalexin")
 
 ######################################################################3
 
@@ -279,26 +280,29 @@ write_fasta_out_name_nt <- function(genepa_comb, path_out,pheno){
 }
 
 pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
-cefalexin.pheno <- as.data.frame(cbind(pheno$X,pheno$Cefalexin.INT))
-cefalexin.resist.isolates <- dplyr::filter(cefalexin.pheno,V2=='1')
-genePA_resist.cefalexin <- inner_join(genePA_long,cefalexin.resist.isolates,by=c("seqid"="V1"))
-nlevels(as.factor(genePA_resist.cefalexin$Gene))
+imipenem.pheno <- as.data.frame(cbind(pheno$X,pheno$Imipenem.INT))
+imipenem.resist.isolates <- dplyr::filter(imipenem.pheno,V2=='1')
+
+genePA_resist.imipenem <- inner_join(genePA_long,imipenem.resist.isolates,by=c("seqid"="V1"))
+nlevels(as.factor(genePA_resist.imipenem$Gene))
 # get_aa_fasta <- function(antibiotic,name) {
- x <- inner_join(genePA_resist.cefalexin, cefalexin.comb,by=c("Gene" = "Gene"))
+ x <- inner_join(genePA_resist.imipenem, sigResistAssoc$`./Imipenem.INT_15_04_2021_1732.results.csv`,by=c("Gene" = "Gene"))
  y <- get_prot_seq_mod7.26("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,F)
  y.sort <- y[order(y$Gene),]
- write_fasta_out_name_nt(y.sort, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","cefalexin_R",".fasta",sep=""),"R")
+ write_fasta_out_name_nt(y.sort, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","imipenem_R",".fasta",sep=""),"R")
 # } 
 
-# pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
+pheno <- read.csv("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/dog_verified_host_PhenoForScoary.csv")
 # cefalexin.pheno <- as.data.frame(cbind(pheno$X,pheno$Cefalexin.INT))
-cefalexin.susc.isolates <- dplyr::filter(cefalexin.pheno,V2=='0')
-genePA_susc.cefalexin <- inner_join(genePA_long,cefalexin.susc.isolates,by=c("seqid"="V1"))
-nlevels(as.factor(genePA_susc.cefalexin$Gene))
+imipenem.susc.isolates <- dplyr::filter(imipenem.pheno,V2=='0')
+genePA_susc.imipenem <- inner_join(genePA_long,imipenem.susc.isolates,by=c("seqid"="V1"))
+nlevels(as.factor(genePA_susc.imipenem$Gene))
 # get_aa_fasta <- function(antibiotic,name) {
- x <- inner_join(genePA_susc.cefalexin, cefalexin.comb,by=c("Gene" = "Gene"))
- y <- get_prot_seq_mod7.26("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x,F)
- write_fasta_out_nt(y, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","cefalexin_susc",".fasta",sep=""))
+ x.S <- inner_join(genePA_susc.imipenem, sigResistAssoc$`./Imipenem.INT_15_04_2021_1732.results.csv`,by=c("Gene" = "Gene"))
+ y.S <- get_prot_seq_mod7.26("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gene_data.csv",x.S,F)
+ y.S.sort <- y.S[order(y.S$Gene),]
+ write_fasta_out_name_nt(y.S.sort, paste("/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/","imipenem_S",".fasta",sep=""),"S")
+
 # }
 
 
@@ -852,6 +856,80 @@ testHeatmap <- pheatmap(tetracyclines.1,
 pdf("test.pdf")
 testHeatmap
 dev.off()
+
+```
+
+
+```{r imipenem, include=FALSE, echo=FALSE}
+# subset imipenem scoary results into categories: where column D = 2, where column D = 1 and column E = 0 and column F = 1 
+both <- subset(imipenem, Number_pos_present_in=="2")
+oneAndOne <- subset(imipenem, Number_pos_present_in=="1" & Number_neg_present_in=="0" & Number_pos_not_present_in=="1")
+
+# subset gene pres abs file into the accession numbers we care about: GCA_013049445.1 and GCA_007012305.1 
+colnames(gene_pres_abs)
+genePA_imi <- gene_pres_abs[,c(1:15,457)]
+# export as csv 
+write.csv(genePA_imi,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/genePA_imi_all.csv")
+
+# inner join on genePA_imi and both 
+genePA_imi_both <- inner_join(both,genePA_imi,by="Gene")
+write.csv(genePA_imi_both,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/genePA_imipenem_resist_both_isos.csv")
+
+# inner join on genePA_imi and oneAndOne 
+genePA_imi_oneAndOne <- inner_join(oneAndOne,genePA_imi,by="Gene")
+write.csv(genePA_imi_oneAndOne,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/genePA_imipenem_resist_onlyOneIso.csv")
+
+
+# read in imipenem accessory genome file for both resistant isolates 
+# goal is to make a heatmap 
+imi_accessory <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/imipenem_acc_resistant_isolates.csv")
+imi_mat_less <- sub("-*", "", imi_accessory)
+library(stringr)
+str_sub(imi_accessory$GCA_007012305.1, start=1, end=-4)
+
+# create matrix to gene presence absence information 
+imi_mat <- matrix(NA, nrow=nrow(imi_accessory), ncol=ncol(imi_accessory))
+
+# populate matrix with "1" if gene is present in GCA_007, but not in GCA_013; "2" if it is present in GCA_013 and not GCA_007; and "3" if it is present in both  
+for (r in 1:nrow(imi_accessory)){
+  for (c in 1:ncol(imi_accessory)){
+    if (imi_accessory[r,c] != ""){
+      gene_mat[r,c]= genepa_abx_filt_combined$log_or[r] 
+    } else{
+      gene_mat[r,c]= -2#0
+    }
+  }
+}
+
+colnames(gene_mat) = colnames(genepa_filtered)
+rownames(gene_mat) = rownames(genepa_filtered)
+
+gene_mat_itol <- t(gene_mat)
+
+
+
+# pheatmap 
+library(pheatmap)
+imi_heatmap_mat <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/imipenem_acc_resist_isolates_for_heatmap.csv",header=TRUE)
+# replace NAs with 0 
+imi_heatmap_mat[is.na(imi_heatmap_mat)] <- 4
+is.na(imi_heatmap_mat) %>% table()
+str(imi_heatmap_mat)
+imi_heatmap_mat$GCA_007012305.1 <- as.integer(imi_heatmap_mat$GCA_007012305.1)
+imi_heatmap_mat$GCA_013049445.1 <- as.integer(imi_heatmap_mat$GCA_013049445.1)
+imi_heatmap_mat$both <- as.integer(imi_heatmap_mat$both)
+rownames(imi_heatmap_mat) <- imi_heatmap_mat$Gene
+imi_heatmap_mat <- imi_heatmap_mat[,2:4]
+
+#default - cluster both rows and columns. new color palette 
+pdf("/Users/hcm59/Box/Holly/Dog_E_coli_project/Visualizations/default_heatmap_imipenem_resist.pdf")
+pheatmap(imi_heatmap_mat,color = colorRampPalette(c("navy", "yellow", "firebrick3","white"))(4))
+dev.off()
+# no row clustering 
+pheatmap(imi_heatmap_mat, cluster_row = FALSE,color = colorRampPalette(c("navy", "yellow", "firebrick3","white"))(4))
+# no column clustering 
+pheatmap(imi_heatmap_mat,cluster_rows = TRUE,cluster_cols = FALSE,color = colorRampPalette(c("navy", "yellow", "firebrick3","white"))(4))
+
 
 ```
 

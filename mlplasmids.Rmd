@@ -1,0 +1,41 @@
+---
+title: "mlplasmids"
+output: html_document
+---
+
+```{r packages, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(devtools)
+devtools::install_git("https://gitlab.com/sirarredondo/mlplasmids")
+library(mlplasmids)
+
+
+
+
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r mlplasmids,include=TRUE,echo=FALSE}
+fastas <- list.files("/Users/hcm59/Box/Holly/Dog_E_coli_project/Fastqs/Assemblies/all_plus_PA_Ryan_036",full.names = TRUE)
+test_file <- fastas[2]
+example_prediction <- plasmid_classification(path_input_file = test_file, species = 'Escherichia coli',full_output = TRUE)
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

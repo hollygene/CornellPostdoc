@@ -18,6 +18,8 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r load_data, include=TRUE}
 staramr_output <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/staramrGalaxy_output.txt",header=TRUE,sep="\t")
+# ST 131 star amr output 
+staramr_output_ST131 <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Galaxy7666-[staramr_on_data_7636,_data_7637,_and_others__detailed_summary.tsv].txt",header=TRUE,sep="\t")
 
 # want to get rid of everything after the first .1 so that I can combine datasets with this same type of identifier 
 data_clean_phrase <- c("GCA_012245225.1_PDT000477478.1_genomic.fna", 
@@ -35,15 +37,31 @@ A <- function(x) {
 
 
 staramr_output_clean <- data.frame( apply(staramr_output[1],2, A), staramr_output[2:11])
+staramr_output_clean_ST131 <- data.frame( apply(staramr_output_ST131[1],2, A), staramr_output_ST131[2:11])
 
-
-
-
-
+# probably should separate out the different categories (MLST, plasmid, Resistance)
+levels(as.factor(staramr_output_clean_ST131$Data.Type))
+MLST_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="MLST")
+plasmid_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="Plasmid")
+write.csv(plasmid_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/plasmid_staramr_ST131.csv")
+resistance_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="Resistance")
+write.csv(resistance_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/resistance_staramr.csv")
+nlevels(as.factor(MLST$Data))
+nlevels(as.factor(plasmid$Data))
+nlevels(as.factor(resistance$Data))
+write.csv(MLST_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/MLST_ST131.csv")
   
-  
-  
-  
+
+```
+
+```{r subsetting gff3s, include=FALSE,echo=FALSE}
+# need to subset the gff3 files to include only the plasmid contigs for Roary 
+# try using grep 
+test <- read.table('/Users/hcm59/Box/Goodman\ Lab/Projects/bacterial\ genomics/Ecoli_dog_AMR_results/dog_verified_host/gff\ files/ST131/GCA_012257685.1.gff', sep="\t", quote="")
+gff2 <- gff[grep("Supercontig_1.1", gff[,1]),]
+
+
+
 
 
 ```
