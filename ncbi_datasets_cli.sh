@@ -1,8 +1,8 @@
 # use ncbi's datasets tool to download assemblies
 
-wget https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/LATEST/linux-amd64/datasets
-
-chmod a+x datasets
+# wget https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/LATEST/linux-amd64/datasets
+#
+# chmod a+x datasets
 
 # ./datasets
 
@@ -11,10 +11,20 @@ chmod a+x datasets
 
 
 #!/bin/bash
-filename='/workdir/hcm59/Ecoli/200_contigs_or_less.txt'
-while read p; do
-    # echo "$p"
-    ./datasets download genome accession $p --dehydrated --filename $p.zip
-done < "$filename"
+# filename='/workdir/hcm59/Ecoli/200_contigs_or_less.txt'
+# while read p; do
+#     # echo "$p"
+#     ./datasets download genome accession $p --dehydrated --filename $p.zip
+# done < "$filename"
 
 # datasets download genome accession GCF_000001405.39 --dehydrated --filename human_GRCh38_dataset.zip
+
+for file in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*.zip
+
+do
+FBASE=$(basename $file .zip)
+BASE=${FBASE%.zip}
+
+unzip ${BASE}.zip -d ${BASE}
+
+done
