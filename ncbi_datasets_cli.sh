@@ -25,6 +25,6 @@ do
 FBASE=$(basename $file .1.zip)
 BASE=${FBASE%.1.zip}
 
-unzip ${BASE}.1.zip -d ${BASE}
+unzip /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}.1.zip -d /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}
 
 done
