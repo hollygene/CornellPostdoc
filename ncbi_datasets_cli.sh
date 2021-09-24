@@ -13,8 +13,8 @@ chmod a+x datasets
 #!/bin/bash
 filename='/workdir/hcm59/Ecoli/200_contigs_or_less.txt'
 while read p; do
-    echo "$p"
-    # ./datasets download gene $p
+    # echo "$p"
+    ./datasets download genome accession $p -dehydrated --filename $p.zip
 done < "$filename"
 
 # datasets download genome accession GCF_000001405.39 --dehydrated --filename human_GRCh38_dataset.zip
