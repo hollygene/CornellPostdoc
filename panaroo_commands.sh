@@ -5,12 +5,12 @@ export PATH=/programs/panaroo-1.2.3/bin:$PATH
 export PYTHONPATH=/programs/panaroo-1.2.3/lib/python3.6/site-packages:/programs/panaroo-1.2.3/lib64/python3.6/site-packages
 
 gff_dir="/workdir/hcm59/Ecoli/prokka_gffs"
-results_dir="/workdir/hcm59/Ecoli"
-mkdir ${results_dir}
+results_dir="/workdir/hcm59/Ecoli/panaroo_results_9.21.21"
+# mkdir ${results_dir}
 
 # run panaroo and remove invalid genes (those with stop codons, etc), using 10 threads:
 panaroo -i ${gff_dir}/*.gff -o ${results_dir} --clean-mode strict --remove-invalid-genes -t 10
 
 
 # get a core gene alignment with the built in mafft aligner, output to the results directory
-panaroo-msa --aligner mafft -a core  -t 20 --verbose -o ${results_dir}
+# panaroo-msa --aligner mafft -a core  -t 20 --verbose -o ${results_dir}

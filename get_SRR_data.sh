@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-cd /workdir/hcm59/Ecoli/raw_data/rest_of_601
+cd /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less
 
 fastq-dump --split-3 $1
 
