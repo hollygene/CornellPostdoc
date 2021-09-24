@@ -19,12 +19,21 @@
 
 # datasets download genome accession GCF_000001405.39 --dehydrated --filename human_GRCh38_dataset.zip
 
-for file in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*.1.zip
+# for file in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*.1.zip
+#
+# do
+# FBASE=$(basename $file .1.zip)
+# BASE=${FBASE%.1.zip}
+#
+# unzip /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}.1.zip -d /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}
+#
+# done
+
+
+for d in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*/
 
 do
-FBASE=$(basename $file .1.zip)
-BASE=${FBASE%.1.zip}
 
-unzip /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}.1.zip -d /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/${BASE}
+datasets rehydrate --directory $d
 
 done
