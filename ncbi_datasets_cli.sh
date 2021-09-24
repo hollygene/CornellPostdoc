@@ -19,12 +19,12 @@
 
 # datasets download genome accession GCF_000001405.39 --dehydrated --filename human_GRCh38_dataset.zip
 
-for file in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*.zip
+for file in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*.1.zip
 
 do
-FBASE=$(basename $file .zip)
-BASE=${FBASE%.zip}
+FBASE=$(basename $file .1.zip)
+BASE=${FBASE%.1.zip}
 
-unzip ${BASE}.zip -d ${BASE}
+unzip ${BASE}.1.zip -d ${BASE}
 
 done
