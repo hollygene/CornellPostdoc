@@ -34,6 +34,6 @@ for d in /workdir/hcm59/Ecoli/assemblies/200_contigs_or_less/*/
 
 do
 
-datasets rehydrate --directory $d
+./datasets rehydrate --directory $d
 
 done
