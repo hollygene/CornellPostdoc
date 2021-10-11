@@ -28,9 +28,9 @@ java -jar /programs/picard-tools-2.26.1/picard.jar SamToFastq \
      SECOND_END_FASTQ=${workdir}/${BASE}_unmapped_2.fastq
 
 # de novo assemble the unmapped reads using SKESA
-skesa --reads ${workdir}/${BASE}_unmapped_1.fastq,${workdir}/${BASE}_unmapped_2.fastq --cores 4 --memory 48 > ${workdir}/${BASE}.skesa.fa
+skesa --fastq ${workdir}/${BASE}_unmapped_1.fastq,${workdir}/${BASE}_unmapped_2.fastq --cores 4 --memory 48 > ${workdir}/${BASE}.skesa.fa
 # compare with original fastqs
-skesa --reads ${workdir}/${BASE}_1.fastq,${workdir}/${BASE}_2.fastq --cores 4 --memory 48 > ${workdir}/${BASE}_orig.skesa.fa
+skesa --fastq ${workdir}/${BASE}_1.fastq,${workdir}/${BASE}_2.fastq --cores 4 --memory 48 > ${workdir}/${BASE}_orig.skesa.fa
 
 # confirm with blast that there are no more phix contigs
 # compare unmapped to original
