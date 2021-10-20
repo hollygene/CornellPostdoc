@@ -1,0 +1,9 @@
+organism:
+    genus_species: 'Escherichia coli'
+    strain: 'ECOL-19-VL-ON-ON-0030'
+consortium: 'Vet-LIRN-E.coli-GU'
+bioproject: 'PRJNA503851'
+biosample: 'SAMN16129782'
+locus_tag_prefix: 'pgaptmp'
+sra:
+    - accession: 'SRR12744009'

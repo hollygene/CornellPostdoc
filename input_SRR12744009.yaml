@@ -1,0 +1,6 @@
+fasta:
+    class: File
+    location: /workdir/hcm59/Ecoli/fastq_missing_assemblies/phix_contaminated/assemblies_phix_removed/SRR12744009.skesa.fa
+submol:
+    class: File
+    location: /workdir/hcm59/CornellPostdoc/submol_SRR12744009.yaml
