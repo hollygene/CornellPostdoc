@@ -3,13 +3,21 @@
 # Before running SAPDES, execute the following command (once per session, or somewhere in the beginning of a script that launches SPADES):
 export OMP_NUM_THREADS=16
 # (if you use the -t option of SPADES, change '16' to the number greater or equal to the one specified with that option).
-parentDir="/workdir/hcm59/panCoV/6.27.21/covamplicons-258876621"
+parentDir="/workdir/hcm59/actinomyces"
 
 
 
-/programs/spades/bin/spades.py -o /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/028588-18-1-2-1-334025032/assembled \
- --rnaviral -1 /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/ /028588-18-1-2-1_S28_L001_R1_001.fastq.gz \
- -2 /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/023753-18-1-1-2b-334009082/023753-18-1-1-2b_S26_L001_R2_001.fastq.gz
+/programs/spades/bin/spades.py -o /workdir/hcm59/actinomyces/assembled \
+-1 /workdir/hcm59/actinomyces/186855_R1_001_paired.fastq \
+-2 /workdir/hcm59/actinomyces/186855_R2_001_paired.fastq
+
+/programs/spades/bin/spades.py -o /workdir/hcm59/actinomyces/assembled/187325 \
+-1 /workdir/hcm59/actinomyces/187325_R1_001_paired.fastq \
+-2 /workdir/hcm59/actinomyces/187325_R2_001_paired.fastq
+
+/programs/spades/bin/spades.py -o /workdir/hcm59/actinomyces/assembled/217892 \
+-1 /workdir/hcm59/actinomyces/217892_R1_001_paired.fastq \
+-2 /workdir/hcm59/actinomyces/217892_R2_001_paired.fastq
 
 
  /programs/spades/bin/spades.py -o /workdir/hcm59/panCoV/6.27.21/covamplicons-258876621/mink710361gel-334005160/assembled \

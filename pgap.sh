@@ -9,4 +9,4 @@ chmod uog+x pgap.py
 
 phix_assemblies="/workdir/hcm59/Ecoli/fastq_missing_assemblies/phix_contaminated/assemblies_phix_removed"
 cd /workdir/$USER
-./pgap.py -D singularity -r -o mg37_results test_genomes/MG37/input.yaml
+./pgap.py -D singularity -r -o /workdir/hcm59/Ecoli/pgap_results /workdir/hcm59/CornellPostdoc/input_SRR12744009.yaml

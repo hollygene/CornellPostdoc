@@ -21,15 +21,33 @@ awk '{ gsub(/ /,""); print }' contigs_amca.txt > contigs_amca_trim.txt
 # need to eliminate "_1" from end of lines also
 awk '{ print substr( $0, 1, length($0)-2 ) }' FS='\t' contigs_amca_trim.txt > CARD_contigs_amca_corr.txt
 
+# to append fasta headers with file names:
+ sed 's/^>/>Actinomyces_marimamalium/g' Actinomyces_marimamalium_partial_16S_rRNA_gene_strain_CCUG_41710.fasta > Actinomyces_marimamalium_partial_16S_rRNA_gene_strain_CCUG_41710.fasta
+
+ for i in *.fna; do
+     sed -i "s/^>/>${i}_/g" *.fna
+ done
 
   workdir="/workdir/hcm59/Ecoli/Scoary_analyses"
   ### To use fasta FetchSeqs perl script
   perl /workdir/hcm59/CornellPostdoc/Fasta_fetchseqs.pl -in ${workdir}/amca.fasta \
     -m ${workdir}/CARD_contigs_amca_corr.txt -file -out ${workdir}/CARD_amca.fasta \
     -regex -v
+    
+    # append fasta headers with filenames
+    for file in /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/*.fasta
 
+    do
+    FBASE=$(basename $file .fasta)
+    BASE=${FBASE%.fasta}
 
+    awk '/>/{sub(">","&"FILENAME"_");sub(/\.fasta/,x)}1' ${BASE}.fasta > ${BASE}_renamedHeader.fasta
 
+    done
+
+# bbmap to change spaces to underscores in fasta headers:
+export PATH=/programs/bbmap-38.90:$PATH
+reformat.sh in=all_for_16S_aln_mafft.fasta out=all_for_16S_aln_mafft_fixed.fasta addunderscore
 
 #Extract sequences with names in file name.list, one sequence name per line:
 seqtk subseq amp.fasta CARD_amp.txt$2 > output.fasta
