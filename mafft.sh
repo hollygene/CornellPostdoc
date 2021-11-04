@@ -12,4 +12,28 @@ awk '/>/{sub(">","&"FILENAME"_");sub(/\.fasta/,x)}1' ${BASE}.fasta > ${BASE}_ren
 done
 
 
-/programs/mafft/bin/mafft /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_3.fasta
+
+
+/programs/mafft/bin/mafft --auto /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_3.fasta
+
+
+export PATH=/programs/mafft/bin:$PATH
+
+# L-INS-i: prob most accurate, recommended for less than 200 sequences
+mafft --localpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_linsi.fasta
+
+linsi input [> output]
+
+
+# G-INS-i: suitable for sequences of similar length, iterative refinement method incorporating global pairwise alignment information
+mafft --globalpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_ginsi.fasta
+
+ginsi input [> output]
+
+# *E-INS-i (suitable for sequences containing large unalignable regions; recommended for <200 sequences):
+mafft --ep 0 --genafpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_einsi.fasta
+
+einsi input [> output]
+# For E-INS-i, the --ep 0 option is recommended to allow large gaps
+
+mafft --ep 0 --genafpair --maxiterate 1000 /workdir/hcm59/actinomyces/assembled/all_3_seqs.fasta > /workdir/hcm59/actinomyces/assembled/all_3_seqs_einsi.fasta

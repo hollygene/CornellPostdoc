@@ -1,18 +1,5 @@
 # RaxML
 
-# Add program to your path
-
-export PATH=/programs/RAxML-8.2.12:$PATH
-
-raxmlHPC -h
-
-raxmlHPC -s ${seq_filename} -n ${output_filename} -m ${substitution_model} -T 24
-
-raxmlHPC -s all_for_16S_aln_mafft_fixed.fasta -n all_for_16S_aln_raxml.out -m GTRGAMMAI -b 1000
-
-
-
-
 ### Raxml ng
 # add to your path
 export PATH=/programs/raxml-ng_v1.0.1:$PATH

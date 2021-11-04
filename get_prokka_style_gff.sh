@@ -10,14 +10,14 @@ do
 	cp ${line}.fna ${line}_mod.fna
 	sed '/#/d' ${line}.gff > ${line}_mod.gff
 
-	
+
 	sed -i.bak '/ribosomal slippage/d' ${line}_mod.gff
-	
-	
+
+
 	echo "##FASTA" >> ${line}_mod.gff
 
 	cat ${line}_lengths.txt ${line}_mod.gff ${line}_mod.fna > ${line}_prokka.gff
-	
+
 	rm *mod*
 	rm *lengths.txt
 done < "$input"
