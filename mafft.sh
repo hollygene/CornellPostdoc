@@ -12,9 +12,9 @@ awk '/>/{sub(">","&"FILENAME"_");sub(/\.fasta/,x)}1' ${BASE}.fasta > ${BASE}_ren
 done
 
 
+cat *.fna > all_dog_ecoli_nov2021.fna
 
-
-/programs/mafft/bin/mafft --auto /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_3.fasta
+/programs/mafft/bin/mafft --auto /workdir/hcm59/Ecoli/panaroo_isolates/fastas/fastas/all_dog_ecoli_nov2021.fna  > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_dog_ecoli_nov2021_mafft.fasta
 
 
 export PATH=/programs/mafft/bin:$PATH

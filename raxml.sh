@@ -5,11 +5,16 @@
 export PATH=/programs/raxml-ng_v1.0.1:$PATH
 
 # check your MSA is good
-raxml-ng --check --msa all_for_16S_aln_mafft_3.fasta --model GTR+G+I --prefix T1b
+raxml-ng --check --msa core_gene_alignment.aln-gb --model GTR+G+I --prefix T1a
 
-raxml-ng --parse --msa all_for_16S_aln_mafft_3.fasta-gb.fasta --model GTR+G --prefix T2a
+raxml-ng --parse --msa core_gene_alignment.aln-gb --model GTR+G --prefix T2
 
-raxml-ng --msa all_for_16S_aln_mafft_3.fasta-gb.fasta --model GTR+G+I --prefix T3a --threads 2 --seed 2
+raxml-ng --msa  core_gene_alignment.aln-gb --model GTR+G+I --prefix T3 --threads 2 --seed 2
+
+/raxml-ng --support --tree bestML.tree --bs-trees bootstraps.tree
+
+
+
 
 raxml-ng --msa all_for_16S_aln_mafft_3.fasta-gb.fasta --model GTR+G --prefix T4 --threads 2 --seed 2 --tree pars{25},rand{25}
 raxml-ng --search1 --msa all_for_16S_aln_mafft_3.fasta-gb.fasta --model GTR+G --prefix T5 --threads 2 --seed 2

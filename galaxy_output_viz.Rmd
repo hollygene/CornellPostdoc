@@ -17,16 +17,16 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r load_data, include=TRUE}
-staramr_output <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/staramrGalaxy_output.txt",header=TRUE,sep="\t")
+staramr_output <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/staramr_11.15.21/detailed_summary.tsv",header=TRUE,sep="\t")
 # ST 131 star amr output 
-staramr_output_ST131 <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Galaxy7666-[staramr_on_data_7636,_data_7637,_and_others__detailed_summary.tsv].txt",header=TRUE,sep="\t")
+# staramr_output_ST131 <- read.delim(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Galaxy7666-[staramr_on_data_7636,_data_7637,_and_others__detailed_summary.tsv].txt",header=TRUE,sep="\t")
 
 # want to get rid of everything after the first .1 so that I can combine datasets with this same type of identifier 
-data_clean_phrase <- c("GCA_012245225.1_PDT000477478.1_genomic.fna", 
-                       "GCA_012246585.1_PDT000477476.1_genomic.fna")
-out <- stringr::str_extract(data_clean_phrase, "^(.*?.1_)") # including the @
+# data_clean_phrase <- c("GCA_012245225.1_PDT000477478.1_genomic.fna", 
+                       # "GCA_012246585.1_PDT000477476.1_genomic.fna")
+# out <- stringr::str_extract(data_clean_phrase, "^(.*?.1_)") # including the @
 # this leaves me with a trailing underscore (_) - should be easy enough to get rid of 
-out.2 <- str_remove_all(out, "[_]")
+# out.2 <- str_remove_all(out, "[_]")
 
 # make this into a function so can use it with apply across the entire dataframe
 A <- function(x) {
@@ -37,20 +37,61 @@ A <- function(x) {
 
 
 staramr_output_clean <- data.frame( apply(staramr_output[1],2, A), staramr_output[2:11])
-staramr_output_clean_ST131 <- data.frame( apply(staramr_output_ST131[1],2, A), staramr_output_ST131[2:11])
+# staramr_output_clean_ST131 <- data.frame( apply(staramr_output_ST131[1],2, A), staramr_output_ST131[2:11])
 
 # probably should separate out the different categories (MLST, plasmid, Resistance)
-levels(as.factor(staramr_output_clean_ST131$Data.Type))
-MLST_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="MLST")
-plasmid_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="Plasmid")
-write.csv(plasmid_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/plasmid_staramr_ST131.csv")
-resistance_ST131 <- subset(staramr_output_clean_ST131,Data.Type=="Resistance")
-write.csv(resistance_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/resistance_staramr.csv")
+levels(as.factor(staramr_output_clean$Data.Type))
+MLST <- subset(staramr_output_clean,Data.Type=="MLST")
+plasmid <- subset(staramr_output_clean,Data.Type=="Plasmid")
+write.csv(plasmid,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/plasmid_staramr_all.csv")
+resistance <- subset(staramr_output_clean,Data.Type=="Resistance")
+write.csv(resistance,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/resistance_staramr_all.csv")
 nlevels(as.factor(MLST$Data))
 nlevels(as.factor(plasmid$Data))
 nlevels(as.factor(resistance$Data))
-write.csv(MLST_ST131,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/MLST_ST131.csv")
+nlevels(as.factor(resistance$Isolate.ID))
+write.csv(MLST,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/MLST_all.csv")
   
+
+# remove rows with empty isolate ID column 
+cols_to_check = c("Isolate.ID")
+
+library(dplyr)
+resistance %>% 
+  filter(if_all(cols_to_check, ~ !is.na(.x)))
+
+library(tidyr)
+# remove NAs from isolate ID col 
+resistance_noNA <- resistance[!is.na(resistance$Isolate.ID),]
+resistance_spread <- tidyr::pivot_wider(resistance_noNA,id_cols=Isolate.ID,names_from=Data,values_from=Predicted.Phenotype,names_repair="minimal")
+# str(resistance_spread)
+# make dataframe 
+resistance_spread_df <- as.data.frame(resistance_spread)
+na_code <- "NULL"
+rownames(resistance_spread_df) <- resistance_spread_df$Isolate.ID
+to_binary <- function(m){
+  m2 <- apply(m, 2, function(x){ ifelse(x %in% na_code, 0, 1) } )
+  colnames(m2) <- colnames(m)
+  rownames(m2) <- rownames(m)
+  return(m2)
+}
+test2 <- to_binary(resistance_spread_df)
+as.data.frame(test2)
+test2[,1] <- rownames(test2)
+str(test2)
+
+resistance_spread_df_cleaned <- test2
+write.csv(resistance_spread_df_cleaned,file="/Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/resistance_spread_dfClean.csv")
+      
+# yay that worked 
+
+# now want to replace "NULL" with 0 and anything else with 1 
+library(naniar)
+test <- resistance_spread %>%  mutate_if(resistance_spread,funs(str_replace(., "NULL", "0")))
+
+resistance_spread2 <- resistance_spread %>% mutate_all(na_if,"") 
+
+
 
 ```
 

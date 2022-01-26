@@ -12,4 +12,4 @@ panaroo -i ${gff_dir}/*.gff -o ${results_dir} --clean-mode strict --remove-inval
 
 
 # get a core gene alignment with the built in mafft aligner, output to the results directory
-# panaroo-msa --aligner mafft -a core  -t 20 --verbose -o ${results_dir}
+panaroo-msa --aligner mafft -a core  -t 20 --verbose -o ${results_dir}

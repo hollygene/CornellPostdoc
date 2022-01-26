@@ -96,55 +96,42 @@ done
 
 # need to rename fasta headers
 # append fasta headers with filenames
-for file in /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/type_strains_16S/*.fasta
+for file in /workdir/hcm59/actinomyces/core_species_seqs/*.fna
 
 do
-FBASE=$(basename $file .fasta)
-BASE=${FBASE%.fasta}
+FBASE=$(basename $file .fna)
+BASE=${FBASE%.fna}
 
-awk '/>/{sub(">","&"FILENAME"_");sub(/\.fasta/,x)}1' ${BASE}.fasta > ${BASE}_renamedHeader.fasta
+awk '/>/{sub(">","&"FILENAME"_");sub(/\.fna/,x)}1' ${BASE}.fna > ${BASE}_renamedHeader.fna
+awk '{print $1;next}1' ${BASE}_renamedHeader.fna > ${BASE}_renamedHeaderClean.fna
 
 done
 
 # remove colons
-for file in /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/type_strains_16S/*_renamedHeader.fasta
-
-do
-FBASE=$(basename $file _renamedHeader.fasta)
-BASE=${FBASE%_renamedHeader.fasta}
-
-sed s/://g ${BASE}_renamedHeader.fasta > ${BASE}_noCols.fasta
-
-done
+# for file in /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/type_strains_16S/*_renamedHeader.fasta
+#
+# do
+# FBASE=$(basename $file _renamedHeader.fasta)
+# BASE=${FBASE%_renamedHeader.fasta}
+#
+# sed s/://g ${BASE}_renamedHeader.fasta > ${BASE}_noCols.fasta
+#
+# done
 
 ###############################################################################################################################
 # align sequences with MAFFT
 export PATH=/programs/mafft/bin:$PATH
 
-# L-INS-i: prob most accurate, recommended for less than 200 sequences
-mafft --localpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_linsi.fasta
-
-# G-INS-i: suitable for sequences of similar length, iterative refinement method incorporating global pairwise alignment information
-mafft --globalpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_ginsi.fasta
-
-# *E-INS-i (suitable for sequences containing large unalignable regions; recommended for <200 sequences):
-mafft --ep 0 --genafpair --maxiterate 1000 /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_einsi.fasta
-
-# For E-INS-i, the --ep 0 option is recommended to allow large gaps
-mafft --ep 0 --genafpair --maxiterate 1000 /workdir/hcm59/actinomyces/assembled/all_3_seqs.fasta > /workdir/hcm59/actinomyces/assembled/all_3_seqs_einsi.fasta
+mafft --reorder --adjustdirectionaccurately --leavegappyregion --kimura 1 --maxiterate 2 --retree 1 --globalpair /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_jan4.fasta
 
 ###############################################################################################################################
 # clean up alignment with Gblocks
 export PATH=/programs/Gblocks_0.91b:$PATH
 
-Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_linsi.fasta -t=d -n=y -u=y -d=y
-# Gblocks alignment:  945 positions (49 %) in 37 selected block(s)
-
-Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_ginsi.fasta -t=d -n=y -u=y -d=y
-# Gblocks alignment:  1008 positions (53 %) in 36 selected block(s)
-
-Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_einsi.fasta -t=d -n=y -u=y -d=y
-# Gblocks alignment:  934 positions (48 %) in 37 selected block(s)
+Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_jan4.fasta -t=d -n=y -u=y -d=y
+# Original alignment: 1602 positions
+# Ungapped alignment: 1277 positions
+# Gblocks alignment:  1244 positions (77 %) in 14 selected block(s)
 
 # t=d: type is DNA
 # n=y: nonconserved blocks
@@ -157,8 +144,38 @@ Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_maf
 export PATH=/programs/raxml-ng_v1.0.1:$PATH
 
 # check your MSA is good
-raxml-ng --check --msa all_for_16S_aln_mafft_ginsi.fasta-gb --model GTR+G+I --prefix ginsi
+raxml-ng --check --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --prefix jan4
 
-raxml-ng --parse --msa all_for_16S_aln_mafft_ginsi.fasta-gb --model GTR+G+I --prefix ginsi_gb2
+raxml-ng --parse --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --prefix jan4
 
-raxml-ng --all --msa all_for_16S_aln_mafft_ginsi.fasta-gb --model GTR+G+I --tree pars{10} --bs-trees 1000
+raxml-ng --bootstrap --all --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --tree pars{10},rand{10} --bs-trees 1000 --seed 2 
+
+
+###############################################################################################################################
+# fastANI to calculate average nucleotide identity
+/programs/fastANI-1.3/fastANI
+# help page
+/programs/fastANI-1.3/fastANI -h
+
+# one to many
+# QUERY_LIST and REFERENCE_LIST are files containing paths to genomes, one per line.
+# QUERY_GENOME and REFERENCE_GENOME are the query genome assemblies in fasta or multi-fasta format.
+# OUTPUT_FILE will contain tab delimited row(s) with query genome, reference genome, ANI value, count of bidirectional fragment mappings, and total query fragments.
+#  NOTE: No ANI output is reported for a genome pair if ANI value is much below 80%. Such case should be computed at amino acid level.
+
+/programs/fastANI-1.3/fastANI -q /workdir/hcm59/actinomyces/assembled/assemblies/contigs_217892.fasta -r /workdir/hcm59/actinomyces/assembled/assemblies/contigs_187325.fasta -o /workdir/hcm59/actinomyces/ANI/contigs_217892to187325.txt
+
+/programs/fastANI-1.3/fastANI -q /workdir/hcm59/actinomyces/assembled/assemblies/contigs_186855.fasta --rl /workdir/hcm59/actinomyces/ncbi_genomes/ncbi_dataset/genomes.txt -o /workdir/hcm59/actinomyces/ANI/${BASE}.txt
+
+
+for file in /workdir/hcm59/actinomyces/assembled/assemblies/*.fasta
+
+do
+
+FBASE=$(basename $file .fasta)
+BASE=${FBASE%.fasta}
+
+
+/programs/fastANI-1.3/fastANI -q /workdir/hcm59/actinomyces/assembled/assemblies/${BASE}.fasta --rl /workdir/hcm59/actinomyces/ncbi_genomes/ncbi_dataset/genomes.txt -o /workdir/hcm59/actinomyces/ANI/${BASE}.txt
+
+done

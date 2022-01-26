@@ -5,14 +5,16 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(reshape2)
+library(dplyr)
+library(tidyverse)
 ```
 
 
 
 ```{r load_pheno_data, include=FALSE}
-phen2017 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2017-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
-phen2018 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2018-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
-phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-ECOL-MIC-Vet-LIRN.csv",header=TRUE,na.strings = c("", "NA"))
+ecol_2017_2020_ast <- read.csv(file="/Users/hcm59/Box/Holly/Dog_E_coli_project/jan22/ECOL_2017-2020_AST.csv",header=TRUE,na.strings = c("", "NA"))
+
 
 ```
 
@@ -20,7 +22,7 @@ phen2019 <- read.csv(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/2019-E
 
 ```{r organize,include=TRUE}
 ## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
-anno <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/ecoli_dog_200contigs_w_panaroo_tag.csv",header=TRUE)
+anno <- read.csv("/Users/hcm59/Box/Holly/Dog_E_coli_project/jan22/isolates_200_contigs_or_less_verified_host_species.csv",header=TRUE)
 
 # want strain (ID used in phenotypic data) and assembly (ID used in SNP data)
 header <- colnames(anno)
@@ -31,50 +33,27 @@ anno.want2 <- substr(anno.want$Assembly, 1, regexpr("\\.", anno.want$Assembly)-1
 anno.want2
 
 # merge phenotypic data with annotations to get IDs and assembly in same file 
-library(dplyr)
-colnames(phen2017)
-phen2017.anno <- inner_join(anno.want, phen2017, by=c("Strain" = "sample.ID."),keep=TRUE)
-View(phen2017.anno)
-library(dplyr)    
-phen2017.fin <- filter(phen2017.anno, specific.host == "Canis lupus familiaris")
 
-phen2018.anno <- inner_join(anno.want, phen2018, by=c("Strain" = "sample.ID."),keep=TRUE)
-View(phen2018.anno)
+colnames(ecol_2017_2020_ast)
+ecol_2017_2020_ast.anno <- inner_join(anno.want, ecol_2017_2020_ast, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(ecol_2017_2020_ast.anno)
+  
+ecol_2017_2020_ast.fin <- filter(ecol_2017_2020_ast.anno, specific.host == "Canis lupus familiaris")
 
-phen2018.fin <- filter(phen2018.anno, specific.host == "Canis lupus familiaris")
 
-phen2019.anno <- inner_join(anno.want, phen2019, by=c("Strain" = "sample.ID."),keep=TRUE)
-View(phen2019.anno)
-phen2019.fin <- filter(phen2019.anno, specific.host == "Canis lupus familiaris")
-
-phenAll <- dplyr::bind_rows(phen2017.fin,phen2018.fin,phen2019.fin)
-phenAll$Assembly
-test <- dplyr::inner_join(phenAll,anno.want,by="Assembly")
+test <- dplyr::inner_join(ecol_2017_2020_ast.fin,anno.want,by="Assembly")
 test$Assembly <- substr(test$Assembly, 1, regexpr("\\.", test$Assembly)-1)
 test$Assembly
 phenAllFinal <- test
-# read in file of dog samples wanted 
-# dogsWanted <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenDogs_samples_wanted.txt",header=FALSE)
-# colnames(dogsWanted) <- c("Assembly")
-# join with phenotype data
-# dogs601 <- dplyr::inner_join(phenAll,dogsWanted,by="Assembly")
-# write.csv(phenAllFinal,"/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
-dogs601 <- read.csv("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/phenotypesDogs171819.csv")
+
 ```
 
 ```{r phen_subset,include=FALSE}
-# first import back in the data you exported before
-# Phen <- read.table("/Users/hcm59/Box/Github/CornellPostdoc/phenAll.txt",header=TRUE)
-Phen <- dogs601
-library(dplyr)
-library(reshape2)
-# phen.Melt <- melt(Phen, id.vars=c("Assembly"),variable.name = "antibiotic", value.name = "INT",na.rm = TRUE)
-
 
 # find all instances of "SUSC" and replace with 0
 # install.packages("tidyverse")
-library(tidyverse)
-phen.sub.0 <- Phen %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
+
+phen.sub.0 <- phenAllFinal %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
 phen.sub.0
 # worked! # now do that to RESIST and convert NOINTP
 phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))

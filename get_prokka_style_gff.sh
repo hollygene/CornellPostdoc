@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 input=$1
 while IFS= read -r line
@@ -21,3 +21,7 @@ do
 	rm *mod*
 	rm *lengths.txt
 done < "$input"
+
+# to run
+# in directory where you have gffs, fna files, and text file of sequence IDs (no file endings) and script get_contig_lengths.pl
+# ./get_prokka_style_gff.sh all.txt

@@ -1,11 +1,35 @@
 ## Random useful shell scripts for analyses
 
+# copy files that match a string in file to new directory
+awk '{system("cp " $0 "* /workdir/hcm59/Ecoli/panaroo_isolates/fastas/jan22/")}' assemblies_for_panaroo_jan22_dog_Ecoli.txt
+
+find -type f -name '*GCA_019204965.1*' -delete
+
+
+mv GCA*/*/*/*/*.fna /workdir/hcm59/staphPseud/dogs
+
 ### To move all the files in a directory whose names match a string in a file:
 nn=($(cat /Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/assemblies_for_panaroo_Nov21_dog_Ecoli.txt))
 for x in "${nn[@]}"
 do
 ls *_genomic.gff.gz|grep "$x"|xargs -I '{}' mv {} /Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/panaroo_isolates/fastas
 done
+
+# print filename in first column followed by certain columns
+for file in /Users/hcm59/Box/Holly/Dog_E_coli_project/Nov_Assembly_Download/AMRFinderResults/*.txt
+
+do
+FBASE=$(basename $file .txt)
+BASE=${FBASE%.txt}
+
+awk -F'\t' 'BEGIN { OFS = FS} ; {print FILENAME,$0}' ${BASE}.txt > ${BASE}_filename.txt
+
+done
+
+awk -F'\t' 'BEGIN { OFS = FS} ; {print FILENAME,$0}' GCA_007012305.1_ASM701230v1_genomic_AMRFinder.txt > GCA_007012305.1_ASM701230v1_genomic_AMRFinder_test.txt
+
+
+awk FNR-1 *_short.txt > cat_test.txt
 
 
 ## To extract headers from fasta file:
