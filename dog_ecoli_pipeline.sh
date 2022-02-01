@@ -64,10 +64,10 @@ rm *lengths.txt
 conda activate panaroo
 ### okay now for the fun part, the actual panaroo run
 # run panaroo and remove invalid genes (those with stop codons, etc), using 10 threads:
-panaroo -i /workdir/hcm59/Ecoli/panaroo_isolates/fastas/jan22/fastas/*.gff -o /workdir/hcm59/Ecoli/jan22/panaroo -t 20 --clean-mode strict --remove-invalid-genes
+panaroo -i /workdir/hcm59/Ecoli/panaroo_isolates/fastas/jan22/fastas/*.gff -o /workdir/hcm59/Ecoli/jan22/panaroo/1.26.22 -t 20 --clean-mode strict --remove-invalid-genes
 
 # get a core gene alignment with the built in mafft aligner, output to the results directory
-panaroo-msa --aligner mafft -a core  -t 20 --verbose -o /workdir/hcm59/Ecoli/jan22/panaroo
+panaroo-msa --aligner mafft -a core  -t 20 --verbose -o /workdir/hcm59/Ecoli/jan22/panaroo/1.26.22
 
 #Gblocks commands
 
@@ -85,9 +85,8 @@ Gblocks core_gene_alignment.aln -t=d -n=y -u=y -d=y
 ################################################################################################
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate iqtree #load in iqtree environment
-iqtree -s all_for_16S_aln_mafft_3.fasta -m MFP
 
-iqtree -s /workdir/hcm59/Ecoli/SNPs/dog_verified_host/core_gene_alignment.aln-gb -m GTR+G -nt AUTO
+iqtree -s core_gene_alignment.aln-gb -m GTR+G -nt AUTO
   # nt is number of threads
   # s specifies alignment file to use
   # m specifies what model to use
