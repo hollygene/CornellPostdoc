@@ -1,0 +1,327 @@
+---
+title: "ggtree"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install these packages (manually):
+  # rio             # import/export
+  # here,            # relative file paths
+  # ape,             # to import and export phylogenetic files
+  # ggtree,          # to visualize phylogenetic files
+  # treeio,          # to visualize phylogenetic files
+  # ggnewscale)      # to add additional layers of color schemes
+
+# install older version of dplyr to address an error 
+# (error was:
+# > ggtree(tree)                                  # simple linear tree
+# Error in DataMask$new(.data, caller_env) : 
+#   argument "caller_env" is missing, with no default  )
+library(rio)
+# install_formats()
+library(rio)
+library(here)
+library(ape)
+library(treeio)
+library(ggnewscale)
+library(ggplot2)
+library(Rcpp)
+# install_version("dplyr", version = "1.0.5", repos = "http://cran.us.r-project.org")
+library(dplyr)
+# remotes::install_github("YuLab-SMU/tidytree")
+library(tidytree)
+# THEN install ggtree
+library(ggtree)
+# require(devtools)
+# install.packages('Rcpp')
+update.packages('Rcpp') 
+# if (!require("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# 
+# BiocManager::install("ggtreeExtra")
+library(ggtreeExtra)
+library(ggstar)
+library(harrypotter)
+library(ghibli)
+library(fuzzyjoin)
+library(stringi)
+```
+
+
+```{r data}
+# iqtree <- read.iqtree("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/1.26.22/core_gene_alignment.aln-gb.treefile")
+tree <- ape::read.tree("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/1.26.22/core_gene_alignment.aln-gb.treefile")
+tree
+AST_data <- import("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/phenCefCombShortRm4Abx_AnnoNCBI.short.csv")
+metadata <- import("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/anno.want.long.regions.csv")
+
+phylogroupData <- read.table("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroup_results/EZClermont/phylogroupresults.txt",header=FALSE)
+
+colnames(phylogroupData) <- c("org","phylogroup")
+
+new <- paste(phylogroupData$org, "_prokka", sep="")
+new <- as.data.frame(new)
+colnames(new) <- "org"
+phylogroupData.mod <- cbind(new,phylogroupData)
+colnames(phylogroupData.mod) <- c("org","org2","phylogroup")
+# join data together
+metadataphylo <- left_join(phylogroupData.mod,metadata, by = c("org"),keep=TRUE,copy=FALSE)
+uniq <- unique(metadataphylo)
+table(uniq$org.x %in% uniq$org.y)
+metadataphylo <- uniq
+phylogroupDataOnly <- uniq[,c(1,3)]
+write.csv(phylogroupDataOnly,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroupData.csv",row.names = FALSE)
+
+clermonTyping <- read.table("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroup_results/ClermonTyping/allPhylo.txt",header=FALSE,sep="\t")
+# just pull out isolate name and phylogroup 
+clermonTypingPh <- clermonTyping[,c(1,5)]
+colnames(clermonTypingPh) <- c("org","phylogroup")
+ library(stringi)      
+library(stringr)
+ pattern <- ".fna"  
+ replacement <-  "_prokka"  
+ clermonTypingPh$org <- str_replace(clermonTypingPh$org, pattern, replacement)      
+
+new <- paste(phylogroupData$org, "_prokka", sep="")
+new <- as.data.frame(new)
+colnames(new) <- "org"
+phylogroupData.mod <- cbind(new,phylogroupData)
+colnames(phylogroupData.mod) <- c("org","org2","phylogroup")
+# join data together
+metadataphylo <- left_join(phylogroupData.mod,metadata, by = c("org"),keep=TRUE,copy=FALSE)
+uniq <- unique(metadataphylo)
+table(uniq$org.x %in% uniq$org.y)
+metadataphylo <- uniq
+phylogroupDataOnly <- uniq[,c(1,3)]
+write.csv(phylogroupDataOnly,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroupData.csv",row.names = FALSE)
+
+
+# make first column in AST data the sample ID 
+AST_data_IDs <- cbind(AST_data$org,AST_data)
+# want only certain columns from this 
+astDataHeader <- colnames(AST_data_IDs)
+header.want <- c(grep("AST_data",astDataHeader),grep("Strain",astDataHeader),grep("Source",astDataHeader),grep("yr",astDataHeader),grep("SEQST",astDataHeader),grep("COLST",astDataHeader),grep("INT",astDataHeader)) 
+
+AST_data_IDs_short <- AST_data_IDs[header.want]
+AST_data_IDs_short
+
+head(tree$tip.label)
+colnames(AST_data_IDs_short)
+head(AST_data_IDs_short$`AST_data$org`)
+colnames(metadata)
+head(metadata$org)
+
+table(AST_data_IDs_short$`AST_data$org`%in% tree$tip.label)
+table( tree$tip.label %in%  AST_data_IDs_short$`AST_data$org`)
+table(metadata$org %in% tree$tip.label)
+table( tree$tip.label %in%  metadata$org )
+
+# want AST data to be in long format, so use melt() from dplyr package to do this 
+AST_only <- AST_data_IDs_short[,c(1,8:42)]
+colnames(AST_only)
+AST_long <- reshape2::melt(AST_only, id="AST_data$org", variable.name = "antibiotic", value.name="phenotype")
+astLevels <- levels(as.factor(AST_long$antibiotic))
+AST_long$antibiotic <- factor(AST_long$antibiotic, levels=astLevels)
+phenoLevels <- levels(as.factor(AST_long$phenotype))
+AST_long$phenotype <- factor(AST_long$phenotype,
+                    levels=phenoLevels)
+
+```
+
+
+```{r simple tree, echo=FALSE}
+ggtree(tree)                                      # simple linear tree
+ggtree(tree,  branch.length = "none")                   # simple linear tree with all tips aligned
+ggtree(tree, layout="circular")                         # simple circular tree
+ggtree(tree, layout="circular", branch.length = "none") # simple circular tree with all tips aligned
+```
+
+
+
+```{r simpleTree+Data, include=TRUE,echo=FALSE}
+
+
+year <- AST_data_IDs_short[,c(1,5)]
+loc <- AST_data_IDs_short[,c(1,7)]
+  
+########## tree with circular layout, branches colored by year 
+tree1 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2, aes(color=as.factor(yr))) %<+% year 
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/treeColorsYear.pdf")
+tree1
+dev.off()
+
+# same plot, but instead of coloring the branches, color the tip points 
+tree1.1 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2) %<+% year 
+# pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/treeColorsYear.pdf")
+tree1.1 + geom_tippoint(mapping=aes(color=as.factor(yr)), size=.5, show.legend=TRUE)
+# dev.off()
+
+# need to use ggtreeExtra to use the circular layout and add multi-dimensional data 
+# let's try it with collection state first 
+tree2 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() + geom_fruit(
+         data=loc,
+         geom=geom_star,
+         mapping = aes(x=COLST, y=`AST_data$org`, fill=COLST),
+         size=1,
+          starstroke=0,
+          pwidth=0.1,
+          inherit.aes = FALSE,
+          grid.params=list(
+                          linetype=3,
+                          size=0.2
+                      )
+     ) 
+tree2 
+
+# cool, that works, kind of. no pattern jumps out, yet 
+# let's try with isolation source now 
+tree3 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() + geom_fruit(
+         data=AST_data_IDs_short,
+         geom=geom_star,
+         mapping = aes(x=Source, y=`AST_data$org`, fill=Source),
+         size=1,
+          starstroke=0,
+          pwidth=0.1,
+          inherit.aes = FALSE,
+          grid.params=list(
+                          linetype=3,
+                          size=0.2
+                      )
+     ) 
+tree3 
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/treeIsolationSourceStar.pdf")
+tree3
+dev.off()
+# isolation source with geom_tile instead of geom_star
+nlevels(as.factor(AST_data_IDs_short$Source))
+palette <- c("#d34338","#868c46","#62c655","#c650ba","#4a9a2f","#7965d8","#9fb936","#8657a6","#45c27f","#da3e77","#408749","#d58fd3","#5f8425","#647bc5","#c0ab39","#5ca5d9","#de722a","#31947c","#a54458","#6bbb8e","#a65589","#a1ba70","#e07b89","#2a6a45","#d89937","#5a6520","#e58f6b","#45c7c8","#a55532","#caa569","#8c6928")
+sourceColors <- cbind(as.data.frame(levels(as.factor(AST_data_IDs_short$Source))),as.data.frame(palette))
+tree4 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() + geom_fruit(
+         data=AST_data_IDs_short,
+         geom=geom_tile,
+         mapping = aes(y=`AST_data$org`, fill=Source),
+         width=10,
+          color="white",
+          pwidth=1,
+          offset=0.05
+      ) + scale_fill_manual(
+         name="Source",
+         values=sourceColors$palette,
+         guide=guide_legend(keywidth=0.3, keyheight=0.3, ncol=2, order=2)
+      )
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/treeIsolationSourceTilesNewColors.pdf")
+tree4
+dev.off()
+
+# tree with geom_fruit() for AST data 
+# 
+treeAST <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() +  geom_fruit(
+          data=AST_long,
+          geom=geom_tile,
+          mapping=aes(x=antibiotic, y=`AST_data$org`, fill=phenotype),
+          width=10,
+          color="white",
+          pwidth=1,
+          offset=0.1
+      ) + scale_fill_viridis_d() +
+      new_scale_fill()
+treeAST
+# tree with geom_fruit() for phylogroup data 
+
+tree5 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() +geom_fruit(
+  data=phylogroupDataOnly,
+         geom=geom_star,
+         mapping=aes(y=org.x,fill=phylogroup),
+         starshape=26,
+         color=NA,
+         size=2,
+         starstroke=0,
+         offset=0,
+     ) 
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/prelim_tree_phylogroup.pdf")
+tree5
+dev.off()
+
+colnames(AST_data_IDs_short)
+levels(as.factor(AST_data_IDs_short$Amoxicillin.Clavulanic.Acid.INT))
+colorsclavamox <- c("white","")
+tree6 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree()+ geom_fruit(
+          data=AST_data_IDs_short,
+          geom=geom_tile,
+          mapping=aes(y=`AST_data$org`,fill="red", alpha = as.factor(Amoxicillin.Clavulanic.Acid.INT),color="red"),
+          width=5,
+          pwidth=0.1,
+          offset=0.1
+      ) + scale_alpha_discrete() + scale_color_discrete(na.value="white") 
+
+tree6 
+tree6.1 <- tree6 + new_scale_fill() + new_scale_color() + geom_fruit(
+          data=AST_data_IDs_short,
+          geom=geom_tile,
+          mapping=aes(y=`AST_data$org`,fill="orange", alpha = as.factor(Amikacin.INT),color="orange"),
+          width=5,
+          pwidth=0.1,
+          offset=0.1
+      ) + scale_alpha_discrete() + scale_color_discrete(na.value="white") 
+tree6.1
+
+
+
+
+# + geom_fruit(
+#           data=AST_data_IDs_short,
+#           geom=geom_tile,
+#           mapping=aes(y=`AST_data$org`, fill=as.factor(Amikacin.INT)),
+#           width=5,
+#           color="white",
+#           pwidth=0.1,
+#           offset=0.1
+#       ) + scale_fill_viridis_d(option = "D",direction = -1)
+tree6.1
+tree6.5 <- tree6 + new_scale_fill() + geom_fruit(
+          data=AST_data_IDs_short,
+          geom=geom_tile,
+          mapping=aes(y=`AST_data$org`, fill=as.factor(Trimethoprim.Sulfamethoxazole.INT)),
+          width=5,
+          color="white",
+          pwidth=0.1,
+          offset=0.1
+      ) 
+tree7 <- treeAST + new_scale_fill() + geom_fruit(
+  data=phylogroupDataOnly,
+         geom=geom_star,
+         mapping=aes(y=org.x,fill=phylogroup),
+         starshape=26,
+         color=NA,
+         size=2,
+         starstroke=0,
+         offset=0.15,
+     ) 
+tree7
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/ast_phylogroupTree.pdf")
+tree7
+dev.off()
+
+
+# with clermonTyping and EZClermont 
+tree8 <- tree7 + new_scale_fill() + geom_fruit(
+  data=clermonTypingPh,
+         geom=geom_star,
+         mapping=aes(y=org,fill=phylogroup),
+         starshape=13,
+         color=NA,
+         size=1,
+         starstroke=0,
+         offset=0.1,
+     ) 
+tree8
+tree7
+pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/ast_phylogroupComparisonTree.pdf")
+tree8
+dev.off()
+```
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

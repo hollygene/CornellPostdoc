@@ -1,0 +1,161 @@
+---
+title: "phenotypic_data_organization"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reshape2)
+library(dplyr)
+library(tidyverse)
+library(fuzzyjoin)
+library(stringi)
+```
+
+
+
+```{r load_pheno_data, include=FALSE}
+ecol_2017_2020_ast <- read.csv(file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/ECOL_2017-2020_AST.csv",header=TRUE,na.strings = c("", "NA"))
+
+
+```
+
+
+
+```{r organize,include=TRUE}
+## annotations file that contains IDs that match phenotype dataset and those that match SNP dataset 
+anno <- read.csv("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/isolates_200_contigs_or_less_verified_host_species.csv",header=TRUE)
+isolates <- read.csv("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/assemblies_for_panaroo_jan22_dog_Ecoli.csv",header=TRUE)
+
+# Merge annotation file with isolates actually used to get correct list of isolates 
+isolates.anno <- inner_join(anno, isolates, by=c("Assembly" = "Assembly"),keep=TRUE)
+
+# want strain (ID used in phenotypic data) and assembly (ID used in WGS data)
+header <- colnames(isolates.anno)
+header.want <- c(grep("Strain",header),grep("Assembly",header),grep("IsolationSource",header),grep("Location",header))
+anno.want <- isolates.anno[header.want]
+View(anno.want)
+anno.want2 <- substr(anno.want$Assembly, 1, regexpr("\\.", anno.want$Assembly)-1)
+anno.want2
+
+# merge phenotypic data with annotations to get IDs and assembly in same file 
+
+colnames(ecol_2017_2020_ast)
+ecol_2017_2020_ast.anno <- left_join(anno.want, ecol_2017_2020_ast, by=c("Strain" = "sample.ID."),keep=TRUE)
+View(ecol_2017_2020_ast.anno)
+
+test <- dplyr::inner_join(ecol_2017_2020_ast.anno,anno.want,by="Assembly.x")
+test$Assembly.x <- substr(test$Assembly.x, 1, regexpr("\\.", test$Assembly.x)-1)
+test$Assembly.x
+phenAllFinal <- test
+
+```
+
+```{r phen_subset,include=FALSE}
+
+# find all instances of "SUSC" and replace with 0
+# install.packages("tidyverse")
+
+phen.sub.0 <- phenAllFinal %>% mutate_if(is.atomic,funs(str_replace(., "SUSC", "0")))
+View(phen.sub.0)
+# worked! # now do that to RESIST and convert NOINTP
+phen.sub.01 <- phen.sub.0 %>%  mutate_if(is.atomic,funs(str_replace(., "RESIST", "1")))
+phen.sub.01.1 <- phen.sub.01 %>%  mutate_if(is.atomic,funs(str_replace(., "NOINTP", "")))
+phen.sub.01.2 <- phen.sub.01.1 %>%  mutate_if(is.atomic,funs(str_replace(., "INTER", "")))
+phen.sub.01.3 <- phen.sub.01.2 %>%  mutate_if(is.atomic,funs(str_replace(., "NOTSUS", "1")))
+phen.sub.01.4 <- phen.sub.01.3 %>%  mutate_if(is.atomic,funs(str_replace(., "NS", "1")))
+phen.sub.01.5 <- phen.sub.01.4 %>%  mutate_if(is.atomic,funs(str_replace(., "NI", "")))
+phen.sub.01.6 <- phen.sub.01.5 %>%  mutate_if(is.atomic,funs(str_replace(., "NOMIC", "")))
+phen.sub.01.7 <- phen.sub.01.6 %>%  mutate_if(is.atomic,funs(str_replace(., "D", "")))
+View(phen.sub.01.7)
+phen.sub.01.8 <- phen.sub.01.7 %>% mutate_all(na_if,"")
+# remove columns that only have NA values
+# leaves columns that have SOME NA values
+phen.test <- phen.sub.01.8[ , ! apply( phen.sub.01.8 , 2 , function(x) all(is.na(x)) ) ]
+
+#export whole pheno file 
+write.csv(phen.test, file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/dogsAST_firstDraft.csv")
+
+
+
+```
+
+
+```{r pheno_curation, include=FALSE}
+# combine cefalexin and cephalexin columns into one 
+# did this in excel
+# read back in .csv 
+phenCefComb <- read.csv("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/dogsAST_firstDraft_INTonly_combCef.csv")
+colnames(phenCefComb)
+
+# combine anno.want.long with phenCefComb to get prokka ids for Scoary
+phenCefComb_anno <- fuzzy_inner_join(orgs2,phenCefComb, by = c("org" = "Assembly.x"), match_fun = stri_detect_fixed)
+write.csv(phenCefComb_anno,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/dogAST_cefComb_Rm_prokkaNames.csv")
+
+
+
+library(tidyverse)
+rownames(phenCefComb) <- phenCefComb$Assembly.x
+rownames(phenCefComb)
+View(phenCefComb)
+phenCefCombHeader <- colnames(phenCefComb)
+phenCefCombHeader
+headr.want <- c(grep("Assembly.x",phenCefCombHeader),grep("Strain.x",phenCefCombHeader),grep("Isolation.Source.x",phenCefCombHeader),grep("Location.x",phenCefCombHeader),
+                grep("year",phenCefCombHeader),grep("State",phenCefCombHeader),grep("Lab.",phenCefCombHeader),grep("Quarter",phenCefCombHeader),
+grep("Instrument",phenCefCombHeader),grep("Plate",phenCefCombHeader),grep("specfic.host",phenCefCombHeader),
+grep("collection.source...cleaned.",phenCefCombHeader),grep("INT",phenCefCombHeader))
+
+headr.want 
+phenCefComb.short <- phenCefComb[headr.want]
+table(phenCefComb$Assembly.x == rownames(phenCefComb.short))
+write.csv(phenCefComb.short,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenoCefComb.csv") 
+# remove 4 antibiotics using Excel and read back in 
+phenCefCombShortRm4Abx <- read.csv("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/phenoCefComb_Rm4Abx.csv")
+#combine final annotated pheno file with orgs2 to get prokka names
+phenCefCombShortRm4Abx_anno <- fuzzy_inner_join(orgs2,phenCefCombShortRm4Abx, by = c("org" = "Assembly.x"), match_fun = stri_detect_fixed)
+write.csv(phenCefCombShortRm4Abx_anno,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenoCefComb_4AbxRm_Anno.csv") 
+# combine with annotation data from ncbi 
+phenCefCombShortRm4Abx_AnnoNCBI <- fuzzy_inner_join(anno.want.short,phenCefCombShortRm4Abx_anno, by = c("Assembly.y" = "Assembly.x"), match_fun = stri_detect_fixed)
+table(phenCefCombShortRm4Abx_AnnoNCBI$yr %in% phenCefCombShortRm4Abx_AnnoNCBI$Year)
+
+phenCefCombShortRm4Abx_AnnoNCBIheader <- colnames(phenCefCombShortRm4Abx_AnnoNCBI)
+
+headr.want2 <- c(grep("Strain",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("Source",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("yr",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("SEQST",phenCefCombShortRm4Abx_AnnoNCBIheader),
+                grep("COLST",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("org",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("Location",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("Year",phenCefCombShortRm4Abx_AnnoNCBIheader),grep("INT",phenCefCombShortRm4Abx_AnnoNCBIheader))
+phenCefCombShortRm4Abx_AnnoNCBI.short <- phenCefCombShortRm4Abx_AnnoNCBI[headr.want2]
+
+write.csv(phenCefCombShortRm4Abx_AnnoNCBI.short,file="/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/phenCefCombShortRm4Abx_AnnoNCBI.short.csv")
+# abxOccurences <- read.table(file="/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/abxResistOccurences.txt")
+# 
+# library(ggplot2)
+# setwd("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/")
+# pdf("/Users/hcm59/Box/Holly/Analyses/Analyses/Ecoli/dist_resist_phenos.pdf")
+# qplot(abxOccurences$V2,binwidth=1, geom="histogram"  ,  main = "", 
+#       xlab = "# Antibiotics Resistant To", ylab="# Isolates", 
+#       fill=I("turquoise"), 
+#       col=I("darkturquoise")) + geom_vline(xintercept=2)
+# dev.off()
+
+
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -76,18 +76,17 @@ quast.py contigs_217892.fasta \
 ###############################################################################################################################
 # isolate 16S sequences with RNAmmer
 
-16S_dir="/workdir/hcm59/actinomyces/16S_species_seqs"
 
-for file in /workdir/hcm59/actinomyces/16S_species_seqs/*.fna
+for file in /workdir/hcm59/actinomyces/16S_species_seqs/new/*.fna
 
 do
 FBASE=$(basename $file .fna)
 BASE=${FBASE%.fna}
 
-perl /programs/rnammer-1.2/rnammer -S bac -m ssu -gff /workdir/hcm59/actinomyces/16S_species_seqs/${BASE}.gff < /workdir/hcm59/actinomyces/16S_species_seqs/${BASE}.fna
+perl /programs/rnammer-1.2/rnammer -S bac -m ssu -gff /workdir/hcm59/actinomyces/16S_species_seqs/new/${BASE}.gff < /workdir/hcm59/actinomyces/16S_species_seqs/new/${BASE}.fna
 
 export PATH=/programs/bedtools2-2.29.2/bin:$PATH
-bedtools getfasta -fi /workdir/hcm59/actinomyces/16S_species_seqs/${BASE}.fna -fo /workdir/hcm59/actinomyces/16S_species_seqs/${BASE}_16S.fasta -bed /workdir/hcm59/actinomyces/16S_species_seqs/${BASE}.gff
+bedtools getfasta -fi /workdir/hcm59/actinomyces/16S_species_seqs/new/${BASE}.fna -fo /workdir/hcm59/actinomyces/16S_species_seqs/new/${BASE}_16S.fasta -bed /workdir/hcm59/actinomyces/16S_species_seqs/new/${BASE}.gff
 
 done
 
@@ -96,14 +95,14 @@ done
 
 # need to rename fasta headers
 # append fasta headers with filenames
-for file in /workdir/hcm59/actinomyces/core_species_seqs/*.fna
+for file in /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/*.fasta
 
 do
-FBASE=$(basename $file .fna)
-BASE=${FBASE%.fna}
+FBASE=$(basename $file .fasta)
+BASE=${FBASE%.fasta}
 
-awk '/>/{sub(">","&"FILENAME"_");sub(/\.fna/,x)}1' ${BASE}.fna > ${BASE}_renamedHeader.fna
-awk '{print $1;next}1' ${BASE}_renamedHeader.fna > ${BASE}_renamedHeaderClean.fna
+awk '/>/{sub(">","&"FILENAME"_");sub(/\.fna/,x)}1' /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta
+awk '{print $1;next}1'  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeaderClean.fasta
 
 done
 
@@ -118,17 +117,19 @@ done
 #
 # done
 
+#concatenate sequences for alignment
+cat *_renamedHeaderClean.fasta > all_sp_16S_renamed.fasta
 ###############################################################################################################################
 # align sequences with MAFFT
 export PATH=/programs/mafft/bin:$PATH
 
-mafft --reorder --adjustdirectionaccurately --leavegappyregion --kimura 1 --maxiterate 2 --retree 1 --globalpair /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_jan4.fasta
+mafft --reorder --adjustdirectionaccurately --leavegappyregion --kimura 1 --maxiterate 2 --retree 1 --globalpair /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft.fasta
 
 ###############################################################################################################################
 # clean up alignment with Gblocks
 export PATH=/programs/Gblocks_0.91b:$PATH
 
-Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft_jan4.fasta -t=d -n=y -u=y -d=y
+Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_for_16S_aln_mafft.fasta -t=d -n=y -u=y -d=y
 # Original alignment: 1602 positions
 # Ungapped alignment: 1277 positions
 # Gblocks alignment:  1244 positions (77 %) in 14 selected block(s)
@@ -144,11 +145,25 @@ Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_maf
 export PATH=/programs/raxml-ng_v1.0.1:$PATH
 
 # check your MSA is good
-raxml-ng --check --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --prefix jan4
+raxml-ng --check --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix march
 
-raxml-ng --parse --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --prefix jan4
+raxml-ng --parse --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix march
+raxml-ng --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix T3 --threads 2 --seed 2
+raxml-ng --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix T4 --threads 2 --seed 2 --tree pars{25},rand{25}
+grep "Final LogLikelihood:" T{3,4}.raxml.log
+cat T{3,4}.raxml.mlTrees > mltrees
+raxml-ng --rfdist --tree mltrees --prefix RF
+raxml-ng --bootstrap --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --tree pars{10},rand{10} --bs-trees 1000 --seed 2
+raxml-ng --bsconverge --bs-trees all_for_16S_aln_mafft.fasta-gb.raxml.bootstraps --prefix t1 --seed 2 --threads 2 --bs-cutoff 0.01
+raxml-ng --bootstrap --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix bt2 --seed 333 --threads 1 --tree pars{10},rand{10} --bs-trees 200
 
-raxml-ng --bootstrap --all --msa all_for_16S_aln_mafft_jan4.fasta-gb --model GTR+G+I --tree pars{10},rand{10} --bs-trees 1000 --seed 2 
+cat bt2.raxml.bootstraps all_for_16S_aln_mafft.fasta-gb.raxml.bootstraps > allbootstraps
+raxml-ng --bsconverge --bs-trees allbootstraps --prefix bt3 --seed 2 --threads 1 --bs-cutoff 0.01
+
+--all
+
+# from web server: 
+--msa /scratch/cluster/weekly/raxml/job_62272/sequenceAlignment.fasta --model GTR+FO+G --search --opt-branches on --opt-model on --tree pars{10},rand{10} --force --threads 2 --prefix /scratch/cluster/weekly/raxml/job_62272/result
 
 
 ###############################################################################################################################
@@ -179,3 +194,31 @@ BASE=${FBASE%.fasta}
 /programs/fastANI-1.3/fastANI -q /workdir/hcm59/actinomyces/assembled/assemblies/${BASE}.fasta --rl /workdir/hcm59/actinomyces/ncbi_genomes/ncbi_dataset/genomes.txt -o /workdir/hcm59/actinomyces/ANI/${BASE}.txt
 
 done
+
+
+###############################################################################################################################
+# kSNP to find core genome SNPs to make the core genome tree
+export PATH=/programs/kSNP3:$PATH
+
+# need to make a file that contains a list of the genomes in the dataset
+# must be in directory with all of the genomes for this, and there must be nothing else in the directory
+# MakeKSNP3infile directory outfileName mode
+# mode = A, automatically makes genome name the file name without the ending
+# mode = S, semi-automatic mode, you have to input the genome names
+# this has to be done in the parent directory of the directory where your files are, or else it won't work properly. The ouput file (called kSNPinputFile) goes into the parent directory as well
+MakeKSNP3infile forKSnp kSNPinputFile3 A
+# need to make a fasta file with all of the genomes, since Kchooser needs this (kSNP doesnt, but Kchooser does)
+# MakeFasta infile_name outfile_name
+MakeFasta kSNPinputFile2 actinomycesGenomes2.fasta
+# first need to run Kchooser to identify the ideal kmer size to use
+Kchooser actinomycesGenomes2.fasta
+# try adjusting the cutoff value to 0.98 based on the Kchooser report
+Kchooser actinomycesGenomes.fasta 0.98
+
+# run kSNP with kmer value of 21
+# use tee to send log info to a file
+kSNP3 -in kSNPinputFile3 -k 21 -core -ML -outdir kSNP4 | tee kSNP4Logfile
+
+
+###############################################################################################################################
+# RaxML to make maximum likelihood tree

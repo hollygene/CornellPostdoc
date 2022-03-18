@@ -81,7 +81,6 @@ Gblocks core_gene_alignment.aln -t=d -n=y -u=y -d=y
 
 ################################################################################################
 ## Pipeline for running IQTree
-# want to run IQTree before RAXml-ng because it takes less time, to make sure the tree is correct
 ################################################################################################
 export PATH=/workdir/miniconda3/bin:$PATH
 source activate iqtree #load in iqtree environment
@@ -93,25 +92,41 @@ iqtree -s core_gene_alignment.aln-gb -m GTR+G -nt AUTO
   # GTR: most general substitution model
   # G: allows different sites to have different substitution rates
 
+  ################################################################################################
+  ## Pipeline for running Scoary
+  ################################################################################################
 
-################################################################################################
-  ## Pipeline for running IQTree
-  # want to run IQTree before RAXml-ng because it takes less time, to make sure the tree is correct
-################################################################################################
-### Raxml ng
-# add to your path
-export PATH=/programs/raxml-ng_v1.0.1:$PATH
+  # Script for Scoary on hpc cluster
+  # building conda environment
+  # source $HOME/miniconda3/bin/activate
+  # conda -V
+  # version 4.9.2
+  # conda update conda
+  # see list of available python versions
+  # conda search "^python$"
 
-# check your MSA is good
-raxml-ng --check --msa core_gene_alignment.aln-gb --model GTR+G+I --prefix T1a
+  # list packages installed in current env
+  conda list
 
-raxml-ng --parse --msa core_gene_alignment.aln-gb --model GTR+G --prefix T2
+  # conda create -n scoary python=3.9
+  source activate scoary
 
-raxml-ng --msa  core_gene_alignment.aln-gb --model GTR+G+I --prefix T3 --threads 2 --seed 2
+  # conda install -n scoary six
+  # pip install scoary
+  # pip install ete3
 
-raxml-ng --support --tree bestML.tree --bs-trees bootstraps.tree
+  # export PYTHONPATH=/programs/scoary/lib/python2.7/site-packages
+  # export PATH=/programs/scoary/bin:$PATH
 
+  conda activate scoary
 
+  scoary -t /workdir/hcm59/Ecoli/SNPs/dog_verified_host/dog_verified_host_PhenoForScoary_OxPolRm.csv \
+   -g /workdir/hcm59/Ecoli/SNPs/dog_verified_host/gene_presence_absence_roary.csv \
+   -o /workdir/hcm59/Ecoli/SNPs/dog_verified_host \
+   -n /workdir/hcm59/Ecoli/SNPs/dog_verified_host/iqtree/core_gene_alignment.aln-gb.treefile \
+   -s 15 \
+   --delimiter , \
+   --permute 1000 --threads 10
 ################################################################################################
 # Run AMRFinder on all isolates
 cp -r /programs/amrfinder-3.10.18 /workdir
@@ -134,6 +149,13 @@ BASE=${FBASE%.fna}
 amrfinder -n ${fastas_gffs}/${BASE}.fna -O Escherichia --plus -o ${results}/${BASE}_AMRFinder.txt
 
 done
+
+
+################################################################################################
+# to get heatmap of gene presence/absence from roary
+################################################################################################
+
+python roary_plots.py core_gene_alignment.aln-gb.treefile gene_presence_absence_roary.csv
 
 ################################################################################################
 # hAMRonization
