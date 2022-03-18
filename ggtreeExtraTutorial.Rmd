@@ -1,0 +1,184 @@
+---
+title: "ggtreeExtraTutorial"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r tutorial for ggtree}
+library(ggtree)
+library(ggtreeExtra)
+library(ggplot2)
+library(ggnewscale)
+library(reshape2)
+library(dplyr)
+library(tidytree)
+library(ggstar)
+library(TDbook)
+
+# load tr and dat from the TDbook package 
+dat <- df_Candidaauris_data
+tr <- tree_Candidaauris
+
+
+
+countries <- c("Canada", "United States",
+               "Colombia", "Panama",
+               "Venezuela", "France",
+               "Germany", "Spain",
+               "UK", "India",
+               "Israel", "Pakistan",
+               "Saudi Arabia", "United Arab Emirates",
+               "Kenya", "South Africa",
+               "Japan", "South Korea",
+               "Australia")
+# For the tip points
+dat1 <- dat %>% select(c("ID", "COUNTRY", "COUNTRY__colour"))
+dat1$COUNTRY <- factor(dat1$COUNTRY, levels=countries)
+COUNTRYcolors <- dat1[match(countries,dat$COUNTRY),"COUNTRY__colour"]
+
+# For the heatmap layer
+dat2 <- dat %>% select(c("ID", "FCZ", "AMB", "MCF"))
+dat2 <- melt(dat2,id="ID", variable.name="Antifungal", value.name="type")
+dat2$type <- paste(dat2$Antifungal, dat2$type)
+dat2$type[grepl("Not_", dat2$type)] = "Susceptible"
+dat2$Antifungal <- factor(dat2$Antifungal, levels=c("FCZ", "AMB", "MCF"))
+dat2$type <- factor(dat2$type,
+                    levels=c("FCZ Resistant",
+                            "AMB Resistant",
+                            "MCF Resistant",
+                            "Susceptible"))
+
+# For the points layer
+dat3 <- dat %>% select(c("ID", "ERG11", "FKS1")) %>%
+        melt(id="ID", variable.name="point", value.name="mutation")
+dat3$mutation <- paste(dat3$point, dat3$mutation)
+dat3$mutation[grepl("WT", dat3$mutation)] <- NA
+dat3$mutation <- factor(dat3$mutation, 
+                        levels=c("ERG11 Y132F", "ERG11 K143R",
+                                 "ERG11 F126L", "FKS1 S639Y/P/F"))
+
+# For the clade group
+dat4 <- dat %>% select(c("ID", "CLADE"))
+dat4 <- aggregate(.~CLADE, dat4, FUN=paste, collapse=",")
+clades <- lapply(dat4$ID, function(x){unlist(strsplit(x,split=","))})
+names(clades) <- dat4$CLADE
+
+tr <- groupOTU(tr, clades, "Clade")
+Clade <- NULL
+p <- ggtree(tr=tr, layout="fan", open.angle=15, size=0.2, aes(colour=Clade)) +
+     scale_colour_manual(
+         values=c("black","#69B920","#9C2E88","#F74B00","#60C3DB"),
+         labels=c("","I", "II", "III", "IV"),
+         guide=guide_legend(keywidth=0.5,
+                            keyheight=0.5,
+                            order=1,
+                            override.aes=list(linetype=c("0"=NA,
+                                                         "Clade1"=1,
+                                                         "Clade2"=1,
+                                                         "Clade3"=1,
+                                                         "Clade4"=1
+                                                        )
+                                             )
+                           )
+     ) + 
+     new_scale_colour()
+
+p1 <- p %<+% dat1 +
+     geom_tippoint(aes(colour=COUNTRY),
+                   alpha=0) +
+     geom_tiplab(aes(colour=COUNTRY),
+                   align=TRUE,
+                   linetype=3,
+                   size=1,
+                   linesize=0.2,
+                   show.legend=FALSE
+                   ) +
+     scale_colour_manual(
+         name="Country labels",
+         values=COUNTRYcolors,
+         guide=guide_legend(keywidth=0.5,
+                            keyheight=0.5,
+                            order=2,
+                            override.aes=list(size=2,alpha=1))
+     )
+
+p2 <- p1 +
+      geom_fruit(
+          data=dat2,
+          geom=geom_tile,
+          mapping=aes(x=Antifungal, y=ID, fill=type),
+          width=0.1,
+          color="white",
+          pwidth=0.1,
+          offset=0.15
+      ) +
+      scale_fill_manual(
+           name="Antifungal susceptibility",
+           values=c("#595959", "#B30000", "#020099", "#E6E6E6"),
+           na.translate=FALSE,
+           guide=guide_legend(keywidth=0.5,
+                              keyheight=0.5,
+                              order=3
+                             )
+      ) +
+      new_scale_fill()
+
+p3 <- p2 +
+      geom_fruit(
+          data=dat3,
+          geom=geom_star,
+          mapping=aes(x=mutation, y=ID, fill=mutation, starshape=point),
+          size=1,
+          starstroke=0,
+          pwidth=0.1,
+          inherit.aes = FALSE,
+          grid.params=list(
+                          linetype=3,
+                          size=0.2
+                      )
+
+      ) +
+      scale_fill_manual(
+          name="Point mutations",
+          values=c("#329901", "#0600FF", "#FF0100", "#9900CC"),
+          guide=guide_legend(keywidth=0.5, keyheight=0.5, order=4,
+                             override.aes=list(
+                                    starshape=c("ERG11 Y132F"=15,
+                                                "ERG11 K143R"=15,
+                                                "ERG11 F126L"=15,
+                                                "FKS1 S639Y/P/F"=1),
+                                    size=2)
+                            ),
+          na.translate=FALSE,
+      ) +
+      scale_starshape_manual(
+          values=c(15, 1),
+          guide="none"
+      ) +
+      theme(
+          legend.background=element_rect(fill=NA),
+          legend.title=element_text(size=7), 
+          legend.text=element_text(size=5.5),
+          legend.spacing.y = unit(0.02, "cm")
+      )
+p3
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,0 +1,33 @@
+---
+title: "phylogroupComparison"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(fuzzyjoin)
+library(stringi)
+```
+
+
+```{r data}
+clermonTyping <- read.table("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroup_results/ClermonTyping/allPhylo.txt",header=FALSE,sep="\t")
+colnames(clermonTyping) <- c("Isolate","Genes","Quadruplex","Supp","Phylogroup","File")
+ezClermont <- read.table("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroup_results/EZClermont/phylogroupresults.txt",header=FALSE)
+colnames(ezClermont) <- c("Isolate","Phylogroup")
+# need to compare these results and see where they do not match 
+# fuzzy join on ezClermont[,1] and clermonTyping[,5]
+compClerm <- fuzzy_join(clermonTyping,ezClermont,by=c("Isolate"),match_fun=stri_detect_fixed)
+compClerm$match <- ifelse(compClerm$Phylogroup.x == compClerm$Phylogroup.y, "", "NO")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
