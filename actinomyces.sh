@@ -95,15 +95,16 @@ done
 
 # need to rename fasta headers
 # append fasta headers with filenames
-for file in /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/*.fasta
+for file in *.fasta
 
 do
 FBASE=$(basename $file .fasta)
 BASE=${FBASE%.fasta}
 
-awk '/>/{sub(">","&"FILENAME"_");sub(/\.fna/,x)}1' /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta
-awk '{print $1;next}1'  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeaderClean.fasta
+# awk '/>/{sub(">","&"FILENAME"_");sub(/\.fna/,x)}1' /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta
+# awk '{print $1;next}1'  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeader.fasta >  /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/${BASE}_renamedHeaderClean.fasta
 
+awk '/^>/ {gsub(/.fa(sta)?$/,"",FILENAME);printf(">%s\n",FILENAME);next;} {print}' ${BASE}.fasta >  ${BASE}_renamedHeaderTest.fasta
 done
 
 # remove colons
@@ -118,21 +119,18 @@ done
 # done
 
 #concatenate sequences for alignment
-cat *_renamedHeaderClean.fasta > all_sp_16S_renamed.fasta
+cat *_renamedHeaderTest.fasta > all_actinomyces_16S.fasta
 ###############################################################################################################################
 # align sequences with MAFFT
-export PATH=/programs/mafft/bin:$PATH
 
-mafft --reorder --adjustdirectionaccurately --leavegappyregion --kimura 1 --maxiterate 2 --retree 1 --globalpair /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/renamed/all_sp_16S_renamed.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/16S_only/all_for_16S_aln_mafft.fasta
+export PATH=/programs/mafft/bin:$PATH
+mafft --reorder --adjustdirectionaccurately --leavegappyregion --kimura 1 --maxiterate 2 --retree 1 --globalpair /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_actinomyces_16S_red.fasta > /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_actinomyces_16S_red_mafft.fasta
 
 ###############################################################################################################################
 # clean up alignment with Gblocks
 export PATH=/programs/Gblocks_0.91b:$PATH
 
-Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_for_16S_aln_mafft.fasta -t=d -n=y -u=y -d=y
-# Original alignment: 1602 positions
-# Ungapped alignment: 1277 positions
-# Gblocks alignment:  1244 positions (77 %) in 14 selected block(s)
+Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_actinomyces_16S_red_mafft.fasta -t=d -n=y -u=y -d=y
 
 # t=d: type is DNA
 # n=y: nonconserved blocks
@@ -145,25 +143,48 @@ Gblocks /workdir/hcm59/actinomyces/16S_species_seqs/new/16S/all_for_16S_aln_maff
 export PATH=/programs/raxml-ng_v1.0.1:$PATH
 
 # check your MSA is good
-raxml-ng --check --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix march
+raxml-ng --check --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --prefix march
 
-raxml-ng --parse --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix march
-raxml-ng --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix T3 --threads 2 --seed 2
-raxml-ng --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix T4 --threads 2 --seed 2 --tree pars{25},rand{25}
+raxml-ng --parse --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --prefix march1
+raxml-ng --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --prefix T3 --threads 2 --seed 2
+raxml-ng --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --prefix T4 --threads 2 --seed 2 --tree pars{25},rand{25}
 grep "Final LogLikelihood:" T{3,4}.raxml.log
 cat T{3,4}.raxml.mlTrees > mltrees
 raxml-ng --rfdist --tree mltrees --prefix RF
-raxml-ng --bootstrap --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --tree pars{10},rand{10} --bs-trees 1000 --seed 2
-raxml-ng --bsconverge --bs-trees all_for_16S_aln_mafft.fasta-gb.raxml.bootstraps --prefix t1 --seed 2 --threads 2 --bs-cutoff 0.01
-raxml-ng --bootstrap --msa all_for_16S_aln_mafft.fasta-gb --model GTR+G+I --prefix bt2 --seed 333 --threads 1 --tree pars{10},rand{10} --bs-trees 200
+raxml-ng --bootstrap --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --tree pars{10},rand{10} --bs-trees 1000 --seed 2
+raxml-ng --bsconverge --bs-trees all_actinomyces_16S_red_mafft.fasta-gb.raxml.bootstraps --prefix t2 --seed 2 --threads 2 --bs-cutoff 0.05
+raxml-ng --bootstrap --msa all_actinomyces_16S_red_mafft.fasta-gb --model GTR+G+I --prefix bt2 --seed 333 --threads 1 --tree pars{10},rand{10} --bs-trees 500
 
-cat bt2.raxml.bootstraps all_for_16S_aln_mafft.fasta-gb.raxml.bootstraps > allbootstraps
-raxml-ng --bsconverge --bs-trees allbootstraps --prefix bt3 --seed 2 --threads 1 --bs-cutoff 0.01
+cat bt2.raxml.bootstraps all_actinomyces_16S_red_mafft.fasta-gb.raxml.bootstraps > allbootstraps
+raxml-ng --bsconverge --bs-trees allbootstraps --prefix bt3 --seed 2 --threads 1 --bs-cutoff 0.05
 
 --all
 
-# from web server: 
---msa /scratch/cluster/weekly/raxml/job_62272/sequenceAlignment.fasta --model GTR+FO+G --search --opt-branches on --opt-model on --tree pars{10},rand{10} --force --threads 2 --prefix /scratch/cluster/weekly/raxml/job_62272/result
+# from web server:
+--msa /scratch/cluster/weekly/raxml/job_62272/sequenceAlignment.fasta --model GTR+FO+G --search --opt-branches on --opt-model on --tree pars{10},rand{10} --force --threads 2 --prefix /scratch/cluster/weekly/raxml/job_62272/resul
+t
+-msa /scratch/cluster/weekly/raxml/job_59298/sequenceAlignment.fasta --model GTR+FO+G --search --opt-branches on --opt-model on --tree pars{10},rand{10} --force --threads 2 --prefix /scratch/cluster/weekly/raxml/job_59298/result
+
+
+###############################################################################################################################
+# IqTree
+# put miniconda in your path
+export PATH=/workdir/miniconda3/bin:$PATH
+source activate iqtree #load in iqtree environment
+iqtree -s all_for_16S_aln_mafft_3.fasta -m MFP
+
+iqtree -s all_actinomyces_16S_red_mafft.fasta-gb -m GTR+G -nt AUTO -B 1000 --prefix ufbootstrap
+iqtree -s all_actinomyces_16S_red_mafft.fasta-gb -m GTR+G -nt AUTO -b 1000 --prefix stdbootstrap
+  # B is # bootstraps for branch support analysis (using UFBoot)
+  # -b if you want to use the standard non-parametric bootstrapping
+  # nt is number of threads
+  # s specifies alignment file to use
+  # m specifies what model to use
+  # GTR: most general substitution model
+  # G: allows different sites to have different substitution rates
+  # ASC: want IQTree to run ascertainment bias correction (necessary because SNP data)
+
+
 
 
 ###############################################################################################################################
@@ -207,18 +228,28 @@ export PATH=/programs/kSNP3:$PATH
 # mode = S, semi-automatic mode, you have to input the genome names
 # this has to be done in the parent directory of the directory where your files are, or else it won't work properly. The ouput file (called kSNPinputFile) goes into the parent directory as well
 MakeKSNP3infile forKSnp kSNPinputFile3 A
+MakeKSNP3infile forKSnp kSNPinputFile4 A
+MakeKSNP3infile forKSnp kSNPinputFile5 A
 # need to make a fasta file with all of the genomes, since Kchooser needs this (kSNP doesnt, but Kchooser does)
 # MakeFasta infile_name outfile_name
 MakeFasta kSNPinputFile2 actinomycesGenomes2.fasta
+MakeFasta kSNPinputFile4 actinomycesGenomes4.fasta
+MakeFasta kSNPinputFile5 actinomycesGenomes5.fasta
 # first need to run Kchooser to identify the ideal kmer size to use
 Kchooser actinomycesGenomes2.fasta
+Kchooser actinomycesGenomes4.fasta
+Kchooser actinomycesGenomes5.fasta
 # try adjusting the cutoff value to 0.98 based on the Kchooser report
 Kchooser actinomycesGenomes.fasta 0.98
-
+Kchooser actinomycesGenomes4.fasta 0.98
 # run kSNP with kmer value of 21
 # use tee to send log info to a file
 kSNP3 -in kSNPinputFile3 -k 21 -core -ML -outdir kSNP4 | tee kSNP4Logfile
-
-
+kSNP3 -in kSNPinputFile4 -k 21 -core -ML -outdir kSNP5 | tee kSNP5Logfile
+kSNP3 -in kSNPinputFile5 -k 21 -core -ML -outdir kSNP6 | tee kSNP6Logfile
 ###############################################################################################################################
-# RaxML to make maximum likelihood tree
+# IQ Tree
+export PATH=/workdir/miniconda3/bin:$PATH
+source activate iqtree #load in iqtree environment
+
+iqtree -s all_for_16S_aln_mafft.fasta-gb -m GTR+G -nt AUTO

@@ -1,0 +1,74 @@
+---
+title: "actinomyces_tree_viz"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rio)
+# install_formats()
+library(here)
+library(ape)
+library(treeio)
+library(ggnewscale)
+library(ggplot2)
+library(Rcpp)
+# install_version("dplyr", version = "1.0.5", repos = "http://cran.us.r-project.org")
+library(dplyr)
+# remotes::install_github("YuLab-SMU/tidytree")
+library(tidytree)
+# THEN install ggtree
+library(ggtree)
+# require(devtools)
+# install.packages('Rcpp')
+update.packages('Rcpp') 
+# if (!require("BiocManager", quietly = TRUE))
+#     install.packages("BiocManager")
+# 
+# BiocManager::install("ggtreeExtra")
+library(ggtreeExtra)
+library(ggstar)
+library(harrypotter)
+library(ghibli)
+library(fuzzyjoin)
+library(stringi)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+core_tree <-  ape::read.tree("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/actinomyces/kSNP5/tree.core.tre")
+core_tree
+core_ML_tree <- ape::read.tree("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/actinomyces/kSNP5/tree.ML.tre")
+core_ML_tree
+core_ML_treeAC <- ape::read.tree("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/actinomyces/kSNP5/tree_AlleleCounts.ML.NodeLabel.tre")
+core_ML_treeAC
+AST_data <- import("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phenotypeData/phenCefCombShortRm4Abx_AnnoNCBI.short.csv")
+metadata <- import("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/anno.want.long.regions.csv")
+
+phylogroupData <- read.table("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/phylogroup_results/EZClermont/phylogroupresults.txt",header=FALSE)
+
+colnames(phylogroupData) <- c("org","phylogroup")
+
+new <- paste(phylogroupData$org, "_prokka", sep="")
+new <- as.data.frame(new)
+colnames(new) <- "org"
+phylogroupData.mod <- cbind(new,phylogroupData)
+colnames(phylogroupData.mod) <- c("org","org2","phylogroup")
+# join data together
+metadataphylo <- left_join(phylogroupData.mod,metadata, by = c("org"),keep=TRUE,copy=FALSE)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
