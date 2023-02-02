@@ -90,17 +90,17 @@ clermonTypingPh <- clermonTyping[,c(1,5)]
 colnames(clermonTypingPh) <- c("org","phylogroup")
  library(stringi)      
 library(stringr)
- # pattern <- ".fna"  
- # replacement <-  "_prokka"  
- # clermonTypingPh$org <- str_replace(clermonTypingPh$org, pattern, replacement)      
+ pattern <- ".fna"
+ replacement <-  "_prokka"
+ clermonTypingPh$org <- str_replace(clermonTypingPh$org, pattern, replacement)
 
-# new <- paste(clermonTypingPh$org, "_prokka", sep="")
-# new <- as.data.frame(new)
-# colnames(new) <- "org"
-# phylogroupData.mod <- cbind(new,clermonTypingPh)
-# colnames(phylogroupData.mod) <- c("org","org2","phylogroup")
-# join data together
-# metadataphylo <- left_join(phylogroupData.mod,region_dataSub, by = c("org"),keep=TRUE,copy=FALSE)
+new <- paste(clermonTypingPh$org, "_prokka", sep="")
+new <- as.data.frame(new)
+colnames(new) <- "org"
+phylogroupData.mod <- cbind(new,clermonTypingPh)
+colnames(phylogroupData.mod) <- c("org","org2","phylogroup")
+join data together
+metadataphylo <- left_join(phylogroupData.mod,region_dataSub, by = c("org"),keep=TRUE,copy=FALSE)
 phyloRegionsComb <- fuzzy_left_join(clermonTypingPh,region_dataSub, by = c("org" = "Assembly"), match_fun = stri_detect_fixed)
 uniq <- unique(phyloRegionsComb)
 table(uniq$org.x %in% uniq$org.y)
@@ -126,11 +126,13 @@ head(region_dataSub$Assembly)
 
 table(AST_data_IDs_short$`AST_data$org`%in% tree$tip.label)
 table( tree$tip.label %in%  AST_data_IDs_short$`AST_data$org`)
-table(region_dataSub$Assembly %in% tree$tip.label)
+table(phyloRegionsComb$org %in% tree$tip.label)
 table( tree$tip.label %in%  region_dataSub$Assembly )
 
 #combine AST and region and phylogroup data all together
-AST_metadata_comb <- fuzzy_inner_join(phyloRegionsComb,AST_data_IDs_short, by = c("org" = "AST_data$org"), match_fun = stri_detect_fixed)
+# join data together
+metadataphylo <- left_join(phyloRegionsComb,AST_data_IDs_short, by = c("org"="AST_data$org"),keep=TRUE,copy=FALSE)
+# AST_metadata_comb <- fuzzy_inner_join(phyloRegionsComb,AST_data_IDs_short, by = c("org" = "AST_data$org"), match_fun = stri_detect_fixed)
 
 # want AST data to be in long format, so use melt() from dplyr package to do this 
 AST_only <- AST_data_IDs_short[,c(1,8:42)]
@@ -141,6 +143,7 @@ AST_long$antibiotic <- factor(AST_long$antibiotic, levels=astLevels)
 phenoLevels <- levels(as.factor(AST_long$phenotype))
 AST_long$phenotype <- factor(AST_long$phenotype,
                     levels=phenoLevels)
+
 
 ```
 
