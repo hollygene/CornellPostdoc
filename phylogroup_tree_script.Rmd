@@ -241,8 +241,8 @@ treeAST <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  
           width=10,
           color="white",
           pwidth=1,
-          offset=0.1 )  
-        + scale_fill_viridis_b(direction=-1) 
+          offset=0.1 )  +
+         scale_fill_viridis_d(direction=-1) 
       # new_scale_fill()
 treeAST
 # tree with geom_fruit() for phylogroup data 
@@ -433,7 +433,8 @@ treeRegions <- treeAST + new_scale_fill() + geom_fruit(
     offset=0.1
 )
 treeRegions
-treeClermRegions <- treeClerm + new_scale_fill() + geom_fruit(
+
+treeClermRegions <- treeClerm  + geom_fruit(
     data=phyloRegionsComb,
     geom=geom_star,
     mapping=aes(y=org,fill=geo_group),
@@ -442,7 +443,11 @@ treeClermRegions <- treeClerm + new_scale_fill() + geom_fruit(
     size=0.5,
     starstroke=0,
     offset=0.1
-)
+)  + scale_fill_manual(
+         name="Region",
+         values=palette,
+         guide=guide_legend(keywidth=0.3, keyheight=0.3, ncol=2, order=2) )
+
 
 treeClermRegions
 
