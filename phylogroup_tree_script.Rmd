@@ -247,18 +247,18 @@ treeAST <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  
 treeAST
 # tree with geom_fruit() for phylogroup data 
 
-tree5 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() +geom_fruit(
-  data=phyloRegionsComb,
-         geom=geom_star,
-         mapping=aes(y=org,fill=phylogroup),
-         starshape=26,
-         color=NA,
-         size=2,
-         starstroke=0,
-         offset=0,
-     ) 
-# pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/prelim_tree_phylogroup.pdf")
-tree5
+# tree5 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() +geom_fruit(
+#   data=phyloRegionsComb,
+#          geom=geom_star,
+#          mapping=aes(y=org,fill=phylogroup),
+#          starshape=26,
+#          color=NA,
+#          size=2,
+#          starstroke=0,
+#          offset=0,
+#      ) 
+# # pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/prelim_tree_phylogroup.pdf")
+# tree5
 # dev.off()
 
 # phylogroup + region
@@ -272,6 +272,7 @@ phyloRegion <- tree5 + geom_fruit(
          starstroke=0,
          offset=0.05,
      ) 
+      )
 # pdf("/Us
 phyloRegion
 
