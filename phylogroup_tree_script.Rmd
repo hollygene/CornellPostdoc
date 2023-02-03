@@ -241,14 +241,14 @@ treeAST <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  
           width=10,
           color="white",
           pwidth=1,
-          offset=0.1
-      ) + scale_fill_viridis_d() +
-      new_scale_fill()
+          offset=0.1 )  
+        + scale_fill_viridis_b(direction=-1) 
+      # new_scale_fill()
 treeAST
 # tree with geom_fruit() for phylogroup data 
 
 tree5 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + theme_tree() +geom_fruit(
-  data=clermonTypingPh,
+  data=phyloRegionsComb,
          geom=geom_star,
          mapping=aes(y=org,fill=phylogroup),
          starshape=26,
@@ -260,6 +260,77 @@ tree5 <- ggtree(tree, layout = "circular", branch.length = "none", size=0.2)  + 
 # pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/prelim_tree_phylogroup.pdf")
 tree5
 # dev.off()
+
+# phylogroup + region
+phyloRegion <- tree5 + geom_fruit(
+  data=phyloRegionsComb,
+         geom=geom_star,
+         mapping=aes(y=org,fill=geo_group),
+         starshape=13,
+         color=NA,
+         size=1,
+         starstroke=0,
+         offset=0.05,
+     ) 
+# pdf("/Us
+phyloRegion
+
+pdf("C:/Users/HCMcQueary/OneDrive - Commonwealth of Massachusetts/HomeDrive/dogEcoli2022/Phenotype/phyloRegion.pdf")
+phyloRegion
+dev.off()
+library(colorBlindness)
+library(paletteer)
+paletteer_d("colorBlindness::PairedColor12Steps")
+palette <- colorBlindness::PairedColor12Steps
+levels(as.factor(phyloRegionsComb$geo_group))
+
+AST_region <- treeAST + geom_fruit(
+  data=phyloRegionsComb,
+         geom=geom_star,
+         mapping=aes(y=org,fill=geo_group),
+         starshape=13,
+         color=NA,
+         size=1,
+         starstroke=0,
+         offset=0.05,
+     ) + scale_fill_manual(
+         name="Region",
+         values=palette,
+         guide=guide_legend(keywidth=0.3, keyheight=0.3, ncol=2, order=2)
+      )
+
+AST_region 
+
+pdf("C:/Users/HCMcQueary/OneDrive - Commonwealth of Massachusetts/HomeDrive/dogEcoli2022/Phenotype/AST_region.pdf")
+AST_region
+dev.off()
+
+
+AST_region_phy <- ( treeAST + geom_fruit(
+         data=phyloRegionsComb,
+         geom=geom_star,
+         mapping=aes(y=org,fill=phylogroup),
+         starshape=26,
+         color=NA,
+         size=2,
+         starstroke=0,
+         offset=0.05 )
++ geom_fruit(
+  data=phyloRegionsComb,
+         geom=geom_star,
+         mapping=aes(y=org,fill=geo_group),
+         starshape=13,
+         color=NA,
+         size=1,
+         starstroke=0,
+         offset=0.05,
+  scale_fill_manual(
+         name="Region",
+         values=palette,
+         guide=guide_legend(keywidth=0.3, keyheight=0.3, ncol=2, order=2) ) ) ) 
+
+
+
 
 colnames(AST_data_IDs_short)
 levels(as.factor(AST_data_IDs_short$Amoxicillin.Clavulanic.Acid.INT))
@@ -335,9 +406,50 @@ tree8 <- tree7 + new_scale_fill() + geom_fruit(
      ) 
 tree8
 tree7
-pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/ast_phylogroupComparisonTree.pdf")
-tree8
+# pdf("/Users/hcm59/Library/CloudStorage/Box-Box/Holly/Dog_E_coli_project/jan22/panarooResults/visualizations/ast_phylogroupComparisonTree.pdf")
+# tree8
+# dev.off()
+
+treeClerm <- treeAST + new_scale_fill() + geom_fruit(
+    data=phyloRegionsComb,
+    geom=geom_star,
+    mapping=aes(y=org,fill=phylogroup),
+    starshape=13,
+    color=NA,
+    size=1,
+    starstroke=0,
+    offset=0.1
+)
+
+treeRegions <- treeAST + new_scale_fill() + geom_fruit(
+    data=phyloRegionsComb,
+    geom=geom_star,
+    mapping=aes(y=org,fill=geo_group),
+    starshape=13,
+    color=NA,
+    size=1,
+    starstroke=0,
+    offset=0.1
+)
+treeRegions
+treeClermRegions <- treeClerm + new_scale_fill() + geom_fruit(
+    data=phyloRegionsComb,
+    geom=geom_star,
+    mapping=aes(y=org,fill=geo_group),
+    starshape=13,
+    color=NA,
+    size=0.5,
+    starstroke=0,
+    offset=0.1
+)
+
+treeClermRegions
+
+
+pdf("C:/Users/HCMcQueary/OneDrive - Commonwealth of Massachusetts/HomeDrive/dogEcoli2022/Phenotype/treeClermRegions.pdf")
+treeClermRegions
 dev.off()
+
 ```
 
 
